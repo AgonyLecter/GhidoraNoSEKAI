@@ -1,100 +1,175 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Ghidorah no Sekai — Rules</title>
-<meta name="description" content="Regole ufficiali del Vault: curatela, rarità, offerte, pagamenti, spedizioni e responsabilità per manga e fumetti rari." />
+<meta name="description" content="Official Vault rules: curation, rarity, offers, payments, shipping and liabilities for rare manga & comics." />
 <meta name="color-scheme" content="dark" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+
 <style>
-:root{--bg:#000;--gold:#FFD700;--gold-deep:#b98b13;--text:#e8e8e8;--muted:#a4a4a4;--border:rgba(255,215,0,.18)}
-*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#070709; --text:#eaeaea; --muted:#a7a7a7;
+  --gold:#FFD700; --gold-deep:#b98b13; --border:rgba(255,215,0,.18);
+  --ring:rgba(255,215,0,.55);
+  --radius:18px;
+  --shadow:0 10px 28px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(1200px 600px at 50% -10%,rgba(255,215,0,.06),transparent 60%),radial-gradient(900px 500px at -20% 120%,rgba(184,134,11,.06),transparent 60%),repeating-conic-gradient(from 0deg,rgba(255,255,255,.012) 0 10deg,transparent 10deg 20deg)}
-.topbar{position:sticky;top:0;z-index:40;display:flex;gap:.75rem;align-items:center;justify-content:space-between;padding:.7rem 1rem;backdrop-filter:blur(8px);background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,0))}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+
+/* Background */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(1200px 600px at 50% -10%,rgba(255,215,0,0.06),transparent 60%),
+    radial-gradient(900px 500px at -20% 120%,rgba(184,134,11,0.05),transparent 60%),
+    #070709;
+}
+
+/* Topbar + comet back */
+.topbar{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  gap:.75rem;padding:.7rem 1rem;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,0));
+  backdrop-filter:blur(8px)
+}
 .brand{display:flex;align-items:center;gap:.6rem}
 .brand img{width:32px;height:32px;border-radius:50%}
 .brand strong{letter-spacing:.04em}
-.back{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:999px;text-decoration:none;background:linear-gradient(90deg,#1a1400,#2b2200);border:1px solid rgba(255,215,0,.28);color:#FFD700;box-shadow:0 0 12px rgba(255,215,0,.18);font-weight:800;letter-spacing:.08em}
-header{text-align:center;padding:2.2rem 1rem 1.2rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+
+.back{
+  --g: conic-gradient(from 0deg at 50% 50%, #1b1600, #2e2500, #1b1600);
+  display:inline-flex;align-items:center;gap:.65rem;position:relative;
+  padding:.78rem 1.25rem;border-radius:999px;border:1px solid rgba(255,215,0,.28);
+  text-decoration:none;color:#FFD700;font-weight:800;letter-spacing:.08em;
+  background:var(--g); box-shadow:0 0 0 1px rgba(255,215,0,.08) inset, var(--shadow);
+  overflow:hidden; isolation:isolate;
+}
+.back::before{
+  content:""; position:absolute; inset:-200% -40% auto -40%; height:360%; transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  animation:beam 3.2s linear infinite; mix-blend-mode:screen; pointer-events:none;
+}
+.back::after{
+  content:"✦"; position:absolute; right:12px; top:6px; font-size:14px; opacity:.8;
+  animation:twinkle 1.8s ease-in-out infinite alternate;
+}
+.back:hover{box-shadow:0 0 0 2px var(--ring), var(--shadow); transform:translateY(-1px)}
+@keyframes beam{0%{transform:translateX(-60%) rotate(22deg)}100%{transform:translateX(60%) rotate(22deg)}}
+@keyframes twinkle{0%{opacity:.4; transform:scale(.9) rotate(0)}100%{opacity:1; transform:scale(1.15) rotate(12deg)}}
+
+/* Header */
+header{text-align:center;padding:2rem 1rem 1rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
 .logo-wrapper{position:relative;display:inline-block}
-.logo-glow{position:absolute;top:50%;left:50%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.65) 0%,rgba(255,215,0,0) 70%);transform:translate(-50%,-50%);filter:blur(14px);z-index:0;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}}
-img.logo{position:relative;z-index:1;width:112px;height:112px;border-radius:50%;object-fit:cover;box-shadow:0 0 18px rgba(255,215,0,.28),0 0 42px rgba(255,215,0,.16)}
-h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2.3rem,7vw,4.2rem);background:linear-gradient(90deg,#fff,#eee,#fff);background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;animation:shine 7s linear infinite;letter-spacing:.14em;text-transform:uppercase}
+.logo-glow{position:absolute;top:50%;left:50%;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.55) 0%,rgba(255,215,0,0) 70%);transform:translate(-50%,-50%);filter:blur(12px);z-index:0;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:.95;transform:translate(-50%,-50%) scale(1.16)}}
+.logo{position:relative;z-index:1;width:108px;height:108px;border-radius:50%;object-fit:cover;box-shadow:0 0 18px rgba(255,215,0,.28),0 0 42px rgba(255,215,0,.16)}
+h1{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(2.2rem,6.5vw,4rem);
+  background:linear-gradient(90deg,#fff,#eee,#fff);background-size:200% auto;
+  color:transparent;-webkit-background-clip:text;background-clip:text;letter-spacing:.14em;text-transform:uppercase;
+  animation:shine 7s linear infinite;margin:.2rem 0 0
+}
 @keyframes shine{0%{background-position:0% center}100%{background-position:200% center}}
-.langs{display:flex;gap:.6rem;justify-content:center;align-items:center;flex-wrap:wrap;padding:.6rem 1rem 0}
-.lang{background:linear-gradient(180deg,#0d0d0d,#151515);border:1px solid #222;border-radius:999px;padding:.72rem 1.1rem;color:#cfcfcf;font-size:1rem;cursor:pointer;user-select:none;min-height:46px;letter-spacing:.04em;position:relative;overflow:hidden}
-.lang[aria-pressed="true"]{border-color:rgba(255,215,0,.28);color:#FFD700;box-shadow:0 0 0 2px rgba(255,215,0,.12) inset}
-.lang::after{content:"";position:absolute;inset:-40% -10%;background:conic-gradient(from var(--a,0deg),rgba(255,215,0,.35),transparent 35% 70%,rgba(255,215,0,.25));filter:blur(16px);opacity:.0;transition:opacity .4s ease}
-.lang.pulse::after{opacity:.9;animation:spin 6s linear infinite}
-@keyframes spin{to{--a:360deg}}
+
+/* Languages (uniform, no icons) */
+.langs{display:flex;gap:.7rem;justify-content:center;align-items:center;flex-wrap:wrap;padding:.6rem 1rem 0}
+.lang{
+  position:relative;display:inline-grid;place-items:center;
+  min-width:132px;padding:.95rem 1.2rem;border-radius:14px;border:1px solid #242424;
+  background:linear-gradient(180deg,#0d0f12,#13161a); color:#d9d9d9; cursor:pointer; user-select:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.3);
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
+  overflow:hidden; isolation:isolate; font-size:1.05rem; letter-spacing:.04em;
+}
+.lang:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.45);border-color:#323232}
+.lang[aria-pressed="true"]{outline:2px solid rgba(255,215,0,.35); color:#FFD700; border-color:rgba(255,215,0,.28)}
+/* sweep + pulse until selection */
+.lang::before{
+  content:""; position:absolute; inset:-160% -40% auto -40%; height:340%; transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+  opacity:0; mix-blend-mode:screen; pointer-events:none;
+}
+.lang.hint::before{opacity:1; animation:beam 3.6s linear infinite}
+.lang.hint{animation:bounce 2.6s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+
+/* Content card (hidden until pick) */
 .main{max-width:1100px;margin:0 auto;padding:clamp(1rem,4vw,2rem)}
-.codex{position:relative;border:1px solid var(--border);border-radius:20px;background:radial-gradient(180% 140% at 50% -10%,rgba(255,215,0,.06),rgba(255,215,0,.02) 38%,rgba(0,0,0,.45) 90%);box-shadow:0 0 30px rgba(255,215,0,.12) inset,0 0 18px rgba(255,215,0,.08);padding:clamp(1rem,3vw,2rem);overflow:hidden;min-height:220px}
-.veil{position:absolute;inset:0;background:
-radial-gradient(120px 120px at var(--x,50%) var(--y,0%),rgba(255,215,0,.18),transparent 60%),
-radial-gradient(420px 420px at var(--x2,50%) var(--y2,100%),rgba(255,215,0,.10),transparent 60%),
-linear-gradient(180deg,rgba(0,0,0,.35),transparent 20% 80%,rgba(0,0,0,.25));
-mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
-.codex.show .veil{opacity:1;animation:scribe 2.8s ease-out forwards}
-@keyframes scribe{0%{--x:50%;--y:-20%;--x2:50%;--y2:120%}50%{--x:10%;--y:40%;--x2:85%;--y2:65%}100%{--x:80%;--y:120%;--x2:20%;--y2:-10%}}
+.codex{
+  display:none; /* nascosto finché non si sceglie */
+  position:relative;border:1px solid var(--border);border-radius:var(--radius);
+  background:radial-gradient(180% 140% at 50% -10%,rgba(255,215,0,.06),rgba(255,215,0,.02) 38%,rgba(0,0,0,.45) 90%);
+  box-shadow:0 0 30px rgba(255,215,0,.12) inset,0 0 18px rgba(255,215,0,.08);
+  padding:clamp(1rem,3vw,2rem);overflow:hidden;min-height:220px
+}
+.codex.show{display:block}
 .gold{background:linear-gradient(90deg,var(--gold),var(--gold-deep),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 14px rgba(255,215,0,.12)}
 .white{color:#f4f4f4}
 .codex h2{font-family:'Cinzel Decorative',serif;letter-spacing:.08em;margin:.2rem 0 1.1rem}
 .codex h3{color:#ffffff;opacity:.95;margin:1.2rem 0 .6rem}
-.codex p,.codex li{font-family:'Cormorant Garamond',serif;line-height:1.65}
+.codex p,.codex li{font-family:'Cormorant Garamond',serif;line-height:1.65;font-size:1.06rem}
 .codex ul{padding-left:1.1rem}
 .codex li{margin:.25rem 0}
-.reveal{opacity:0;transform:translateY(18px) scale(.98);filter:blur(12px)}
-.codex.show .reveal{animation:ink 1200ms ease forwards}
-.codex.show .reveal:nth-child(1){animation-delay:120ms}
-.codex.show .reveal:nth-child(2){animation-delay:220ms}
-.codex.show .reveal:nth-child(3){animation-delay:320ms}
-.codex.show .reveal:nth-child(4){animation-delay:420ms}
-.codex.show .reveal:nth-child(5){animation-delay:520ms}
-@keyframes ink{0%{opacity:0;filter:blur(10px);transform:translateY(16px) scale(.985)}45%{opacity:.85;filter:blur(4px)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}
-.footer{text-align:center;font-size:.85rem;color:#888a;padding:2rem 1rem;border-top:1px solid #222;margin-top:2rem}
-@media (max-width:640px){.langs{gap:.5rem}.codex{padding:1.1rem}}
-.noselect{user-select:none}
-.shield{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:999}
-.shield.active{display:flex}
-.shield .box{border:1px solid #333;border-radius:16px;padding:1.2rem 1.4rem;background:#0b0b0b;max-width:520px;text-align:center;box-shadow:0 0 24px rgba(255,215,0,.14)}
-.shield .box h3{margin:0 0 .4rem;color:#FFD700;letter-spacing:.08em}
-.shield .box p{margin:.25rem 0;color:#cfcfcf}
+.reveal{opacity:0;transform:translateY(12px) scale(.985);filter:blur(10px)}
+.codex.show .reveal{animation:ink 900ms ease forwards}
+.codex.show .reveal:nth-child(1){animation-delay:100ms}
+.codex.show .reveal:nth-child(2){animation-delay:180ms}
+.codex.show .reveal:nth-child(3){animation-delay:260ms}
+.codex.show .reveal:nth-child(4){animation-delay:340ms}
+.codex.show .reveal:nth-child(5){animation-delay:420ms}
+@keyframes ink{0%{opacity:0;filter:blur(10px);transform:translateY(14px) scale(.985)}45%{opacity:.85;filter:blur(4px)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}
+
+/* Footer */
+.footer{text-align:center;font-size:.9rem;color:#8d8f95;padding:2rem 1rem;border-top:1px solid #222;margin-top:2rem}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+  .lang::before{display:none!important}
+}
 </style>
 </head>
-<body class="noselect">
+<body>
+
 <div class="topbar">
   <div class="brand"><img src="Ghidorah1.png" alt="Ghidorah" /><strong>Ghidorah no Sekai</strong></div>
-  <a class="back" href="index.html">⟵ Back to Vault</a>
+  <a class="back" href="index.html" aria-label="Back to Vault">⟵ Back to Vault</a>
 </div>
 
 <header>
   <div class="logo-wrapper" aria-hidden="true">
     <div class="logo-glow"></div>
-    <img src="Ghidorah1.png" alt="Logo Ghidorah no Sekai" class="logo" width="112" height="112" />
+    <img src="Ghidorah1.png" alt="Ghidorah no Sekai logo" class="logo" width="108" height="108" />
   </div>
   <h1>Rules</h1>
-  <div class="langs" role="tablist" aria-label="Lingue">
-    <button class="lang pulse" data-lang="en" aria-pressed="false">English</button>
-    <button class="lang pulse" data-lang="it" aria-pressed="false">Italiano</button>
-    <button class="lang pulse" data-lang="fr" aria-pressed="false">Français</button>
+
+  <!-- Uniform language buttons (no icons/abbr) -->
+  <div class="langs" role="tablist" aria-label="Languages">
+    <button class="lang hint" data-lang="en" aria-pressed="false" role="tab" aria-controls="content">English</button>
+    <button class="lang hint" data-lang="it" aria-pressed="false" role="tab" aria-controls="content">Italiano</button>
+    <button class="lang hint" data-lang="fr" aria-pressed="false" role="tab" aria-controls="content">Français</button>
   </div>
 </header>
 
 <main class="main">
   <section class="codex" id="codex" aria-live="polite">
     <div id="content"></div>
-    <div class="veil"></div>
   </section>
 </main>
 
 <div class="footer">© 2025 Ghidorah no Sekai — Vintage &amp; Rare Comics Vault</div>
 
+<!-- ========== Templates ========== -->
 <template id="tpl-en">
   <h2 class="white reveal">Vault Policy</h2>
   <p class="gold reveal"><strong>Ghidorah no Sekai</strong> acts exclusively as curator of rare books, manga, artbooks, comics and related works. We are not wholesalers; quantities are strictly limited.</p>
@@ -124,7 +199,7 @@ mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
 
 <template id="tpl-it">
   <h2 class="white reveal">Regolamento del Vault</h2>
-  <p class="gold reveal"><strong>Ghidora no SEKAI</strong> opera esclusivamente quale curatore di libri antichi, manga, artbook, comics e opere affini. Non siamo rivenditori all’ingrosso; le quantità sono rigorosamente limitate.</p>
+  <p class="gold reveal"><strong>Ghidorah no Sekai</strong> opera esclusivamente quale curatore di libri antichi, manga, artbook, comics e opere affini. Non siamo rivenditori all’ingrosso; le quantità sono rigorosamente limitate.</p>
   <h3 class="white reveal">Rarità & Trasparenza</h3>
   <ul class="gold reveal">
     <li>Ogni opera è dotata di un indice di rarità <strong>da 1 a 5 stelle</strong>, che esprime la normale reperibilità sul mercato. I sistemi di grading numerici o alfabetici non sono adottati per scelta curatoriale.</li>
@@ -133,7 +208,7 @@ mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
   <h3 class="white reveal">Offerte & Accettazione</h3>
   <ul class="gold reveal">
     <li>Ogni offerta inviata dal cliente viene esaminata. La risposta è fornita entro <strong>tre (3) giorni</strong> dalla ricezione.</li>
-    <li>Ghidora no SEKAI può rifiutare qualsiasi offerta a propria esclusiva discrezione, senza obbligo di motivazione.</li>
+    <li>Ghidorah no Sekai può rifiutare qualsiasi offerta a propria esclusiva discrezione, senza obbligo di motivazione.</li>
     <li>In caso di accettazione, il cliente è contattato via email per i dati di spedizione e l’oggetto viene <strong>immediatamente rimosso</strong> dalla vetrina.</li>
   </ul>
   <h3 class="white reveal">Pagamento</h3>
@@ -146,7 +221,7 @@ mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
     <li>Le fasi di imballaggio e sigillatura sono <strong>fotografate e filmate</strong>; la documentazione può essere fornita su richiesta.</li>
   </ul>
   <h3 class="white reveal">Responsabilità</h3>
-  <p class="gold reveal">La responsabilità di Ghidora no SEKAI termina con la consegna del pacco al corriere e con l’invio dei dati di tracciamento al cliente.</p>
+  <p class="gold reveal">La responsabilità di Ghidorah no Sekai termina con la consegna del pacco al corriere e con l’invio dei dati di tracciamento al cliente.</p>
 </template>
 
 <template id="tpl-fr">
@@ -177,31 +252,60 @@ mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
 </template>
 
 <script>
-const codex=document.getElementById('codex');
-const content=document.getElementById('content');
-const veil=codex.querySelector('.veil');
-function setActive(lang){document.querySelectorAll('.lang').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)))}
+const codex = document.getElementById('codex');
+const content = document.getElementById('content');
+const langButtons = Array.from(document.querySelectorAll('.lang'));
+
+function setActive(lang){
+  langButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang===lang)));
+}
 function show(lang){
-  setActive(lang);
-  const tpl=document.getElementById(`tpl-${lang}`);
+  const tpl = document.getElementById(`tpl-${lang}`);
   if(!tpl) return;
-  codex.classList.remove('show');
-  content.innerHTML=tpl.innerHTML;
+  setActive(lang);
+  content.innerHTML = tpl.innerHTML;
+  codex.classList.add('show');     // mostra ora le regole
+  // togli hint su tutti i bottoni dopo la scelta
+  langButtons.forEach(b=>b.classList.remove('hint'));
+  // riavvia animazioni reveal
   void content.offsetWidth;
   codex.classList.add('show');
 }
-document.addEventListener('click',e=>{
-  const b=e.target.closest('.lang');
+
+// Click lingue
+document.addEventListener('click', (e)=>{
+  const b = e.target.closest('.lang');
   if(!b) return;
   show(b.dataset.lang);
 });
+
+// Tastiera: frecce cambiano lingua, ma solo dopo la prima scelta
+document.addEventListener('keydown',(e)=>{
+  if(!(e.key==='ArrowRight'||e.key==='ArrowLeft')) return;
+  if(!codex.classList.contains('show')) return;
+  const idx = langButtons.findIndex(b=>b.getAttribute('aria-pressed')==='true');
+  const next = e.key==='ArrowRight' ? (idx+1)%langButtons.length : (idx-1+langButtons.length)%langButtons.length;
+  show(langButtons[next].dataset.lang);
+});
+
+// Avvio: regole nascoste, solo hint visivo sui pulsanti
+window.addEventListener('load', ()=>{
+  codex.classList.remove('show');          // garantito nascosto
+  langButtons.forEach(b=>b.classList.add('hint'));
+});
+
+// (facoltativo) blocco devtools
 document.addEventListener('contextmenu',e=>e.preventDefault(),{passive:false});
-window.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase();if(k==='f12'||(e.ctrlKey&&k==='u')||(e.ctrlKey&&e.shiftKey&&['i','j','c','s'].includes(k))){e.preventDefault();e.stopPropagation()}},true);
-(function pulseHint(){setTimeout(()=>document.querySelectorAll('.lang').forEach(b=>b.classList.add('pulse')),200)})();
-(function shield(){if(localStorage.getItem("ghidorah_dev_ok")==="1")return;const el=document.createElement("div");el.className="shield";el.innerHTML='<div class="box"><h3>Vault Shield</h3><p>Protezione attiva.</p><p>Assistenza: ghidorahnosekai@example.com</p></div>';document.body.appendChild(el);const check=()=>{const w=window.outerWidth-window.innerWidth;const h=window.outerHeight-window.innerHeight;const open=w>160||h>160;el.classList.toggle("active",open)};setInterval(check,700)})();
+window.addEventListener('keydown',e=>{
+  const k=(e.key||'').toLowerCase();
+  if(k==='f12'||(e.ctrlKey&&k==='u')||(e.ctrlKey&&e.shiftKey&&['i','j','c','s'].includes(k))){
+    e.preventDefault(); e.stopPropagation();
+  }
+}, true);
 </script>
 </body>
 </html>
+
 
 
 
