@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Ghidorah no Sekai — Rules</title>
+<meta name="description" content="Regole ufficiali del Vault: curatela, rarità, offerte, pagamenti, spedizioni e responsabilità per manga e fumetti rari." />
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#000;--gold:#FFD700;--gold-deep:#b98b13;--text:#e8e8e8;--muted:#a4a4a4;--border:rgba(255,215,0,.18)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(1200px 600px at 50% -10%,rgba(255,215,0,.06),transparent 60%),radial-gradient(900px 500px at -20% 120%,rgba(184,134,11,.06),transparent 60%),repeating-conic-gradient(from 0deg,rgba(255,255,255,.012) 0 10deg,transparent 10deg 20deg)}
+.topbar{position:sticky;top:0;z-index:40;display:flex;gap:.75rem;align-items:center;justify-content:space-between;padding:.7rem 1rem;backdrop-filter:blur(8px);background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,0))}
+.brand{display:flex;align-items:center;gap:.6rem}
+.brand img{width:32px;height:32px;border-radius:50%}
+.brand strong{letter-spacing:.04em}
+.back{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:999px;text-decoration:none;background:linear-gradient(90deg,#1a1400,#2b2200);border:1px solid rgba(255,215,0,.28);color:#FFD700;box-shadow:0 0 12px rgba(255,215,0,.18);font-weight:800;letter-spacing:.08em}
+header{text-align:center;padding:2.2rem 1rem 1.2rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+.logo-wrapper{position:relative;display:inline-block}
+.logo-glow{position:absolute;top:50%;left:50%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.65) 0%,rgba(255,215,0,0) 70%);transform:translate(-50%,-50%);filter:blur(14px);z-index:0;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}}
+img.logo{position:relative;z-index:1;width:112px;height:112px;border-radius:50%;object-fit:cover;box-shadow:0 0 18px rgba(255,215,0,.28),0 0 42px rgba(255,215,0,.16)}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2.3rem,7vw,4.2rem);background:linear-gradient(90deg,#fff,#eee,#fff);background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;animation:shine 7s linear infinite;letter-spacing:.14em;text-transform:uppercase}
+@keyframes shine{0%{background-position:0% center}100%{background-position:200% center}}
+.langs{display:flex;gap:.6rem;justify-content:center;align-items:center;flex-wrap:wrap;padding:.6rem 1rem 0}
+.lang{background:linear-gradient(180deg,#0d0d0d,#151515);border:1px solid #222;border-radius:999px;padding:.72rem 1.1rem;color:#cfcfcf;font-size:1rem;cursor:pointer;user-select:none;min-height:46px;letter-spacing:.04em;position:relative;overflow:hidden}
+.lang[aria-pressed="true"]{border-color:rgba(255,215,0,.28);color:#FFD700;box-shadow:0 0 0 2px rgba(255,215,0,.12) inset}
+.lang::after{content:"";position:absolute;inset:-40% -10%;background:conic-gradient(from var(--a,0deg),rgba(255,215,0,.35),transparent 35% 70%,rgba(255,215,0,.25));filter:blur(16px);opacity:.0;transition:opacity .4s ease}
+.lang.pulse::after{opacity:.9;animation:spin 6s linear infinite}
+@keyframes spin{to{--a:360deg}}
+.main{max-width:1100px;margin:0 auto;padding:clamp(1rem,4vw,2rem)}
+.codex{position:relative;border:1px solid var(--border);border-radius:20px;background:radial-gradient(180% 140% at 50% -10%,rgba(255,215,0,.06),rgba(255,215,0,.02) 38%,rgba(0,0,0,.45) 90%);box-shadow:0 0 30px rgba(255,215,0,.12) inset,0 0 18px rgba(255,215,0,.08);padding:clamp(1rem,3vw,2rem);overflow:hidden;min-height:220px}
+.veil{position:absolute;inset:0;background:
+radial-gradient(120px 120px at var(--x,50%) var(--y,0%),rgba(255,215,0,.18),transparent 60%),
+radial-gradient(420px 420px at var(--x2,50%) var(--y2,100%),rgba(255,215,0,.10),transparent 60%),
+linear-gradient(180deg,rgba(0,0,0,.35),transparent 20% 80%,rgba(0,0,0,.25));
+mix-blend-mode:screen;pointer-events:none;opacity:0;transition:opacity .5s ease}
+.codex.show .veil{opacity:1;animation:scribe 2.8s ease-out forwards}
+@keyframes scribe{0%{--x:50%;--y:-20%;--x2:50%;--y2:120%}50%{--x:10%;--y:40%;--x2:85%;--y2:65%}100%{--x:80%;--y:120%;--x2:20%;--y2:-10%}}
+.gold{background:linear-gradient(90deg,var(--gold),var(--gold-deep),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 14px rgba(255,215,0,.12)}
+.white{color:#f4f4f4}
+.codex h2{font-family:'Cinzel Decorative',serif;letter-spacing:.08em;margin:.2rem 0 1.1rem}
+.codex h3{color:#ffffff;opacity:.95;margin:1.2rem 0 .6rem}
+.codex p,.codex li{font-family:'Cormorant Garamond',serif;line-height:1.65}
+.codex ul{padding-left:1.1rem}
+.codex li{margin:.25rem 0}
+.reveal{opacity:0;transform:translateY(18px) scale(.98);filter:blur(12px)}
+.codex.show .reveal{animation:ink 1200ms ease forwards}
+.codex.show .reveal:nth-child(1){animation-delay:120ms}
+.codex.show .reveal:nth-child(2){animation-delay:220ms}
+.codex.show .reveal:nth-child(3){animation-delay:320ms}
+.codex.show .reveal:nth-child(4){animation-delay:420ms}
+.codex.show .reveal:nth-child(5){animation-delay:520ms}
+@keyframes ink{0%{opacity:0;filter:blur(10px);transform:translateY(16px) scale(.985)}45%{opacity:.85;filter:blur(4px)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}
+.footer{text-align:center;font-size:.85rem;color:#888a;padding:2rem 1rem;border-top:1px solid #222;margin-top:2rem}
+@media (max-width:640px){.langs{gap:.5rem}.codex{padding:1.1rem}}
+.noselect{user-select:none}
+.shield{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:999}
+.shield.active{display:flex}
+.shield .box{border:1px solid #333;border-radius:16px;padding:1.2rem 1.4rem;background:#0b0b0b;max-width:520px;text-align:center;box-shadow:0 0 24px rgba(255,215,0,.14)}
+.shield .box h3{margin:0 0 .4rem;color:#FFD700;letter-spacing:.08em}
+.shield .box p{margin:.25rem 0;color:#cfcfcf}
+</style>
+</head>
+<body class="noselect">
+<div class="topbar">
+  <div class="brand"><img src="Ghidorah1.png" alt="Ghidorah" /><strong>Ghidorah no Sekai</strong></div>
+  <a class="back" href="index.html">⟵ Back to Vault</a>
+</div>
+
+<header>
+  <div class="logo-wrapper" aria-hidden="true">
+    <div class="logo-glow"></div>
+    <img src="Ghidorah1.png" alt="Logo Ghidorah no Sekai" class="logo" width="112" height="112" />
+  </div>
+  <h1>Rules</h1>
+  <div class="langs" role="tablist" aria-label="Lingue">
+    <button class="lang pulse" data-lang="en" aria-pressed="false">English</button>
+    <button class="lang pulse" data-lang="it" aria-pressed="false">Italiano</button>
+    <button class="lang pulse" data-lang="fr" aria-pressed="false">Français</button>
+  </div>
+</header>
+
+<main class="main">
+  <section class="codex" id="codex" aria-live="polite">
+    <div id="content"></div>
+    <div class="veil"></div>
+  </section>
+</main>
+
+<div class="footer">© 2025 Ghidorah no Sekai — Vintage &amp; Rare Comics Vault</div>
+
+<template id="tpl-en">
+  <h2 class="white reveal">Vault Policy</h2>
+  <p class="gold reveal"><strong>Ghidorah no Sekai</strong> acts exclusively as curator of rare books, manga, artbooks, comics and related works. We are not wholesalers; quantities are strictly limited.</p>
+  <h3 class="white reveal">Rarity & Transparency</h3>
+  <ul class="gold reveal">
+    <li>Each work is assigned a <strong>1–5 star</strong> rarity index reflecting normal market availability. Standard numeric or letter grading systems are intentionally not adopted.</li>
+    <li>Any imperfection is <strong>described and documented</strong> with photographs to ensure complete transparency of the item’s integrity.</li>
+  </ul>
+  <h3 class="white reveal">Offers & Acceptance</h3>
+  <ul class="gold reveal">
+    <li>All offers submitted by clients are examined. A response is provided within <strong>three (3) days</strong> from receipt.</li>
+    <li>Ghidorah no Sekai may decline any offer at its sole discretion, without obligation to state reasons.</li>
+    <li>Upon acceptance, the client is contacted by email to provide shipping details and the item is <strong>immediately withdrawn</strong> from the showcase.</li>
+  </ul>
+  <h3 class="white reveal">Payment</h3>
+  <ul class="gold reveal">
+    <li>Payment is required <strong>in advance</strong> by bank transfer.</li>
+  </ul>
+  <h3 class="white reveal">Shipping</h3>
+  <ul class="gold reveal">
+    <li>Dispatch occurs within <strong>three (3) business days</strong> from receipt of payment.</li>
+    <li>The packaging and sealing phases are <strong>photographed and filmed</strong>; evidence can be provided to the client upon request.</li>
+  </ul>
+  <h3 class="white reveal">Liability</h3>
+  <p class="gold reveal">Liability of Ghidorah no Sekai ends upon delivery of the parcel to the carrier and transmission of the tracking data to the client.</p>
+</template>
+
+<template id="tpl-it">
+  <h2 class="white reveal">Regolamento del Vault</h2>
+  <p class="gold reveal"><strong>Ghidora no SEKAI</strong> opera esclusivamente quale curatore di libri antichi, manga, artbook, comics e opere affini. Non siamo rivenditori all’ingrosso; le quantità sono rigorosamente limitate.</p>
+  <h3 class="white reveal">Rarità & Trasparenza</h3>
+  <ul class="gold reveal">
+    <li>Ogni opera è dotata di un indice di rarità <strong>da 1 a 5 stelle</strong>, che esprime la normale reperibilità sul mercato. I sistemi di grading numerici o alfabetici non sono adottati per scelta curatoriale.</li>
+    <li>Eventuali difetti sono <strong>descritti e documentati</strong> con fotografie, al fine di garantire piena trasparenza sull’integrità dell’opera.</li>
+  </ul>
+  <h3 class="white reveal">Offerte & Accettazione</h3>
+  <ul class="gold reveal">
+    <li>Ogni offerta inviata dal cliente viene esaminata. La risposta è fornita entro <strong>tre (3) giorni</strong> dalla ricezione.</li>
+    <li>Ghidora no SEKAI può rifiutare qualsiasi offerta a propria esclusiva discrezione, senza obbligo di motivazione.</li>
+    <li>In caso di accettazione, il cliente è contattato via email per i dati di spedizione e l’oggetto viene <strong>immediatamente rimosso</strong> dalla vetrina.</li>
+  </ul>
+  <h3 class="white reveal">Pagamento</h3>
+  <ul class="gold reveal">
+    <li>Il pagamento è richiesto <strong>anticipato</strong>, tramite bonifico bancario.</li>
+  </ul>
+  <h3 class="white reveal">Spedizione</h3>
+  <ul class="gold reveal">
+    <li>La spedizione avviene entro <strong>tre (3) giorni lavorativi</strong> dalla ricezione del pagamento.</li>
+    <li>Le fasi di imballaggio e sigillatura sono <strong>fotografate e filmate</strong>; la documentazione può essere fornita su richiesta.</li>
+  </ul>
+  <h3 class="white reveal">Responsabilità</h3>
+  <p class="gold reveal">La responsabilità di Ghidora no SEKAI termina con la consegna del pacco al corriere e con l’invio dei dati di tracciamento al cliente.</p>
+</template>
+
+<template id="tpl-fr">
+  <h2 class="white reveal">Règlement du Vault</h2>
+  <p class="gold reveal"><strong>Ghidorah no Sekai</strong> agit exclusivement en qualité de curateur de livres anciens, mangas, artbooks, comics et œuvres connexes. Nous ne sommes pas grossistes ; les quantités sont strictement limitées.</p>
+  <h3 class="white reveal">Rareté & Transparence</h3>
+  <ul class="gold reveal">
+    <li>Chaque œuvre reçoit un indice de rareté <strong>de 1 à 5 étoiles</strong> reflétant sa disponibilité habituelle sur le marché. Les systèmes de grading numériques ou alphabétiques ne sont pas employés par choix curatoriel.</li>
+    <li>Toute imperfection est <strong>décrite et documentée</strong> par photographies afin d’assurer une transparence intégrale sur l’intégrité de la pièce.</li>
+  </ul>
+  <h3 class="white reveal">Offres & Acceptation</h3>
+  <ul class="gold reveal">
+    <li>Toute offre transmise par le client est examinée. Une réponse est fournie dans un délai de <strong>trois (3) jours</strong> à compter de sa réception.</li>
+    <li>Ghidorah no Sekai peut refuser toute offre à sa seule discrétion, sans obligation de motivation.</li>
+    <li>En cas d’acceptation, le client est contacté par email pour les informations d’expédition et l’article est <strong>immédiatement retiré</strong> de la vitrine.</li>
+  </ul>
+  <h3 class="white reveal">Paiement</h3>
+  <ul class="gold reveal">
+    <li>Le paiement est exigé <strong>à l’avance</strong>, par virement bancaire.</li>
+  </ul>
+  <h3 class="white reveal">Expédition</h3>
+  <ul class="gold reveal">
+    <li>L’envoi est effectué dans un délai de <strong>trois (3) jours ouvrables</strong> à compter de la réception du paiement.</li>
+    <li>Les phases d’emballage et de scellement sont <strong>photographiées et filmées</strong> ; les preuves peuvent être fournies sur demande.</li>
+  </ul>
+  <h3 class="white reveal">Responsabilité</h3>
+  <p class="gold reveal">La responsabilité de Ghidorah no Sekai cesse à la remise du colis au transporteur et à l’envoi des informations de suivi au client.</p>
+</template>
+
+<script>
+const codex=document.getElementById('codex');
+const content=document.getElementById('content');
+const veil=codex.querySelector('.veil');
+function setActive(lang){document.querySelectorAll('.lang').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)))}
+function show(lang){
+  setActive(lang);
+  const tpl=document.getElementById(`tpl-${lang}`);
+  if(!tpl) return;
+  codex.classList.remove('show');
+  content.innerHTML=tpl.innerHTML;
+  void content.offsetWidth;
+  codex.classList.add('show');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.lang');
+  if(!b) return;
+  show(b.dataset.lang);
+});
+document.addEventListener('contextmenu',e=>e.preventDefault(),{passive:false});
+window.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase();if(k==='f12'||(e.ctrlKey&&k==='u')||(e.ctrlKey&&e.shiftKey&&['i','j','c','s'].includes(k))){e.preventDefault();e.stopPropagation()}},true);
+(function pulseHint(){setTimeout(()=>document.querySelectorAll('.lang').forEach(b=>b.classList.add('pulse')),200)})();
+(function shield(){if(localStorage.getItem("ghidorah_dev_ok")==="1")return;const el=document.createElement("div");el.className="shield";el.innerHTML='<div class="box"><h3>Vault Shield</h3><p>Protezione attiva.</p><p>Assistenza: ghidorahnosekai@example.com</p></div>';document.body.appendChild(el);const check=()=>{const w=window.outerWidth-window.innerWidth;const h=window.outerHeight-window.innerHeight;const open=w>160||h>160;el.classList.toggle("active",open)};setInterval(check,700)})();
+</script>
+</body>
+</html>
+
+
+
