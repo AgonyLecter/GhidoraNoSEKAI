@@ -19,20 +19,24 @@ header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
 .btn{background:conic-gradient(from 0deg at 50% 50%,#ffe27a,#e5c100,#ffd84d,#ffe27a);color:#000;font-weight:800;border:none;border-radius:12px;padding:.8rem 1.1rem;cursor:pointer;box-shadow:0 0 16px rgba(255,215,0,.22)}
 .btn.dim{background:#171717;color:#ddd;border:1px solid #2a2a2a}
 .btn.ghost{background:linear-gradient(90deg,#1a1400,#2b2200);color:#FFD700;border:1px solid rgba(255,215,0,.28)}
-main{display:grid;grid-template-columns:420px 1fr;gap:1rem;padding:1rem}
+main{display:grid;grid-template-columns:440px 1fr;gap:1rem;padding:1rem}
 @media (max-width:1100px){main{grid-template-columns:1fr}}
 .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1rem}
 .panel h2{margin:.25rem 0 1rem;font-size:1.1rem;color:var(--gold)}
 label{display:block;font-size:.9rem;color:#ccc;margin:.5rem 0 .25rem}
 input,textarea,select{width:100%;background:#0b0b0b;color:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:.6rem;outline:none}
 input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px var(--ring)}
-textarea{min-height:92px;resize:vertical}
+textarea{min-height:110px;resize:vertical}
+.helper{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:#9d9d9d;margin-top:.25rem}
 .row{display:flex;gap:.5rem}
 .row>*{flex:1}
 .hint{color:var(--muted);font-size:.85rem}
 .grid{display:grid;gap:.6rem}
 .item{display:grid;grid-template-columns:72px 1fr auto;gap:.75rem;align-items:center;background:#0b0b0b;border:1px solid #1d1d1d;border-radius:12px;padding:.6rem}
 .item img{width:72px;height:96px;object-fit:cover;border-radius:8px}
+.pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.pill{border:1px solid #2a2a2a;border-radius:999px;padding:.1rem .45rem;font-size:.75rem;color:#cfcfcf}
+.pill.warn{border-color:#553300;color:#ffc04d;background:#1a1400}
 .stars{color:#FFD700}
 .actions{display:flex;gap:.4rem;align-items:center}
 .a{padding:.45rem .7rem;border-radius:8px;border:1px solid #2a2a2a;background:#141414;color:#eaeaea;cursor:pointer;min-height:40px}
@@ -46,17 +50,29 @@ textarea{min-height:92px;resize:vertical}
 .search{display:flex;gap:.5rem;align-items:center}
 .fabbar{display:none}
 @media (max-width:640px){
-main{display:block;padding-bottom:88px}
-.fabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,.2),#000);border-top:1px solid #202020;padding:.6rem env(safe-area-inset-left) calc(.6rem + env(safe-area-inset-bottom)) env(safe-area-inset-right);gap:.5rem;justify-content:space-around}
-.fabbar .btn{flex:1;min-height:44px}
+  main{display:block;padding-bottom:88px}
+  .fabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,.2),#000);border-top:1px solid #202020;padding:.6rem env(safe-area-inset-left) calc(.6rem + env(safe-area-inset-bottom)) env(safe-area-inset-right);gap:.5rem;justify-content:space-around}
+  .fabbar .btn{flex:1;min-height:44px}
 }
+/* Gallery */
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem;margin-top:.6rem}
-.thumb{position:relative;border:1px solid #222;border-radius:10px;overflow:hidden;background:#0c0c0c}
+.thumb{position:relative;border:1px solid #222;border-radius:10px;overflow:hidden;background:#0c0c0c;user-select:none}
 .thumb img{width:100%;height:100%;object-fit:contain;display:block;aspect-ratio:3/4;background:#000}
 .thumb .ops{position:absolute;inset:auto .25rem .25rem .25rem;display:flex;gap:.25rem;justify-content:space-between}
 .small{font-size:.78rem;padding:.35rem .5rem;border-radius:8px;border:1px solid #2a2a2a;background:#131313;color:#eaeaea;cursor:pointer}
 .small.star{border-color:#705500;background:#2b2200;color:#FFD700}
+.thumb.dragging{opacity:.6;outline:2px dashed #555}
+.prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:#222}
+.prog>i{display:block;height:100%;width:0;background:#ffd700}
+/* Dropzone */
+.dropzone{margin-top:.5rem;border:1px dashed #393939;border-radius:12px;padding:.75rem;text-align:center;color:#bdbdbd}
+.dropzone.active{background:#0a0a0a;border-color:#5b4500;color:#ffd36b;box-shadow:0 0 0 2px rgba(255,215,0,.12) inset}
+/* Preview image (cover) */
 #preview{display:none;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-top:.5rem;border:1px solid #222}
+/* Filters/Sort on list */
+.tools{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.select{background:#101010;border:1px solid #2a2a2a;color:#ddd;border-radius:10px;padding:.45rem .6rem}
+.kbd{border:1px solid #2a2a2a;border-radius:6px;padding:.05rem .35rem;font-size:.78rem;color:#cfcfcf}
 </style>
 </head>
 <body>
@@ -68,18 +84,35 @@ main{display:block;padding-bottom:88px}
       <div class="sub">Realtime DB + Storage</div>
     </div>
   </div>
-  <a class="btn ghost" href="rules.html">⚖️ Rules</a>
+  <div class="tools">
+    <input id="search" placeholder="Cerca titolo..." />
+    <select id="filter" class="select" title="Filtro">
+      <option value="all">All</option>
+      <option value="pub">Published</option>
+      <option value="draft">Draft</option>
+    </select>
+    <select id="sort" class="select" title="Ordina per">
+      <option value="added">AddedAt ↓</option>
+      <option value="rarity">Rarity ↓</option>
+      <option value="stock">Stock ↓</option>
+      <option value="title">Title A→Z</option>
+    </select>
+    <span class="hint">Shortcut: <span class="kbd">⌘/Ctrl</span>+<span class="kbd">S</span></span>
+    <a class="btn ghost" href="rules.html">⚖️ Rules</a>
+  </div>
 </header>
 
 <main>
   <section class="panel" aria-labelledby="formTitle">
     <h2 id="formTitle">Create / Edit Item</h2>
-    <form id="form">
+    <form id="form" autocomplete="off">
       <input type="hidden" id="docId" />
       <label for="title">Title</label>
       <input id="title" required placeholder="Es. Akira #1 (Italia)" />
       <label for="desc">Description</label>
       <textarea id="desc" placeholder="Dettagli, edizione, stato..."></textarea>
+      <div class="helper"><span id="descCount">0 chars</span><span id="draftBadge" class="hint"></span></div>
+
       <div class="row">
         <div><label for="rarity">Rarity (1–5)</label><input id="rarity" type="number" inputmode="numeric" min="1" max="5" value="3" required /></div>
         <div><label for="stock">Stock</label><input id="stock" type="number" inputmode="numeric" min="0" value="1" required /></div>
@@ -87,6 +120,7 @@ main{display:block;padding-bottom:88px}
       </div>
 
       <label>Gallery upload</label>
+      <div class="dropzone" id="drop">Trascina qui file / incolla immagini (clipboard) / usa il selettore</div>
       <input id="files" type="file" accept="image/*" multiple />
       <div class="row" style="margin-top:.4rem">
         <input id="imgUrl" placeholder="Aggiungi URL singolo come cover (opzionale)" />
@@ -109,13 +143,7 @@ main{display:block;padding-bottom:88px}
   </section>
 
   <section class="panel" aria-labelledby="listTitle">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem">
-      <h2 id="listTitle">Items</h2>
-      <div class="search">
-        <input id="search" placeholder="Cerca titolo..."/>
-        <span class="hint">Ordine: addedAt ↓</span>
-      </div>
-    </div>
+    <h2 id="listTitle">Items</h2>
     <div id="list" class="grid"></div>
   </section>
 
@@ -130,91 +158,250 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { getDatabase, ref, push, set, update, remove, onValue, query, orderByChild, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
+/* OPTIONAL UI-ONLY GATE (commentato: NON è sicurezza)
+if(localStorage.getItem('gh_admin_ok')!=='1'){
+  const pass = prompt('Admin passphrase:');
+  if(pass==='GHS-OK'){ localStorage.setItem('gh_admin_ok','1'); }
+  else { document.body.innerHTML='<div style="display:grid;place-items:center;height:100vh;color:#ffd700">Access denied</div>'; throw new Error('Denied'); }
+}
+*/
+
 const firebaseConfig={apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",authDomain:"wandernatureconnect.firebaseapp.com",databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",projectId:"wandernatureconnect",storageBucket:"wandernatureconnect.appspot.com",messagingSenderId:"1062563433646",appId:"1:1062563433646:web:a7251b914f569fc105f13f",measurementId:"G-SGF0KC717J"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const st=getStorage(app);
 
+/* DOM */
 const form=document.getElementById("form");
 const saveBtn=document.getElementById("saveBtn");
 const resetBtn=document.getElementById("resetBtn");
 const deleteBtn=document.getElementById("deleteBtn");
 const statusEl=document.getElementById("formStatus");
 const searchEl=document.getElementById("search");
+const filterEl=document.getElementById("filter");
+const sortEl=document.getElementById("sort");
 const listEl=document.getElementById("list");
 
 const filesEl=document.getElementById("files");
+const dropEl=document.getElementById("drop");
 const imgUrlEl=document.getElementById("imgUrl");
 const addUrlBtn=document.getElementById("addUrl");
 const galleryEl=document.getElementById("gallery");
 const previewEl=document.getElementById("preview");
+const descEl=document.getElementById("desc");
+const descCount=document.getElementById("descCount");
+const draftBadge=document.getElementById("draftBadge");
 
-let gallery=[];
+let gallery=[];          // array di URL
+let cache=[];            // items dal DB
+let dirty=false;         // modifiche non salvate
+let autosaveTimer=null;
 
+/* ===== Helpers ===== */
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function fmtDate(t){ try{ return new Date(t).toLocaleString(); }catch{return ""} }
+function markDirty(){ dirty=true; draftBadge.textContent="Draft saved"; }
+function setStatus(msg){ statusEl.textContent=msg; setTimeout(()=>{ if(statusEl.textContent===msg) statusEl.textContent=""; },2500); }
+
+/* ===== Autosave (localStorage) ===== */
+const LS_KEY="gh_admin_draft";
+function collectDraft(){
+  return {
+    id: document.getElementById("docId").value.trim(),
+    title: document.getElementById("title").value || "",
+    desc: descEl.value || "",
+    rarity: document.getElementById("rarity").value || "3",
+    stock: document.getElementById("stock").value || "0",
+    total: document.getElementById("total").value || "1",
+    published: document.getElementById("published").checked,
+    gallery: gallery.slice()
+  };
+}
+function applyDraft(d){
+  if(!d) return;
+  document.getElementById("docId").value=d.id||"";
+  document.getElementById("title").value=d.title||"";
+  descEl.value=d.desc||"";
+  document.getElementById("rarity").value=d.rarity||"3";
+  document.getElementById("stock").value=d.stock||"0";
+  document.getElementById("total").value=d.total||"1";
+  document.getElementById("published").checked=!!d.published;
+  gallery = Array.isArray(d.gallery)? d.gallery.slice():[];
+  renderGallery();
+  updateDescCount();
+}
+function scheduleAutosave(){
+  clearTimeout(autosaveTimer);
+  autosaveTimer=setTimeout(()=>{
+    localStorage.setItem(LS_KEY, JSON.stringify(collectDraft()));
+    draftBadge.textContent="Draft saved";
+  }, 1000);
+}
+(function restoreDraft(){
+  const raw=localStorage.getItem(LS_KEY);
+  if(raw){ try{ applyDraft(JSON.parse(raw)); draftBadge.textContent="Draft restored"; }catch{} }
+})();
+
+/* ===== Prevent lose changes ===== */
+window.addEventListener("beforeunload",(e)=>{ if(dirty){ e.preventDefault(); e.returnValue=""; }});
+
+/* ===== Gallery render & DnD reorder ===== */
 function renderGallery(){
   galleryEl.innerHTML="";
   gallery.forEach((url,idx)=>{
     const t=document.createElement("div");
-    t.className="thumb";
-    t.innerHTML=`<img src="${url}" alt=""/><div class="ops"><button class="small star" data-cover="${idx}">Cover</button><div><button class="small" data-left="${idx}">◀</button><button class="small" data-right="${idx}">▶</button><button class="small" data-del="${idx}">Del</button></div></div>`;
+    t.className="thumb"; t.draggable=true; t.dataset.idx=idx;
+    t.innerHTML=`
+      <img src="${url}" alt=""/>
+      <div class="ops">
+        <button class="small star" data-cover="${idx}" title="Set as cover">Cover</button>
+        <div>
+          <button class="small" data-left="${idx}" title="Sposta a sinistra">◀</button>
+          <button class="small" data-right="${idx}" title="Sposta a destra">▶</button>
+          <button class="small" data-del="${idx}" title="Elimina">Del</button>
+        </div>
+      </div>`;
     galleryEl.appendChild(t);
+  });
+}
+
+/* Drag reorder */
+let dragIdx=null;
+galleryEl.addEventListener("dragstart",(e)=>{
+  const thumb=e.target.closest(".thumb"); if(!thumb) return;
+  dragIdx=+thumb.dataset.idx; thumb.classList.add("dragging");
+});
+galleryEl.addEventListener("dragend",(e)=>{
+  const thumb=e.target.closest(".thumb"); if(thumb) thumb.classList.remove("dragging");
+  dragIdx=null;
+});
+galleryEl.addEventListener("dragover",(e)=>{
+  e.preventDefault();
+  const over=e.target.closest(".thumb"); if(!over || dragIdx==null) return;
+  const overIdx=+over.dataset.idx;
+  if(dragIdx===overIdx) return;
+  const [x]=gallery.splice(dragIdx,1);
+  gallery.splice(overIdx,0,x);
+  dragIdx=overIdx;
+  renderGallery();
+  markDirty(); scheduleAutosave();
+});
+
+galleryEl.addEventListener("click",(e)=>{
+  const cover=e.target.closest("[data-cover]"); const left=e.target.closest("[data-left]"); const right=e.target.closest("[data-right]"); const del=e.target.closest("[data-del]");
+  if(cover){ const i=+cover.getAttribute("data-cover"); const [x]=gallery.splice(i,1); gallery.unshift(x); renderGallery(); }
+  else if(left){ const i=+left.getAttribute("data-left"); if(i>0){ [gallery[i-1],gallery[i]]=[gallery[i],gallery[i-1]]; renderGallery(); } }
+  else if(right){ const i=+right.getAttribute("data-right"); if(i<gallery.length-1){ [gallery[i+1],gallery[i]]=[gallery[i],gallery[i+1]]; renderGallery(); } }
+  else if(del){ const i=+del.getAttribute("data-del"); gallery.splice(i,1); renderGallery(); }
+  markDirty(); scheduleAutosave();
+});
+
+/* ===== Uploads ===== */
+async function uploadFile(file){
+  const safeName=file.name.replace(/[^a-z0-9\.\-_]/gi,"_");
+  const path=`items/${Date.now()}_${safeName}`;
+  const refS=sRef(st,path);
+  const task=uploadBytesResumable(refS,file,{contentType:file.type||"image/jpeg"});
+
+  // temp thumb with progress
+  const holder=document.createElement("div");
+  holder.className="thumb";
+  holder.innerHTML=`<img alt="" /><div class="prog"><i></i></div>`;
+  galleryEl.prepend(holder);
+  const bar=holder.querySelector(".prog i");
+
+  return new Promise((res,rej)=>{
+    task.on("state_changed",(snap)=>{
+      const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
+      bar.style.width=pct+"%";
+    },rej,async()=>{
+      const url=await getDownloadURL(task.snapshot.ref);
+      gallery.push(url);
+      renderGallery();
+      res(url);
+    });
   });
 }
 
 filesEl.addEventListener("change",async e=>{
   const files=[...(e.target.files||[])];
   if(!files.length) return;
-  for(const file of files){
-    const path=`items/${Date.now()}_${file.name.replace(/[^a-z0-9\\.\\-_]/gi,"_")}`;
-    const refS=sRef(st,path);
-    const task=uploadBytesResumable(refS,file);
-    statusEl.textContent="Uploading…";
-    await new Promise((res,rej)=>{
-      task.on("state_changed",()=>{},rej,async()=>{const url=await getDownloadURL(task.snapshot.ref); gallery.push(url); res()});
-    });
-  }
+  statusEl.textContent="Uploading…";
+  for(const f of files){ await uploadFile(f); }
   statusEl.textContent="Upload complete";
-  renderGallery();
+  markDirty(); scheduleAutosave();
 });
 
+/* Drag & Drop area */
+["dragenter","dragover"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault(); dropEl.classList.add("active");}));
+["dragleave","drop"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault(); dropEl.classList.remove("active");}));
+dropEl.addEventListener("drop",async e=>{
+  const dt=e.dataTransfer; if(!dt) return;
+  const files=[...(dt.files||[])].filter(f=>/^image\//.test(f.type));
+  if(!files.length) return;
+  statusEl.textContent="Uploading…";
+  for(const f of files){ await uploadFile(f); }
+  statusEl.textContent="Upload complete";
+  markDirty(); scheduleAutosave();
+});
+
+/* Paste from clipboard */
+document.addEventListener("paste",async e=>{
+  const items = e.clipboardData?.items || [];
+  const images=[...items].map(i=>i.getAsFile()).filter(f=>f && /^image\//.test(f.type));
+  if(!images.length) return;
+  statusEl.textContent="Uploading from clipboard…";
+  for(const f of images){ await uploadFile(f); }
+  statusEl.textContent="Upload complete";
+  markDirty(); scheduleAutosave();
+});
+
+/* Add single URL as image */
 addUrlBtn.addEventListener("click",()=>{
   const u=(imgUrlEl.value||"").trim();
   if(!u) return;
   gallery.push(u);
   imgUrlEl.value="";
   renderGallery();
+  markDirty(); scheduleAutosave();
 });
 
-galleryEl.addEventListener("click",(e)=>{
-  const cover=e.target.closest("[data-cover]"); const left=e.target.closest("[data-left]"); const right=e.target.closest("[data-right]"); const del=e.target.closest("[data-del]");
-  if(cover){ const i=+cover.getAttribute("data-cover"); const [x]=gallery.splice(i,1); gallery.unshift(x); renderGallery(); }
-  else if(left){ const i=+left.getAttribute("data-left"); if(i>0){const tmp=gallery[i-1];gallery[i-1]=gallery[i];gallery[i]=tmp;renderGallery()} }
-  else if(right){ const i=+right.getAttribute("data-right"); if(i<gallery.length-1){const tmp=gallery[i+1];gallery[i+1]=gallery[i];gallery[i]=tmp;renderGallery()} }
-  else if(del){ const i=+del.getAttribute("data-del"); gallery.splice(i,1); renderGallery(); }
+/* ===== Live counters & validations ===== */
+function updateDescCount(){ const n=(descEl.value||"").length; descCount.textContent=`${n} chars`; }
+descEl.addEventListener("input",()=>{ updateDescCount(); markDirty(); scheduleAutosave(); });
+
+["title","rarity","stock","total","published"].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener(el.type==="checkbox"?"change":"input",()=>{ 
+    if(id==="rarity") el.value=String(clamp(parseInt(el.value||"3",10)||3,1,5));
+    if(id==="stock")  document.getElementById("stock").value=String(Math.max(0,parseInt(el.value||"0",10)||0));
+    if(id==="total")  document.getElementById("total").value=String(Math.max(1,parseInt(el.value||"1",10)||1));
+    markDirty(); scheduleAutosave();
+  });
 });
 
+/* ===== Save / Reset / Delete ===== */
 const itemsRef=ref(db,"items");
 
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   const id=document.getElementById("docId").value.trim();
   const title=document.getElementById("title");
-  const desc=document.getElementById("desc");
   const rarity=document.getElementById("rarity");
   const stock=document.getElementById("stock");
   const total=document.getElementById("total");
-
-  if(!title.value.trim()){statusEl.textContent="Title required";setTimeout(()=>statusEl.textContent="",2500);return}
+  if(!title.value.trim()){ setStatus("Title required"); return; }
   if(!total.value) total.value=Math.max(1,parseInt(stock.value||"1",10));
 
   const payload={
     title:title.value.trim(),
-    desc:desc.value.trim(),
-    img: gallery[0] || "",                 /* cover opzionale */
-    imgs: gallery.slice(),                 /* array opzionale */
-    rarity:Math.max(1,Math.min(5,parseInt(rarity.value||"1",10))),
-    stock:Math.max(0,parseInt(stock.value||"0",10)),
-    total:Math.max(1,parseInt(total.value||"1",10)),
+    desc:descEl.value.trim(),
+    img: gallery[0] || "",
+    imgs: gallery.slice(),
+    rarity:clamp(parseInt(rarity.value||"3",10)||3,1,5),
+    stock:Math.max(0,parseInt(stock.value||"0",10)||0),
+    total:Math.max(1,parseInt(total.value||"1",10)||1),
     published:document.getElementById("published").checked,
     addedAt: serverTimestamp()
   };
@@ -223,80 +410,147 @@ form.addEventListener("submit",async e=>{
     saveBtn.disabled=true;
     if(id){
       await update(ref(db,`items/${id}`),payload);
-      statusEl.textContent="Updated ✓";
+      setStatus("Updated ✓");
     }else{
       const newRef=push(itemsRef);
       await set(newRef,payload);
       document.getElementById("docId").value=newRef.key;
-      statusEl.textContent="Created ✓";
+      setStatus("Created ✓");
     }
+    dirty=false;
+    draftBadge.textContent="Saved";
+    localStorage.setItem(LS_KEY, JSON.stringify(collectDraft()));
   }catch(err){
-    alert(err.message); statusEl.textContent="Error";
+    alert(err.message); setStatus("Error");
   }finally{
     saveBtn.disabled=false;
   }
 });
 
+/* shortcuts */
+window.addEventListener("keydown",(e)=>{
+  if((e.ctrlKey||e.metaKey) && (e.key==="s"||e.key==="S")){ e.preventDefault(); form.requestSubmit(); }
+  if((e.ctrlKey||e.metaKey) && e.key==="Enter"){ e.preventDefault(); form.requestSubmit(); }
+});
+
 document.getElementById("resetBtnMobile")?.addEventListener("click",()=>resetBtn.click());
-document.getElementById("saveBtnMobile")?.addEventListener("click",()=>saveBtn.click());
-resetBtn.addEventListener("click",resetForm);
-function resetForm(){ form.reset(); document.getElementById("docId").value=""; deleteBtn.style.display="none"; statusEl.textContent=""; previewEl.style.display="none"; gallery=[]; renderGallery(); }
+resetBtn.addEventListener("click",()=>{
+  if(dirty && !confirm("Discard changes?")) return;
+  form.reset(); document.getElementById("docId").value="";
+  deleteBtn.style.display="none"; statusEl.textContent="";
+  previewEl.style.display="none"; gallery=[];
+  renderGallery(); updateDescCount();
+  dirty=false; draftBadge.textContent="";
+  localStorage.removeItem(LS_KEY);
+});
 
 deleteBtn.addEventListener("click",async()=>{
   const id=document.getElementById("docId").value.trim();
   if(!id) return;
   if(!confirm("Delete this item?")) return;
-  try{ await remove(ref(db,`items/${id}`)); resetForm(); statusEl.textContent="Deleted ✓"; }
-  catch(err){ alert(err.message); }
+  try{ await remove(ref(db,`items/${id}`));
+    form.reset(); document.getElementById("docId").value="";
+    deleteBtn.style.display="none"; previewEl.style.display="none"; gallery=[]; renderGallery();
+    setStatus("Deleted ✓");
+    dirty=false; draftBadge.textContent="";
+    localStorage.removeItem(LS_KEY);
+  } catch(err){ alert(err.message); }
 });
 
-function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-
+/* ===== Items list ===== */
 const q= query(itemsRef, orderByChild("addedAt"));
-let cache=[];
 onValue(q,snap=>{
   const obj=snap.val()||{};
   const arr=Object.entries(obj).map(([id,v])=>({id,...v}));
-  arr.sort((a,b)=> (b.addedAt??0) - (a.addedAt??0));
-  cache=arr; renderList(cache);
+  cache=arr;
+  applyListView();
 });
 
-searchEl.addEventListener("input",()=>{
-  const term=searchEl.value.toLowerCase();
-  const filtered=cache.filter(i=>((i.title||"")+" "+(i.desc||"")).toLowerCase().includes(term));
-  renderList(filtered);
-});
+function applyListView(){
+  let arr = [...cache];
+  /* filter */
+  const f=filterEl.value;
+  if(f==="pub")   arr=arr.filter(x=>!!x.published);
+  if(f==="draft") arr=arr.filter(x=>!x.published);
+  /* search */
+  const term=(searchEl.value||"").toLowerCase();
+  if(term) arr=arr.filter(i=>((i.title||"")+" "+(i.desc||"")).toLowerCase().includes(term));
+  /* sort */
+  const s=sortEl.value;
+  if(s==="added")   arr.sort((a,b)=> (b.addedAt??0) - (a.addedAt??0));
+  if(s==="rarity")  arr.sort((a,b)=> (b.rarity??0)  - (a.rarity??0));
+  if(s==="stock")   arr.sort((a,b)=> (b.stock??0)   - (a.stock??0));
+  if(s==="title")   arr.sort((a,b)=> (a.title||"").localeCompare(b.title||""));
+  renderList(arr);
+}
+searchEl.addEventListener("input",applyListView);
+filterEl.addEventListener("change",applyListView);
+sortEl.addEventListener("change",applyListView);
 
 function renderList(arr){
   listEl.innerHTML="";
   arr.forEach(it=>{
     const row=document.createElement("div");
     row.className="item";
-    const when = typeof it.addedAt==="number" ? new Date(it.addedAt).toLocaleString() : "";
+    const when = typeof it.addedAt==="number" ? fmtDate(it.addedAt) : "";
     const cover = (Array.isArray(it.imgs) && it.imgs[0]) || it.img || "";
-    row.innerHTML=`<img src="${cover}" alt="cover"/><div><div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap"><strong>${escapeHtml(it.title||"Untitled")}</strong><span class="stars">${"★".repeat(it.rarity||0)}</span><span class="hint">${when}</span><span class="pill" title="published">${it.published?"Published":"Draft"}</span><span class="pill" title="stock/total">${it.stock??0}/${it.total??1}</span></div><div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,140))}${(it.desc||"").length>140?"…":""}</div></div><div class="actions"><button class="a" data-edit="${it.id}">Edit</button><label class="toggle" title="Toggle publish"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label><button class="a del" data-del="${it.id}">Del</button></div>`;
+    const imgCount = Array.isArray(it.imgs) ? it.imgs.length : (it.img?1:0);
+    const descLen = (it.desc||"").length;
+    const warnCover = !cover ? '<span class="pill warn">no-cover</span>' : '';
+    const warnDesc  = descLen<40 ? '<span class="pill warn">desc<40</span>' : '';
+    row.innerHTML=`
+      <img src="${cover}" alt="cover"/>
+      <div>
+        <div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap">
+          <strong>${escapeHtml(it.title||"Untitled")}</strong>
+          <span class="stars">${"★".repeat(it.rarity||0)}</span>
+          <span class="hint">${when}</span>
+          <div class="pills">
+            <span class="pill" title="published">${it.published?"Published":"Draft"}</span>
+            <span class="pill" title="stock/total">${it.stock??0}/${it.total??1}</span>
+            <span class="pill">imgs:${imgCount}</span>
+            <span class="pill">len:${descLen}</span>
+            ${warnCover}${warnDesc}
+          </div>
+        </div>
+        <div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,140))}${(it.desc||"").length>140?"…":""}</div>
+      </div>
+      <div class="actions">
+        <button class="a" data-dup="${it.id}" title="Duplica">Dup</button>
+        <button class="a" data-copy="${it.id}" title="Copia ID">ID</button>
+        <button class="a" data-edit="${it.id}">Edit</button>
+        <label class="toggle" title="Toggle publish"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label>
+        <button class="a del" data-del="${it.id}">Del</button>
+      </div>`;
     listEl.appendChild(row);
   });
 
   listEl.onclick=async ev=>{
-    const edit=ev.target.closest("[data-edit]");
-    const del =ev.target.closest("[data-del]");
-    const pub =ev.target.closest("[data-pub] input");
+    const t=ev.target;
+    const edit=t.closest("[data-edit]");
+    const del =t.closest("[data-del]");
+    const pub =t.closest("[data-pub] input");
+    const dup =t.closest("[data-dup]");
+    const cpy =t.closest("[data-copy]");
+
     if(edit){
       const id=edit.getAttribute("data-edit");
       const data=cache.find(x=>x.id===id);
       if(!data) return;
+      if(dirty && !confirm("Hai modifiche non salvate. Sovrascrivere la bozza?")) return;
       document.getElementById("docId").value=id;
       document.getElementById("title").value=data.title||"";
-      document.getElementById("desc").value=data.desc||"";
+      descEl.value=data.desc||"";
       document.getElementById("rarity").value=data.rarity||1;
       document.getElementById("stock").value=data.stock||0;
       document.getElementById("total").value=data.total||1;
       document.getElementById("published").checked=!!data.published;
       gallery = Array.isArray(data.imgs) ? data.imgs.slice() : (data.img ? [data.img] : []);
-      renderGallery();
+      renderGallery(); updateDescCount();
       deleteBtn.style.display="inline-block";
       statusEl.textContent=`Editing ${id}`;
+      dirty=false; draftBadge.textContent="";
+      localStorage.setItem(LS_KEY, JSON.stringify(collectDraft()));
       window.scrollTo({top:0,behavior:"smooth"});
     } else if(del){
       const id=del.getAttribute("data-del");
@@ -306,13 +560,28 @@ function renderList(arr){
       const id=pub.getAttribute("data-pub");
       try{ await update(ref(db,`items/${id}`),{published:pub.checked}); }
       catch(err){ alert(err.message); pub.checked=!pub.checked; }
+    } else if(dup){
+      const id=dup.getAttribute("data-dup");
+      const data=cache.find(x=>x.id===id);
+      if(!data) return;
+      try{
+        const newRef=push(itemsRef);
+        const payload={...data}; delete payload.id; payload.addedAt=serverTimestamp();
+        await set(newRef,payload);
+        setStatus("Duplicated ✓");
+      }catch(err){ alert(err.message); }
+    } else if(cpy){
+      const id=cpy.getAttribute("data-copy");
+      try{ await navigator.clipboard.writeText(id); setStatus("ID copied"); }catch{}
     }
   };
 }
 
+/* Context-menu/devtools block (come ti piace) */
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 </script>
 </body>
 </html>
+
 
