@@ -25,15 +25,11 @@
 <meta name="color-scheme" content="dark" />
 <style>
 :root{
-  /* Palette */
   --bg:#0a0a0a; --text:#e9e9e9; --muted:#a6a6a6;
   --gold:#ffd700; --gold-dark:#b8860b; --border:#232323; --card:#111214;
   --ring:rgba(255,215,0,.5);
-
-  /* Grid & sizing */
   --gap:12px; --radius:14px;
-  --thumb-ratio: 3/4;           /* legacy */
-  --card-media-ratio: 3/4;      /* << rapporto UNICO per tutte le card */
+  --card-media-ratio: 3/4;
   --body-extra: 120px;
 }
 @media (max-width:680px){ :root{ --gap:9px; --body-extra:110px } }
@@ -101,7 +97,7 @@ h1{
 @media (max-width:480px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 
 /* Skeleton */
-.skel{background:linear-gradient(180deg,#0d0d10,#131317);border:1px solid #1e1e22;border-radius:var(--radius);overflow:hidden;min-height:calc((100% / (var(--thumb-ratio))) + var(--body-extra));position:relative}
+.skel{background:linear-gradient(180deg,#0d0d10,#131317);border:1px solid #1e1e22;border-radius:var(--radius);overflow:hidden;min-height:calc((100% / (var(--card-media-ratio))) + var(--body-extra));position:relative}
 
 /* Footer */
 footer{text-align:center;font-size:.85rem;color:#888a;padding:1.2rem 1rem;border-top:1px solid #222}
@@ -109,19 +105,53 @@ footer{text-align:center;font-size:.85rem;color:#888a;padding:1.2rem 1rem;border
 /* Web component host perf */
 vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-size:auto 420px}
 
-/* Lightbox viewer */
+/* Lightbox Pro */
 .viewer{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center}
 .viewer.active{display:flex}
-.viewer img{max-width:96vw;max-height:92vh;object-fit:contain;image-orientation:from-image}
+.viewer img{max-width:96vw;max-height:72vh;object-fit:contain;image-orientation:from-image}
 .viewer .nav{
   position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;
   border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer
 }
 .viewer .prev{left:12px} .viewer .next{right:12px}
 .viewer .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.viewer .dots{position:absolute;bottom:14px;left:0;right:0;display:flex;gap:6px;justify-content:center}
-.viewer .dot{width:8px;height:8px;border-radius:50%;background:#666;border:1px solid #777}
-.viewer .dot[aria-current="true"]{background:#ffd700;box-shadow:0 0 10px rgba(255,215,0,.6)}
+.viewer .thumbs{
+  position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;overflow:auto;padding:6px 10px
+}
+.viewer .thumbs::-webkit-scrollbar{height:6px}
+.viewer .thumb{width:56px;height:56px;border:1px solid #555;border-radius:8px;overflow:hidden;flex:0 0 auto;background:#0f0f0f;display:grid;place-items:center;cursor:pointer}
+.viewer .thumb img{width:100%;height:100%;object-fit:cover}
+.viewer .thumb[aria-current="true"]{outline:2px solid #ffd700;box-shadow:0 0 10px rgba(255,215,0,.5)}
+
+/* ===== Description Sheet (public, no source link) ===== */
+.sheet{position:fixed;inset:0;z-index:1100;display:none}
+.sheet.open{display:block}
+.sheet .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.sheet .panel{
+  position:absolute;left:50%;transform:translateX(-50%);
+  width:min(720px,92vw);
+  background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55);
+  max-height:80vh;overflow:auto;padding:14px;
+  top:8vh;
+}
+@media (max-width:740px){
+  .sheet .panel{
+    left:0;right:0;transform:none;width:auto;border-radius:16px 16px 0 0;
+    bottom:0;top:auto;max-height:78vh;
+    animation:rise .22s ease-out;
+  }
+  @keyframes rise{from{transform:translateY(18px)}to{transform:translateY(0)}}
+}
+.sheet h3{margin:.1rem 0 .4rem;color:#ffd700;font-size:1.05rem}
+.sheet p{margin:.45rem 0;color:#d0d0d0;line-height:1.6;white-space:pre-wrap}
+.sheet .head{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.sheet .close{border:1px solid #444;background:#151515;color:#eee;border-radius:10px;padding:.45rem .7rem;cursor:pointer}
+.sheet .actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.sheet .link{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-radius:10px;border:1px solid #2a2a2a;background:#141414;color:#eaeaea;text-decoration:none}
+.sheet .link.main{background:linear-gradient(90deg,#ffd700,#e6c200);color:#000;border-color:#5c4a00;font-weight:900}
+
+/* ===== Card internals ===== */
 </style>
 </head>
 <body>
@@ -153,79 +183,73 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 
 <footer>© 2025 Ghidorah no Sekai — Vintage &amp; Rare Comics Vault</footer>
 
-<!-- LIGHTBOX -->
+<!-- LIGHTBOX PRO -->
 <div id="viewer" class="viewer" aria-hidden="true">
   <button class="close" aria-label="Close">✕</button>
   <button class="nav prev" aria-label="Previous">‹</button>
   <img alt="Preview" />
   <button class="nav next" aria-label="Next">›</button>
-  <div class="dots" role="tablist"></div>
+  <div class="thumbs" role="tablist" aria-label="Thumbnails"></div>
+</div>
+
+<!-- DESCRIPTION SHEET (no link to source) -->
+<div id="sheet" class="sheet" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="head">
+      <h3 id="sheetTitle"></h3>
+      <button class="close" aria-label="Close">✕</button>
+    </div>
+    <p id="sheetBody"></p>
+    <div class="actions">
+      <a id="sheetMail" class="link main" href="#">Contact</a>
+      <a id="sheetShare" class="link" href="#">Share</a>
+    </div>
+  </div>
 </div>
 
 <script>
 /* ===== Web Component: VaultCard ===== */
 class VaultCard extends HTMLElement{
-  static get observedAttributes(){return["title","desc","imgs","rarity","stock","total","isnew"]}
+  static get observedAttributes(){return["title","desc","imgs","rarity","stock","total","isnew","id"]}
+
   constructor(){
     super();
-    this._idx=0; this._slides=[];
+    this._idx=0; this._slides=[]; this._fullDesc="";
     this.attachShadow({mode:"open"});
     this.shadowRoot.innerHTML=`
       <style>
         :host{display:block;height:100%}
-        .card{
-          display:flex;flex-direction:column;overflow:hidden;
-          border:1px solid var(--border);background:var(--card);border-radius:var(--radius);
-          height:100%;
-          box-shadow:0 4px 14px rgba(0,0,0,.28);
-          transition:transform .15s ease, box-shadow .15s ease;
-        }
+        .card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);background:var(--card);border-radius:var(--radius);height:100%;box-shadow:0 4px 14px rgba(0,0,0,.28);transition:transform .15s ease, box-shadow .15s ease}
         .card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.4)}
 
-        /* Media: ratio UNICO per tutte le card + contain */
         .media{
-          --media-ratio: var(--card-media-ratio, var(--thumb-ratio)); /* usa il globale */
-          position:relative;overflow:hidden;
-          aspect-ratio: var(--media-ratio);
-          background:
-            radial-gradient(120% 80% at 50% 0%, rgba(255,215,0,.06), transparent 60%),
-            linear-gradient(180deg,#0d0d10,#15151a);
+          --media-ratio: var(--card-media-ratio);
+          position:relative;overflow:hidden;aspect-ratio: var(--media-ratio);
+          background:radial-gradient(120% 80% at 50% 0%, rgba(255,215,0,.06), transparent 60%), linear-gradient(180deg,#0d0d10,#15151a);
           display:flex;align-items:center;justify-content:center;isolation:isolate;cursor:zoom-in;
         }
-        .media::after{
-          content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-          background:repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 6px);
-          opacity:.08;
-        }
-
+        .media::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 6px);opacity:.08}
         .carousel{position:absolute;inset:0;z-index:1}
-        .track{
-          display:flex;height:100%;align-items:stretch; /* altezza piena */
-          transition:transform .28s ease
-        }
-
-        /* Centratura pixel-perfect + figure senza margini UA */
-        .slide{
-          margin:0;
-          min-width:100%;
-          height:100%;
-          display:grid;
-          place-items:center;
-        }
-
-        .slide img{
-          max-width:100%;max-height:100%;
-          width:auto;height:auto;
-          object-fit:contain;object-position:center;
-          display:block;vertical-align:middle;
-          image-rendering:auto;image-orientation:from-image;
-        }
-
-        .noimg{
-          display:grid;place-items:center;
-          height:100%;width:100%;
-        }
+        .track{display:flex;height:100%;align-items:stretch;transition:transform .28s ease}
+        .slide{margin:0;min-width:100%;height:100%;display:grid;place-items:center;position:relative}
+        .slide img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:center;display:block;vertical-align:middle;image-orientation:from-image}
+        .noimg{display:grid;place-items:center;height:100%;width:100%}
         .noimg .glyph{font-size:30px;color:var(--gold);opacity:.9}
+
+        /* overflow badge (+N) */
+        .more{position:absolute;right:.45rem;bottom:.45rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:10px;padding:.12rem .45rem;font-size:.78rem;backdrop-filter:blur(2px);display:none}
+        .has-more .more{display:block}
+
+        /* NEW: info button (opens sheet) */
+        .info{
+          position:absolute;left:.45rem;bottom:.45rem;z-index:3;
+          width:28px;height:28px;border-radius:50%;
+          display:flex;align-items:center;justify-content:center;
+          border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#ffd700;
+          cursor:pointer;backdrop-filter:blur(2px)
+        }
+        .info:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
 
         .nav{position:absolute;top:50%;transform:translateY(-50%);border:none;background:rgba(0,0,0,.35);color:#fff;width:32px;height:32px;border-radius:999px;display:none;align-items:center;justify-content:center;cursor:pointer}
         .nav.prev{left:.45rem}.nav.next{right:.45rem}
@@ -235,39 +259,22 @@ class VaultCard extends HTMLElement{
         .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.25)}
         .dot[aria-current="true"]{background:#FFD700;box-shadow:0 0 8px rgba(255,215,0,.6)}
 
-        /* NEW badge sparkle */
-        .tag{
-          position:absolute;left:.55rem;top:.55rem;z-index:3;display:none;align-items:center;gap:.4rem;
-          padding:.26rem .55rem;border-radius:999px;background:linear-gradient(90deg,#1d1600,#2a2200);
-          border:1px solid rgba(255,215,0,.30);color:#FFD700;font-weight:800;letter-spacing:.08em;font-size:.72rem;
-          box-shadow:0 0 0 1px rgba(255,215,0,.08) inset, 0 0 14px rgba(255,215,0,.22);overflow:hidden;
-        }
+        .tag{position:absolute;left:.55rem;top:.55rem;z-index:3;display:none;align-items:center;gap:.4rem;padding:.26rem .55rem;border-radius:999px;background:linear-gradient(90deg,#1d1600,#2a2200);border:1px solid rgba(255,215,0,.30);color:#FFD700;font-weight:800;letter-spacing:.08em;font-size:.72rem;box-shadow:0 0 0 1px rgba(255,215,0,.08) inset, 0 0 14px rgba(255,215,0,.22);overflow:hidden}
         .tag.sparkle{display:inline-flex}
         .tag .dot{width:8px;height:8px;border-radius:50%;background:#FFD700;box-shadow:0 0 8px #FFD700,0 0 16px rgba(255,215,0,.6)}
         .tag::after{content:"";position:absolute;inset:-150% -40% auto -40%;height:300%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);animation:shine 2.8s linear infinite}
         .tag::before{content:"✨";position:absolute;right:-2px;top:-6px;font-size:14px;animation:twinkle 1.8s ease-in-out infinite alternate}
-        @keyframes shine{0%{transform:translateX(-120%) rotate(25deg)}100%{transform:translateX(120%) rotate(25deg)}}
-        @keyframes twinkle{0%{opacity:.4;transform:scale(.9) rotate(0)}100%{opacity:1;transform:scale(1.15) rotate(8deg)}}
 
         .seal{position:absolute;top:.55rem;right:.55rem;background:linear-gradient(90deg,#111,#2a2300);border:1px solid rgba(255,215,0,.24);color:#FFD700;padding:.22rem .5rem;border-radius:999px;font-size:.7rem;z-index:3}
 
         .body{display:flex;flex-direction:column;gap:6px;padding:10px;background:linear-gradient(180deg,#101114,#0f0f11)}
-        h2{font-size:1rem;line-height:1.2;margin:0;color:var(--gold);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}
+        h2{font-size:1rem;line-height:1.2;margin:0;color:var(--gold);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;cursor:pointer}
         .desc{margin:0;color:var(--muted);font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
         .meta{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
         .qty{color:#bbb;border:1px dashed #333;border-radius:999px;padding:2px 8px}
 
-        /* ★ Stars visibili ovunque (iOS/shadow-safe) */
         .stars{display:inline-flex;gap:2px}
-        .stars .s{
-          font-weight:900;
-          background: linear-gradient(90deg,#C9B037,#FFD700,#b8860b,#FFD700);
-          background-size:200% auto;
-          -webkit-background-clip:text;background-clip:text;
-          -webkit-text-fill-color:transparent;color:transparent;
-          animation:starshine 6s linear infinite, twinkle 2.2s ease-in-out infinite alternate;
-          text-shadow:0 0 10px rgba(255,215,0,.15);
-        }
+        .stars .s{font-weight:900;background: linear-gradient(90deg,#C9B037,#FFD700,#b8860b,#FFD700);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:starshine 6s linear infinite, twinkle 2.2s ease-in-out infinite alternate;text-shadow:0 0 10px rgba(255,215,0,.15)}
         .stars .s:nth-child(odd){animation-delay:.25s}
         @keyframes starshine{0%{background-position:0% center}100%{background-position:200% center}}
 
@@ -284,6 +291,8 @@ class VaultCard extends HTMLElement{
             <button class="nav next" aria-label="Next">›</button>
             <div class="dots" role="tablist"></div>
           </div>
+          <button class="info" title="Read more" aria-label="Read more">…</button>
+          <div class="more" aria-hidden="true"></div>
           <div class="tag"><span class="dot"></span>NEW</div>
           <span class="seal"></span>
         </div>
@@ -296,6 +305,7 @@ class VaultCard extends HTMLElement{
       </article>
     `;
   }
+
   attributeChangedCallback(){this.render()}
   connectedCallback(){this.render()}
 
@@ -303,6 +313,8 @@ class VaultCard extends HTMLElement{
     const r=this.shadowRoot;
     const title=this.getAttribute("title")||"";
     const desc=this.getAttribute("desc")||"";
+    this._fullDesc=desc;
+
     let imgs=[]; try{imgs=JSON.parse(this.getAttribute("imgs")||"[]")}catch{imgs=[]}
     imgs=(Array.isArray(imgs)?imgs:[]).filter(Boolean);
 
@@ -312,10 +324,6 @@ class VaultCard extends HTMLElement{
     const isNew=this.getAttribute("isnew")==="1";
     const available=stock>0;
 
-    const card=r.querySelector(".card");
-    card.classList.toggle("soldout",!available);
-
-    // MEDIA / CAROUSEL
     const media=r.querySelector(".media");
     const track=r.querySelector(".track");
     const dots=r.querySelector(".dots");
@@ -323,12 +331,21 @@ class VaultCard extends HTMLElement{
     const next=r.querySelector(".nav.next");
     const tag=r.querySelector(".tag");
     const seal=r.querySelector(".seal");
+    const overflow=r.querySelector(".more");
+    const infoBtn=r.querySelector(".info");
+
     track.innerHTML=""; dots.innerHTML="";
 
-    this._slides = imgs.length? imgs : ["__NOIMG__"];
+    /* show up to 6 in-card; rest via lightbox */
+    const PREVIEW_MAX = 6;
+    const allSlides = imgs.length? imgs : ["__NOIMG__"];
+    this._slides = allSlides.slice(0, PREVIEW_MAX);
+    const extra = Math.max(0, allSlides.length - this._slides.length);
+    media.classList.toggle('has-more', extra>0);
+    overflow.textContent = extra>0 ? `+${extra}` : "";
+
     this._idx = Math.min(this._idx, this._slides.length-1); this._idx = Math.max(this._idx, 0);
 
-    // build slides
     this._slides.forEach((src,i)=>{
       const slide=document.createElement("figure"); slide.className="slide";
       if(src==="__NOIMG__"){
@@ -348,10 +365,12 @@ class VaultCard extends HTMLElement{
       }
     });
 
-    // open lightbox
-    media.onclick = () => {
-      const imgs = this._slides.filter(s=>s!=="__NOIMG__");
-      if(imgs.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs,index:this._idx}}));
+    // Lightbox with ALL images
+    media.onclick = (e) => {
+      // non aprire lightbox se si clicca sul bottone info
+      if(e.target && e.target.classList.contains('info')) return;
+      const all = allSlides.filter(s=>s!=="__NOIMG__");
+      if(all.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}));
     };
 
     const upd=()=>{track.style.transform=`translateX(-${this._idx*100}%)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)))};    
@@ -365,6 +384,14 @@ class VaultCard extends HTMLElement{
     dots.style.display = multi? "flex":"none";
     upd();
 
+    // swipe carousel
+    let sx=0,cx=0,drag=false;
+    const down=e=>{drag=true; sx=(e.touches?e.touches[0].clientX:e.clientX); cx=sx};
+    const move=e=>{if(!drag)return; cx=(e.touches?e.touches[0].clientX:e.clientX)};
+    const up=()=>{if(!drag)return; const dx=cx-sx; drag=false; if(Math.abs(dx)>50){ dx<0?this._go(this._idx+1):this._go(this._idx-1)}};
+    track.parentElement.addEventListener("pointerdown",down); track.parentElement.addEventListener("pointermove",move); track.parentElement.addEventListener("pointerup",up);
+    track.parentElement.addEventListener("touchstart",down,{passive:true}); track.parentElement.addEventListener("touchmove",move,{passive:true}); track.parentElement.addEventListener("touchend",up,{passive:true});
+
     // NEW sparkle
     tag.classList.toggle("sparkle",!!isNew);
 
@@ -374,23 +401,27 @@ class VaultCard extends HTMLElement{
 
     // Text
     r.querySelector("h2").textContent=title;
-    r.querySelector(".desc").textContent=desc;
+    r.querySelector(".desc").textContent=this._fullDesc||"";
 
+    // open sheet (NO source link)
+    const openSheet=()=>window.dispatchEvent(new CustomEvent("open-sheet",{detail:{
+      title, desc:this._fullDesc||""
+    }}));
+    infoBtn.onclick=openSheet;
+    r.querySelector("h2").onclick=openSheet;
+
+    // Stars
     const stars=r.querySelector(".stars"); stars.innerHTML="";
     for(let i=0;i<rarity;i++){ const s=document.createElement("span"); s.className="s"; s.textContent="★"; stars.appendChild(s); }
 
     r.querySelector(".qty").textContent= available ? (total>1?`In vault: ${stock}/${total}`:"unique") : "sold";
 
-    const btn=r.querySelector(".btn");
-    if(available){
-      btn.textContent="Contact us";
-      btn.href="mailto:ghidorahnosekai@example.com?subject="+encodeURIComponent("Info — "+title);
-      btn.setAttribute("aria-label","Contact us for "+title);
-    }else{
-      btn.textContent="Request restock";
-      btn.href="mailto:ghidorahnosekai@example.com?subject="+encodeURIComponent("Waitlist — "+title);
-      btn.setAttribute("aria-label","Request restock for "+title);
-    }
+    const cta=r.querySelector(".btn");
+    cta.textContent = available ? "Contact us" : "Request restock";
+    cta.href = available
+      ? `mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Info — "+title)}`
+      : `mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Waitlist — "+title)}`;
+    cta.setAttribute("aria-label", cta.textContent + " for " + title);
   }
 }
 customElements.define("vault-card",VaultCard);
@@ -466,6 +497,7 @@ function renderList(list){
   list.forEach(item=>{
     const el=document.createElement("vault-card");
     const imgs = Array.isArray(item.imgs) ? item.imgs.filter(Boolean) : (item.img ? [item.img] : []);
+    el.setAttribute("id",    item.id ?? "");
     el.setAttribute("title", item.title ?? "Untitled");
     el.setAttribute("desc",  item.desc  ?? "");
     el.setAttribute("imgs",  JSON.stringify(imgs));
@@ -505,24 +537,30 @@ btnFilter?.addEventListener("click",()=>{filterAvailable=!filterAvailable;btnFil
 btnSort  ?.addEventListener("click",()=>{sortByRarity  =!sortByRarity;  btnSort  .setAttribute("aria-pressed",String(sortByRarity));  applyView();});
 qInput?.addEventListener("input",applyView);
 
-/* ===== LIGHTBOX logic ===== */
+/* ===== LIGHTBOX Pro logic ===== */
 const viewer=document.getElementById('viewer');
 const vImg=viewer.querySelector('img');
 const vClose=viewer.querySelector('.close');
 const vPrev=viewer.querySelector('.prev');
 const vNext=viewer.querySelector('.next');
-const vDots=viewer.querySelector('.dots');
+const vStrip=viewer.querySelector('.thumbs');
 let vList=[], vIndex=0;
 
 function vRender(){
   vImg.src = vList[vIndex] || '';
-  vDots.innerHTML='';
-  vList.forEach((_,i)=>{
-    const d=document.createElement('button');
-    d.className='dot'; d.setAttribute('aria-label','Go to image '+(i+1));
-    if(i===vIndex) d.setAttribute('aria-current','true');
-    d.onclick=()=>{vIndex=i; vRender()};
-    vDots.appendChild(d);
+  vStrip.innerHTML='';
+  vList.forEach((src,i)=>{
+    const th=document.createElement('button');
+    th.className='thumb';
+    if(i===vIndex) th.setAttribute('aria-current','true');
+    const im=document.createElement('img'); im.loading='lazy'; im.decoding='async'; im.src=src;
+    th.appendChild(im);
+    th.onclick=()=>{vIndex=i; vRender();};
+    vStrip.appendChild(th);
+  });
+  [vIndex-1, vIndex+1].forEach(k=>{
+    const j=(k+vList.length)%vList.length;
+    if(vList[j]){ const pre=new Image(); pre.src=vList[j]; }
   });
 }
 function vOpen(list,start=0){
@@ -530,7 +568,7 @@ function vOpen(list,start=0){
   viewer.classList.add('active'); viewer.setAttribute('aria-hidden','false'); vRender();
 }
 function vCloseFn(){
-  viewer.classList.remove('active'); viewer.setAttribute('aria-hidden','true'); vList=[]; vIndex=0; vImg.removeAttribute('src');
+  viewer.classList.remove('active'); viewer.setAttribute('aria-hidden','true'); vList=[]; vIndex=0; vImg.removeAttribute('src'); vStrip.innerHTML='';
 }
 vClose.onclick=vCloseFn;
 vPrev.onclick=()=>{vIndex=(vIndex-1+vList.length)%vList.length; vRender()};
@@ -549,10 +587,51 @@ viewer.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0 ? vNext.click() : vPrev.click(); }
 },{passive:true});
 window.addEventListener('open-viewer', (ev)=>{ vOpen(ev.detail.imgs || [], ev.detail.index || 0); });
+
+/* ===== DESCRIPTION SHEET logic (public-safe) ===== */
+const sheet=document.getElementById('sheet');
+const shOverlay=sheet.querySelector('.overlay');
+const shPanel=sheet.querySelector('.panel');
+const shTitle=document.getElementById('sheetTitle');
+const shBody=document.getElementById('sheetBody');
+const shMail=document.getElementById('sheetMail');
+const shShare=document.getElementById('sheetShare');
+const shClose=sheet.querySelector('.close');
+let shOpenState=false, startY=0, deltaY=0;
+
+function openSheet({title,desc}){
+  shTitle.textContent=title||'Details';
+  shBody.textContent=desc||'';
+  shMail.href = `mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent('Info — '+(title||''))}`;
+  shShare.onclick = (e)=>{
+    e.preventDefault();
+    const text = `${title||'Item'} — ${desc||''}`;
+    if(navigator.share){ navigator.share({title: title||'Ghidorah no Sekai', text}); }
+    else { navigator.clipboard?.writeText(text); alert('Copied to clipboard'); }
+  };
+  sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); shOpenState=true;
+}
+function closeSheet(){
+  sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); shOpenState=false;
+}
+shClose.onclick=closeSheet;
+shOverlay.onclick=closeSheet;
+window.addEventListener('keydown',e=>{ if(shOpenState && e.key==='Escape') closeSheet(); });
+window.addEventListener('open-sheet',(ev)=>openSheet(ev.detail||{}));
+
+/* Swipe down to close on mobile */
+shPanel.addEventListener('touchstart',e=>{startY=e.touches[0].clientY; deltaY=0;},{passive:true});
+shPanel.addEventListener('touchmove',e=>{
+  deltaY = e.touches[0].clientY - startY;
+  if(deltaY>0){ shPanel.style.transform = `translateY(${Math.min(deltaY,60)}px)`; }
+},{passive:true});
+shPanel.addEventListener('touchend',()=>{
+  if(deltaY>60){ closeSheet(); }
+  shPanel.style.transform='';
+},{passive:true});
 </script>
 </body>
 </html>
-
 
 
 
