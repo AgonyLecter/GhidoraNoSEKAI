@@ -282,7 +282,7 @@ class VaultCard extends HTMLElement{
     r.querySelector(".qty").textContent=available?(total>1?`In vault: ${stock}/${total}`:"unique"):"sold";
     const cta=r.querySelector(".btn");
     cta.textContent=available?"Contact us":"Request restock";
-    cta.href=available?`mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Info — "+title)}`:`mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Waitlist — "+title)}`;
+    cta.href=available?`mailto:ghidorahnosekai@proton.me?subject=${encodeURIComponent("Info — "+title)}`:`mailto:ghidorahnosekai@proton.me?subject=${encodeURIComponent("Waitlist — "+title)}`;
     cta.setAttribute("aria-label",cta.textContent+" for "+title);
   }
 }
@@ -462,6 +462,7 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
+
 
 
 
