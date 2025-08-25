@@ -54,7 +54,6 @@ textarea{min-height:110px;resize:vertical}
   .fabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,.2),#000);border-top:1px solid #202020;padding:.6rem env(safe-area-inset-left) calc(.6rem + env(safe-area-inset-bottom)) env(safe-area-inset-right);gap:.5rem;justify-content:space-around}
   .fabbar .btn{flex:1;min-height:44px}
 }
-/* Gallery */
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem;margin-top:.6rem}
 .thumb{position:relative;border:1px solid #222;border-radius:10px;overflow:hidden;background:#0c0c0c;user-select:none}
 .thumb img{width:100%;height:100%;object-fit:contain;display:block;aspect-ratio:3/4;background:#000}
@@ -64,12 +63,9 @@ textarea{min-height:110px;resize:vertical}
 .thumb.dragging{opacity:.6;outline:2px dashed #555}
 .prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:#222}
 .prog>i{display:block;height:100%;width:0;background:#ffd700}
-/* Dropzone */
 .dropzone{margin-top:.5rem;border:1px dashed #393939;border-radius:12px;padding:.75rem;text-align:center;color:#bdbdbd}
 .dropzone.active{background:#0a0a0a;border-color:#5b4500;color:#ffd36b;box-shadow:0 0 0 2px rgba(255,215,0,.12) inset}
-/* Preview image (cover) */
 #preview{display:none;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-top:.5rem;border:1px solid #222}
-/* Filters/Sort on list */
 .tools{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .select{background:#101010;border:1px solid #2a2a2a;color:#ddd;border-radius:10px;padding:.45rem .6rem}
 .kbd{border:1px solid #2a2a2a;border-radius:6px;padding:.05rem .35rem;font-size:.78rem;color:#cfcfcf}
@@ -85,13 +81,22 @@ textarea{min-height:110px;resize:vertical}
     </div>
   </div>
   <div class="tools">
-    <input id="search" placeholder="Cerca titolo..." />
-    <select id="filter" class="select" title="Filtro">
+    <input id="search" placeholder="Search title..." />
+    <select id="filter" class="select" title="State">
       <option value="all">All</option>
       <option value="pub">Published</option>
       <option value="draft">Draft</option>
     </select>
-    <select id="sort" class="select" title="Ordina per">
+    <select id="filterCat" class="select" title="Category">
+      <option value="all">All categories</option>
+      <option value="editoriale_corno">Editoriale Corno</option>
+      <option value="usa_comics">USA Comics</option>
+      <option value="art">Art</option>
+      <option value="manga_japanese">Manga (Japanese)</option>
+      <option value="manga_italian">Manga (Italian)</option>
+      <option value="misc">Misc</option>
+    </select>
+    <select id="sort" class="select" title="Sort">
       <option value="added">AddedAt ↓</option>
       <option value="rarity">Rarity ↓</option>
       <option value="stock">Stock ↓</option>
@@ -108,32 +113,55 @@ textarea{min-height:110px;resize:vertical}
     <form id="form" autocomplete="off">
       <input type="hidden" id="docId" />
       <label for="title">Title</label>
-      <input id="title" required placeholder="Es. Akira #1 (Italia)" />
+      <input id="title" required placeholder="e.g., Akira #1 (Italy)" />
       <label for="desc">Description</label>
-      <textarea id="desc" placeholder="Dettagli, edizione, stato..."></textarea>
+      <textarea id="desc" placeholder="Details, edition, condition..."></textarea>
       <div class="helper"><span id="descCount">0 chars</span><span id="draftBadge" class="hint"></span></div>
-
+      <div class="row">
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="">— Select —</option>
+            <option value="editoriale_corno">Editoriale Corno</option>
+            <option value="usa_comics">USA Comics</option>
+            <option value="art">Art</option>
+            <option value="manga_japanese">Manga (Japanese)</option>
+            <option value="manga_italian">Manga (Italian)</option>
+            <option value="misc">Misc</option>
+          </select>
+        </div>
+        <div>
+          <label for="lang">Language</label>
+          <select id="lang">
+            <option value="">— Select —</option>
+            <option value="it">Italian</option>
+            <option value="en">English</option>
+            <option value="ja">Japanese</option>
+            <option value="zh">Chinese</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="es">Spanish</option>
+          </select>
+        </div>
+      </div>
       <div class="row">
         <div><label for="rarity">Rarity (1–5)</label><input id="rarity" type="number" inputmode="numeric" min="1" max="5" value="3" required /></div>
         <div><label for="stock">Stock</label><input id="stock" type="number" inputmode="numeric" min="0" value="1" required /></div>
         <div><label for="total">Total</label><input id="total" type="number" inputmode="numeric" min="1" value="1" /></div>
       </div>
-
       <label>Gallery upload</label>
-      <div class="dropzone" id="drop">Trascina qui file / incolla immagini (clipboard) / usa il selettore</div>
+      <div class="dropzone" id="drop">Drop files / paste images / use picker</div>
       <input id="files" type="file" accept="image/*" multiple />
       <div class="row" style="margin-top:.4rem">
-        <input id="imgUrl" placeholder="Aggiungi URL singolo come cover (opzionale)" />
+        <input id="imgUrl" placeholder="Add single image URL (optional)" />
         <button type="button" class="btn dim" id="addUrl">Add URL</button>
       </div>
       <div class="gallery" id="gallery"></div>
       <img id="preview" alt="" />
-
       <div class="row" style="align-items:center;margin-top:.5rem">
         <label class="toggle"><input id="published" type="checkbox"/> <span>Published</span></label>
         <span class="status" id="formStatus"></span>
       </div>
-
       <div class="row" style="margin-top:.4rem">
         <button type="submit" class="btn" id="saveBtn">Save</button>
         <button type="button" class="btn dim" id="resetBtn">Reset</button>
@@ -158,20 +186,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { getDatabase, ref, push, set, update, remove, onValue, query, orderByChild, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
-/* OPTIONAL UI-ONLY GATE (commentato: NON è sicurezza)
-if(localStorage.getItem('gh_admin_ok')!=='1'){
-  const pass = prompt('Admin passphrase:');
-  if(pass==='GHS-OK'){ localStorage.setItem('gh_admin_ok','1'); }
-  else { document.body.innerHTML='<div style="display:grid;place-items:center;height:100vh;color:#ffd700">Access denied</div>'; throw new Error('Denied'); }
-}
-*/
-
 const firebaseConfig={apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",authDomain:"wandernatureconnect.firebaseapp.com",databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",projectId:"wandernatureconnect",storageBucket:"wandernatureconnect.appspot.com",messagingSenderId:"1062563433646",appId:"1:1062563433646:web:a7251b914f569fc105f13f",measurementId:"G-SGF0KC717J"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const st=getStorage(app);
 
-/* DOM */
 const form=document.getElementById("form");
 const saveBtn=document.getElementById("saveBtn");
 const resetBtn=document.getElementById("resetBtn");
@@ -179,9 +198,9 @@ const deleteBtn=document.getElementById("deleteBtn");
 const statusEl=document.getElementById("formStatus");
 const searchEl=document.getElementById("search");
 const filterEl=document.getElementById("filter");
+const filterCatEl=document.getElementById("filterCat");
 const sortEl=document.getElementById("sort");
 const listEl=document.getElementById("list");
-
 const filesEl=document.getElementById("files");
 const dropEl=document.getElementById("drop");
 const imgUrlEl=document.getElementById("imgUrl");
@@ -191,20 +210,20 @@ const previewEl=document.getElementById("preview");
 const descEl=document.getElementById("desc");
 const descCount=document.getElementById("descCount");
 const draftBadge=document.getElementById("draftBadge");
+const categoryEl=document.getElementById("category");
+const langEl=document.getElementById("lang");
 
-let gallery=[];          // array di URL
-let cache=[];            // items dal DB
-let dirty=false;         // modifiche non salvate
+let gallery=[];
+let cache=[];
+let dirty=false;
 let autosaveTimer=null;
 
-/* ===== Helpers ===== */
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 function fmtDate(t){ try{ return new Date(t).toLocaleString(); }catch{return ""} }
 function markDirty(){ dirty=true; draftBadge.textContent="Draft saved"; }
 function setStatus(msg){ statusEl.textContent=msg; setTimeout(()=>{ if(statusEl.textContent===msg) statusEl.textContent=""; },2500); }
 
-/* ===== Autosave (localStorage) ===== */
 const LS_KEY="gh_admin_draft";
 function collectDraft(){
   return {
@@ -215,7 +234,9 @@ function collectDraft(){
     stock: document.getElementById("stock").value || "0",
     total: document.getElementById("total").value || "1",
     published: document.getElementById("published").checked,
-    gallery: gallery.slice()
+    gallery: gallery.slice(),
+    category: categoryEl.value || "",
+    lang: langEl.value || ""
   };
 }
 function applyDraft(d){
@@ -227,26 +248,23 @@ function applyDraft(d){
   document.getElementById("stock").value=d.stock||"0";
   document.getElementById("total").value=d.total||"1";
   document.getElementById("published").checked=!!d.published;
+  categoryEl.value=d.category||"";
+  langEl.value=d.lang||"";
   gallery = Array.isArray(d.gallery)? d.gallery.slice():[];
   renderGallery();
   updateDescCount();
 }
 function scheduleAutosave(){
   clearTimeout(autosaveTimer);
-  autosaveTimer=setTimeout(()=>{
-    localStorage.setItem(LS_KEY, JSON.stringify(collectDraft()));
-    draftBadge.textContent="Draft saved";
-  }, 1000);
+  autosaveTimer=setTimeout(()=>{ localStorage.setItem(LS_KEY, JSON.stringify(collectDraft())); draftBadge.textContent="Draft saved"; }, 800);
 }
 (function restoreDraft(){
   const raw=localStorage.getItem(LS_KEY);
   if(raw){ try{ applyDraft(JSON.parse(raw)); draftBadge.textContent="Draft restored"; }catch{} }
 })();
 
-/* ===== Prevent lose changes ===== */
 window.addEventListener("beforeunload",(e)=>{ if(dirty){ e.preventDefault(); e.returnValue=""; }});
 
-/* ===== Gallery render & DnD reorder ===== */
 function renderGallery(){
   galleryEl.innerHTML="";
   gallery.forEach((url,idx)=>{
@@ -257,16 +275,15 @@ function renderGallery(){
       <div class="ops">
         <button class="small star" data-cover="${idx}" title="Set as cover">Cover</button>
         <div>
-          <button class="small" data-left="${idx}" title="Sposta a sinistra">◀</button>
-          <button class="small" data-right="${idx}" title="Sposta a destra">▶</button>
-          <button class="small" data-del="${idx}" title="Elimina">Del</button>
+          <button class="small" data-left="${idx}" title="Left">◀</button>
+          <button class="small" data-right="${idx}" title="Right">▶</button>
+          <button class="small" data-del="${idx}" title="Delete">Del</button>
         </div>
       </div>`;
     galleryEl.appendChild(t);
   });
 }
 
-/* Drag reorder */
 let dragIdx=null;
 galleryEl.addEventListener("dragstart",(e)=>{
   const thumb=e.target.closest(".thumb"); if(!thumb) return;
@@ -287,7 +304,6 @@ galleryEl.addEventListener("dragover",(e)=>{
   renderGallery();
   markDirty(); scheduleAutosave();
 });
-
 galleryEl.addEventListener("click",(e)=>{
   const cover=e.target.closest("[data-cover]"); const left=e.target.closest("[data-left]"); const right=e.target.closest("[data-right]"); const del=e.target.closest("[data-del]");
   if(cover){ const i=+cover.getAttribute("data-cover"); const [x]=gallery.splice(i,1); gallery.unshift(x); renderGallery(); }
@@ -297,25 +313,18 @@ galleryEl.addEventListener("click",(e)=>{
   markDirty(); scheduleAutosave();
 });
 
-/* ===== Uploads ===== */
 async function uploadFile(file){
   const safeName=file.name.replace(/[^a-z0-9\.\-_]/gi,"_");
   const path=`items/${Date.now()}_${safeName}`;
   const refS=sRef(st,path);
   const task=uploadBytesResumable(refS,file,{contentType:file.type||"image/jpeg"});
-
-  // temp thumb with progress
   const holder=document.createElement("div");
   holder.className="thumb";
   holder.innerHTML=`<img alt="" /><div class="prog"><i></i></div>`;
   galleryEl.prepend(holder);
   const bar=holder.querySelector(".prog i");
-
   return new Promise((res,rej)=>{
-    task.on("state_changed",(snap)=>{
-      const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
-      bar.style.width=pct+"%";
-    },rej,async()=>{
+    task.on("state_changed",(snap)=>{ bar.style.width=Math.round((snap.bytesTransferred/snap.totalBytes)*100)+"%"; },rej,async()=>{
       const url=await getDownloadURL(task.snapshot.ref);
       gallery.push(url);
       renderGallery();
@@ -323,7 +332,6 @@ async function uploadFile(file){
     });
   });
 }
-
 filesEl.addEventListener("change",async e=>{
   const files=[...(e.target.files||[])];
   if(!files.length) return;
@@ -332,8 +340,6 @@ filesEl.addEventListener("change",async e=>{
   statusEl.textContent="Upload complete";
   markDirty(); scheduleAutosave();
 });
-
-/* Drag & Drop area */
 ["dragenter","dragover"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault(); dropEl.classList.add("active");}));
 ["dragleave","drop"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault(); dropEl.classList.remove("active");}));
 dropEl.addEventListener("drop",async e=>{
@@ -345,19 +351,15 @@ dropEl.addEventListener("drop",async e=>{
   statusEl.textContent="Upload complete";
   markDirty(); scheduleAutosave();
 });
-
-/* Paste from clipboard */
 document.addEventListener("paste",async e=>{
   const items = e.clipboardData?.items || [];
   const images=[...items].map(i=>i.getAsFile()).filter(f=>f && /^image\//.test(f.type));
   if(!images.length) return;
-  statusEl.textContent="Uploading from clipboard…";
+  statusEl.textContent="Uploading…";
   for(const f of images){ await uploadFile(f); }
   statusEl.textContent="Upload complete";
   markDirty(); scheduleAutosave();
 });
-
-/* Add single URL as image */
 addUrlBtn.addEventListener("click",()=>{
   const u=(imgUrlEl.value||"").trim();
   if(!u) return;
@@ -367,11 +369,9 @@ addUrlBtn.addEventListener("click",()=>{
   markDirty(); scheduleAutosave();
 });
 
-/* ===== Live counters & validations ===== */
 function updateDescCount(){ const n=(descEl.value||"").length; descCount.textContent=`${n} chars`; }
 descEl.addEventListener("input",()=>{ updateDescCount(); markDirty(); scheduleAutosave(); });
-
-["title","rarity","stock","total","published"].forEach(id=>{
+["title","rarity","stock","total","published","category","lang"].forEach(id=>{
   const el=document.getElementById(id);
   el.addEventListener(el.type==="checkbox"?"change":"input",()=>{ 
     if(id==="rarity") el.value=String(clamp(parseInt(el.value||"3",10)||3,1,5));
@@ -381,9 +381,7 @@ descEl.addEventListener("input",()=>{ updateDescCount(); markDirty(); scheduleAu
   });
 });
 
-/* ===== Save / Reset / Delete ===== */
 const itemsRef=ref(db,"items");
-
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   const id=document.getElementById("docId").value.trim();
@@ -393,7 +391,6 @@ form.addEventListener("submit",async e=>{
   const total=document.getElementById("total");
   if(!title.value.trim()){ setStatus("Title required"); return; }
   if(!total.value) total.value=Math.max(1,parseInt(stock.value||"1",10));
-
   const payload={
     title:title.value.trim(),
     desc:descEl.value.trim(),
@@ -403,9 +400,10 @@ form.addEventListener("submit",async e=>{
     stock:Math.max(0,parseInt(stock.value||"0",10)||0),
     total:Math.max(1,parseInt(total.value||"1",10)||1),
     published:document.getElementById("published").checked,
+    category: categoryEl.value || "",
+    lang: langEl.value || "",
     addedAt: serverTimestamp()
   };
-
   try{
     saveBtn.disabled=true;
     if(id){
@@ -426,13 +424,10 @@ form.addEventListener("submit",async e=>{
     saveBtn.disabled=false;
   }
 });
-
-/* shortcuts */
 window.addEventListener("keydown",(e)=>{
   if((e.ctrlKey||e.metaKey) && (e.key==="s"||e.key==="S")){ e.preventDefault(); form.requestSubmit(); }
   if((e.ctrlKey||e.metaKey) && e.key==="Enter"){ e.preventDefault(); form.requestSubmit(); }
 });
-
 document.getElementById("resetBtnMobile")?.addEventListener("click",()=>resetBtn.click());
 resetBtn.addEventListener("click",()=>{
   if(dirty && !confirm("Discard changes?")) return;
@@ -443,12 +438,12 @@ resetBtn.addEventListener("click",()=>{
   dirty=false; draftBadge.textContent="";
   localStorage.removeItem(LS_KEY);
 });
-
 deleteBtn.addEventListener("click",async()=>{
   const id=document.getElementById("docId").value.trim();
   if(!id) return;
   if(!confirm("Delete this item?")) return;
-  try{ await remove(ref(db,`items/${id}`));
+  try{
+    await remove(ref(db,`items/${id}`));
     form.reset(); document.getElementById("docId").value="";
     deleteBtn.style.display="none"; previewEl.style.display="none"; gallery=[]; renderGallery();
     setStatus("Deleted ✓");
@@ -457,7 +452,6 @@ deleteBtn.addEventListener("click",async()=>{
   } catch(err){ alert(err.message); }
 });
 
-/* ===== Items list ===== */
 const q= query(itemsRef, orderByChild("addedAt"));
 onValue(q,snap=>{
   const obj=snap.val()||{};
@@ -468,14 +462,13 @@ onValue(q,snap=>{
 
 function applyListView(){
   let arr = [...cache];
-  /* filter */
   const f=filterEl.value;
   if(f==="pub")   arr=arr.filter(x=>!!x.published);
   if(f==="draft") arr=arr.filter(x=>!x.published);
-  /* search */
+  const fc=filterCatEl.value;
+  if(fc!=="all") arr=arr.filter(x=>(x.category||"")===fc);
   const term=(searchEl.value||"").toLowerCase();
   if(term) arr=arr.filter(i=>((i.title||"")+" "+(i.desc||"")).toLowerCase().includes(term));
-  /* sort */
   const s=sortEl.value;
   if(s==="added")   arr.sort((a,b)=> (b.addedAt??0) - (a.addedAt??0));
   if(s==="rarity")  arr.sort((a,b)=> (b.rarity??0)  - (a.rarity??0));
@@ -485,10 +478,12 @@ function applyListView(){
 }
 searchEl.addEventListener("input",applyListView);
 filterEl.addEventListener("change",applyListView);
+filterCatEl.addEventListener("change",applyListView);
 sortEl.addEventListener("change",applyListView);
 
 function renderList(arr){
   listEl.innerHTML="";
+  const frag=document.createDocumentFragment();
   arr.forEach(it=>{
     const row=document.createElement("div");
     row.className="item";
@@ -497,7 +492,9 @@ function renderList(arr){
     const imgCount = Array.isArray(it.imgs) ? it.imgs.length : (it.img?1:0);
     const descLen = (it.desc||"").length;
     const warnCover = !cover ? '<span class="pill warn">no-cover</span>' : '';
-    const warnDesc  = descLen<40 ? '<span class="pill warn">desc<40</span>' : '';
+    const warnDesc  = descLen<40 ? '<span class="pill warn">desc&lt;40</span>' : '';
+    const catTxt=(it.category||"").replaceAll("_"," ");
+    const langTxt=(it.lang||"").toUpperCase();
     row.innerHTML=`
       <img src="${cover}" alt="cover"/>
       <div>
@@ -506,24 +503,27 @@ function renderList(arr){
           <span class="stars">${"★".repeat(it.rarity||0)}</span>
           <span class="hint">${when}</span>
           <div class="pills">
-            <span class="pill" title="published">${it.published?"Published":"Draft"}</span>
-            <span class="pill" title="stock/total">${it.stock??0}/${it.total??1}</span>
+            <span class="pill">${it.published?"Published":"Draft"}</span>
+            <span class="pill">${it.stock??0}/${it.total??1}</span>
             <span class="pill">imgs:${imgCount}</span>
             <span class="pill">len:${descLen}</span>
+            <span class="pill">${escapeHtml(catTxt||"—")}</span>
+            <span class="pill">${escapeHtml(langTxt||"—")}</span>
             ${warnCover}${warnDesc}
           </div>
         </div>
         <div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,140))}${(it.desc||"").length>140?"…":""}</div>
       </div>
       <div class="actions">
-        <button class="a" data-dup="${it.id}" title="Duplica">Dup</button>
-        <button class="a" data-copy="${it.id}" title="Copia ID">ID</button>
+        <button class="a" data-dup="${it.id}" title="Duplicate">Dup</button>
+        <button class="a" data-copy="${it.id}" title="Copy ID">ID</button>
         <button class="a" data-edit="${it.id}">Edit</button>
         <label class="toggle" title="Toggle publish"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label>
         <button class="a del" data-del="${it.id}">Del</button>
       </div>`;
-    listEl.appendChild(row);
+    frag.appendChild(row);
   });
+  listEl.appendChild(frag);
 
   listEl.onclick=async ev=>{
     const t=ev.target;
@@ -537,7 +537,7 @@ function renderList(arr){
       const id=edit.getAttribute("data-edit");
       const data=cache.find(x=>x.id===id);
       if(!data) return;
-      if(dirty && !confirm("Hai modifiche non salvate. Sovrascrivere la bozza?")) return;
+      if(dirty && !confirm("Unsaved changes. Overwrite draft?")) return;
       document.getElementById("docId").value=id;
       document.getElementById("title").value=data.title||"";
       descEl.value=data.desc||"";
@@ -545,6 +545,8 @@ function renderList(arr){
       document.getElementById("stock").value=data.stock||0;
       document.getElementById("total").value=data.total||1;
       document.getElementById("published").checked=!!data.published;
+      categoryEl.value=data.category||"";
+      langEl.value=data.lang||"";
       gallery = Array.isArray(data.imgs) ? data.imgs.slice() : (data.img ? [data.img] : []);
       renderGallery(); updateDescCount();
       deleteBtn.style.display="inline-block";
@@ -577,11 +579,11 @@ function renderList(arr){
   };
 }
 
-/* Context-menu/devtools block (come ti piace) */
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 </script>
 </body>
 </html>
+
 
 
