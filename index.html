@@ -24,70 +24,34 @@
 <meta name="twitter:image" content="Ghidorah1.png" />
 <meta name="color-scheme" content="dark" />
 <style>
-:root{
-  --bg:#0a0a0a; --text:#e9e9e9; --muted:#a6a6a6;
-  --gold:#ffd700; --gold-dark:#b8860b; --border:#232323; --card:#111214;
-  --ring:rgba(255,215,0,.5);
-  --gap:12px; --radius:14px;
-  --card-media-ratio: 3/4;
-  --body-extra: 120px;
-}
-@media (max-width:680px){ :root{ --gap:9px; --body-extra:110px } }
+:root{--bg:#0a0a0a;--text:#e9e9e9;--muted:#a6a6a6;--gold:#ffd700;--gold-dark:#b8860b;--border:#232323;--card:#111214;--ring:rgba(255,215,0,.5);--gap:12px;--radius:14px;--card-media-ratio:3/4;--body-extra:120px}
+@media (max-width:680px){:root{--gap:9px;--body-extra:110px}}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-}
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
-  background:
-    radial-gradient(1000px 480px at 50% -10%,rgba(255,215,0,0.05),transparent 60%),
-    radial-gradient(760px 420px at -20% 120%,rgba(184,134,11,0.04),transparent 60%),
-    repeating-conic-gradient(from 0deg,rgba(255,255,255,0.01) 0 10deg,transparent 10deg 20deg);
-}
-.topbar{
-  position:sticky;top:0;z-index:30;
-  display:flex;gap:10px;align-items:center;justify-content:flex-end;
-  padding:10px 12px;border-bottom:1px solid var(--border);
-  background:#0b0b0bd9;backdrop-filter:blur(6px)
-}
-.rules{
-  display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;border-radius:999px;
-  background:linear-gradient(90deg,#1a1400,#2b2200);border:1px solid rgba(255,215,0,.25);
-  color:#FFD700;font-weight:800;letter-spacing:.08em;text-decoration:none
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(1000px 480px at 50% -10%,rgba(255,215,0,0.05),transparent 60%),radial-gradient(760px 420px at -20% 120%,rgba(184,134,11,0.04),transparent 60%),repeating-conic-gradient(from 0deg,rgba(255,255,255,0.01) 0 10deg,transparent 10deg 20deg)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;gap:10px;align-items:center;justify-content:flex-end;padding:10px 12px;border-bottom:1px solid var(--border);background:#0b0b0bd9;backdrop-filter:blur(6px)}
+.rules{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;border-radius:999px;background:linear-gradient(90deg,#1a1400,#2b2200);border:1px solid rgba(255,215,0,.25);color:#FFD700;font-weight:800;letter-spacing:.08em;text-decoration:none}
 header{text-align:center;padding:1.1rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:.7rem}
 .logo-stage{position:relative;display:grid;place-items:center}
-.logo-stage .glow{position:absolute;border-radius:50%;filter:blur(24px);will-change:transform,opacity}
-.logo-stage .g1{width:220px;height:220px;background:radial-gradient(circle,rgba(255,215,0,.16) 0%,rgba(255,215,0,0) 70%)}
-.logo-stage .g2{width:280px;height:280px;background:conic-gradient(from 0deg,rgba(255,215,0,.18),transparent 45%,rgba(255,215,0,.15),transparent 90%)}
-.logo-stage .g3{width:320px;height:320px;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.08),transparent 40%),radial-gradient(circle at 70% 70%,rgba(255,215,0,.12),transparent 50%)}
+.logo-stage .glow{position:absolute;border-radius:50%;filter:blur(28px);will-change:transform,opacity}
+.logo-stage .g1{width:240px;height:240px;background:radial-gradient(circle,rgba(255,215,0,.18) 0%,rgba(255,215,0,0) 70%)}
+.logo-stage .g2{width:300px;height:300px;background:conic-gradient(from 0deg,rgba(255,215,0,.22),transparent 45%,rgba(255,215,0,.18),transparent 90%)}
+.logo-stage .g3{width:360px;height:360px;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.08),transparent 40%),radial-gradient(circle at 70% 70%,rgba(255,215,0,.14),transparent 50%)}
 img.logo{position:relative;z-index:1;width:96px;height:96px;border-radius:50%;object-fit:cover;will-change:transform}
-h1{
-  font-size:clamp(1.6rem,5vw,2.4rem);
-  background:linear-gradient(90deg,var(--gold),var(--gold-dark),var(--gold));background-size:200% auto;
-  color:transparent;-webkit-background-clip:text;background-clip:text;letter-spacing:.12em;margin:.2rem 0 0
-}
+h1{font-size:clamp(1.6rem,5vw,2.4rem);background:linear-gradient(90deg,var(--gold),var(--gold-dark),var(--gold));background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;letter-spacing:.12em;margin:.2rem 0 0}
 .subtitle{font-size:.98rem;color:var(--muted)}
 .jp-bottom{font-size:1.05rem;color:#bbb8;letter-spacing:.5em}
 .controls{display:flex;flex-direction:column;gap:.55rem;align-items:center;margin-top:.2rem}
 .controls-row{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;width:100%}
 .searchbar{display:flex;align-items:center;gap:.5rem;width:min(680px,92vw)}
-.searchbar input{
-  flex:1;background:#101012;border:1px solid var(--border);border-radius:10px;color:#fff;
-  padding:.6rem .8rem;outline:none
-}
+.searchbar input{flex:1;background:#101012;border:1px solid var(--border);border-radius:10px;color:#fff;padding:.6rem .8rem;outline:none}
 .searchbar input:focus{box-shadow:0 0 0 3px var(--ring)}
-.control-chip{
-  background:linear-gradient(180deg,#0d0d0f,#17171a);border:1px solid #222;border-radius:999px;
-  padding:.6rem .9rem;color:#cfcfcf;font-size:.9rem;cursor:pointer;user-select:none;min-height:40px
-}
+.control-chip{background:linear-gradient(180deg,#0d0d0f,#17171a);border:1px solid #222;border-radius:999px;padding:.6rem .9rem;color:#cfcfcf;font-size:.9rem;cursor:pointer;user-select:none;min-height:40px}
 .control-chip[aria-pressed="true"]{outline:2px solid #ffd70055;color:var(--gold);border-color:#3a2e00}
 .container{max-width:1100px;margin:0 auto 1.6rem;padding:14px}
 .grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-@media (max-width:480px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .skel{background:linear-gradient(180deg,#0d0d10,#131317);border:1px solid #1e1e22;border-radius:var(--radius);overflow:hidden;min-height:calc((100% / (var(--card-media-ratio))) + var(--body-extra));position:relative}
 footer{text-align:center;font-size:.85rem;color:#888a;padding:1.2rem 1rem;border-top:1px solid #222}
 vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-size:auto 420px}
@@ -95,7 +59,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .viewer.active{display:flex}
 .viewer img{max-width:96vw;max-height:72vh;object-fit:contain;image-orientation:from-image}
 .viewer .nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.viewer .prev{left:12px} .viewer .next{right:12px}
+.viewer .prev{left:12px}.viewer .next{right:12px}
 .viewer .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .viewer .thumbs{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;overflow:auto;padding:6px 10px}
 .viewer .thumbs::-webkit-scrollbar{height:6px}
@@ -105,22 +69,8 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .sheet{position:fixed;inset:0;z-index:1100;display:none}
 .sheet.open{display:block}
 .sheet .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.sheet .panel{
-  position:absolute;left:50%;transform:translateX(-50%);
-  width:min(720px,92vw);
-  background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;
-  box-shadow:0 30px 80px rgba(0,0,0,.55);
-  max-height:80vh;overflow:auto;padding:14px;
-  top:8vh;
-}
-@media (max-width:740px){
-  .sheet .panel{
-    left:0;right:0;transform:none;width:auto;border-radius:16px 16px 0 0;
-    bottom:0;top:auto;max-height:78vh;
-    animation:rise .22s ease-out;
-  }
-  @keyframes rise{from{transform:translateY(18px)}to{transform:translateY(0)}}
-}
+.sheet .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(720px,92vw);background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.55);max-height:80vh;overflow:auto;padding:14px;top:8vh}
+@media (max-width:740px){.sheet .panel{left:0;right:0;transform:none;width:auto;border-radius:16px 16px 0 0;bottom:0;top:auto;max-height:78vh;animation:rise .22s ease-out}@keyframes rise{from{transform:translateY(18px)}to{transform:translateY(0)}}}
 .sheet h3{margin:.1rem 0 .4rem;color:#ffd700;font-size:1.05rem}
 .sheet p{margin:.45rem 0;color:#d0d0d0;line-height:1.6;white-space:pre-wrap}
 .sheet .head{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
@@ -134,11 +84,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .cat-modal{position:fixed;inset:0;z-index:1200;display:none}
 .cat-modal.open{display:block}
 .cat-modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.cat-modal .panel{
-  position:absolute;left:50%;transform:translateX(-50%);
-  width:min(560px,92vw);top:12vh;max-height:70vh;overflow:auto;
-  background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55)
-}
+.cat-modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(560px,92vw);top:12vh;max-height:70vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
 .cat-modal h4{margin:.2rem 0 .6rem;color:#ffd700}
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
 .cat-btn{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.65rem .8rem;text-align:center;cursor:pointer}
@@ -171,7 +117,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     </div>
     <div class="controls-row catbar">
       <button class="control-chip" id="filter-available" aria-pressed="false">Available only</button>
-      <button class="control-chip" id="sort-rarity" aria-pressed="false">Sort by rarity</button>
+      <button class="control-chip" id="filter-newest" aria-pressed="false">Newest</button>
       <button class="control-chip" id="cat-btn" aria-expanded="false">Categories: All</button>
     </div>
   </div>
@@ -219,17 +165,16 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 class VaultCard extends HTMLElement{
   static get observedAttributes(){return["title","desc","imgs","rarity","stock","total","isnew","id","category","lang"]}
   constructor(){
-    super();
-    this._idx=0; this._slides=[]; this._fullDesc="";
+    super();this._idx=0;this._slides=[];this._fullDesc="";
     this.attachShadow({mode:"open"});
     this.shadowRoot.innerHTML=`
       <style>
         :host{display:block;height:100%}
-        .card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);background:var(--card);border-radius:var(--radius);height:100%;box-shadow:0 4px 14px rgba(0,0,0,.28);transition:transform .15s ease, box-shadow .15s ease}
+        .card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);background:var(--card);border-radius:var(--radius);height:100%;box-shadow:0 4px 14px rgba(0,0,0,.28);transition:transform .15s ease,box-shadow .15s ease}
         .card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.4)}
-        .media{--media-ratio: var(--card-media-ratio);position:relative;overflow:hidden;aspect-ratio: var(--media-ratio);background:radial-gradient(120% 80% at 50% 0%, rgba(255,215,0,.06), transparent 60%), linear-gradient(180deg,#0d0d10,#15151a);display:flex;align-items:center;justify-content:center;isolation:isolate;cursor:zoom-in}
-        .media::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 6px);opacity:.08}
-        .carousel{position:absolute;inset:0;z-index:1}
+        .media{--media-ratio:var(--card-media-ratio);position:relative;overflow:hidden;aspect-ratio:var(--media-ratio);background:radial-gradient(120% 80% at 50% 0%,rgba(255,215,0,.06),transparent 60%),linear-gradient(180deg,#0d0d10,#15151a);display:flex;align-items:center;justify-content:center;isolation:isolate}
+        .media::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 6px);opacity:.08}
+        .carousel{position:absolute;inset:0;z-index:1;cursor:zoom-in}
         .track{display:flex;height:100%;align-items:stretch;transition:transform .28s ease}
         .slide{margin:0;min-width:100%;height:100%;display:grid;place-items:center;position:relative}
         .slide img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:center;display:block;vertical-align:middle;image-orientation:from-image}
@@ -237,8 +182,6 @@ class VaultCard extends HTMLElement{
         .noimg .glyph{font-size:30px;color:var(--gold);opacity:.9}
         .more{position:absolute;right:.45rem;bottom:.45rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:10px;padding:.12rem .45rem;font-size:.78rem;backdrop-filter:blur(2px);display:none}
         .has-more .more{display:block}
-        .info{position:absolute;left:.45rem;bottom:.45rem;z-index:3;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#ffd700;cursor:pointer;backdrop-filter:blur(2px)}
-        .info:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
         .nav{position:absolute;top:50%;transform:translateY(-50%);border:none;background:rgba(0,0,0,.35);color:#fff;width:32px;height:32px;border-radius:999px;display:none;align-items:center;justify-content:center;cursor:pointer}
         .nav.prev{left:.45rem}.nav.next{right:.45rem}
         .nav:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
@@ -246,7 +189,7 @@ class VaultCard extends HTMLElement{
         .dots{position:absolute;left:0;right:0;bottom:.42rem;display:flex;gap:.3rem;justify-content:center;z-index:2}
         .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.25)}
         .dot[aria-current="true"]{background:#FFD700;box-shadow:0 0 8px rgba(255,215,0,.6)}
-        .tag{position:absolute;left:.55rem;top:.55rem;z-index:3;display:none;align-items:center;gap:.4rem;padding:.26rem .55rem;border-radius:999px;background:linear-gradient(90deg,#1d1600,#2a2200);border:1px solid rgba(255,215,0,.30);color:#FFD700;font-weight:800;letter-spacing:.08em;font-size:.72rem;box-shadow:0 0 0 1px rgba(255,215,0,.08) inset, 0 0 14px rgba(255,215,0,.22)}
+        .tag{position:absolute;left:.55rem;top:.55rem;z-index:3;display:none;align-items:center;gap:.4rem;padding:.26rem .55rem;border-radius:999px;background:linear-gradient(90deg,#1d1600,#2a2200);border:1px solid rgba(255,215,0,.30);color:#FFD700;font-weight:800;letter-spacing:.08em;font-size:.72rem;box-shadow:0 0 0 1px rgba(255,215,0,.08) inset,0 0 14px rgba(255,215,0,.22)}
         .tag.sparkle{display:inline-flex}
         .tag .dot{width:8px;height:8px;border-radius:50%;background:#FFD700;box-shadow:0 0 8px #FFD700,0 0 16px rgba(255,215,0,.6)}
         .tag::after{content:"";position:absolute;inset:-150% -40% auto -40%;height:300%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);animation:shine 2.2s linear infinite}
@@ -260,13 +203,15 @@ class VaultCard extends HTMLElement{
         .meta{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
         .qty{color:#bbb;border:1px dashed #333;border-radius:999px;padding:2px 8px}
         .stars{display:inline-flex;gap:2px}
-        .stars .s{font-weight:900;background: linear-gradient(90deg,#C9B037,#FFD700,#b8860b,#FFD700);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:starshine 6s linear infinite, twinkle 2.2s ease-in-out infinite alternate;text-shadow:0 0 10px rgba(255,215,0,.15)}
+        .stars .s{font-weight:900;background:linear-gradient(90deg,#C9B037,#FFD700,#b8860b,#FFD700);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:starshine 6s linear infinite,twinkle 2.2s ease-in-out infinite alternate;text-shadow:0 0 10px rgba(255,215,0,.15)}
         .stars .s:nth-child(odd){animation-delay:.25s}
         @keyframes starshine{0%{background-position:0% center}100%{background-position:200% center}}
-        .btn{display:block;margin-top:6px;text-align:center;background:linear-gradient(90deg,#ffd700,#e6c200);color:#000;font-weight:800;border-radius:10px;padding:10px;text-decoration:none;transition:transform .12s ease, box-shadow .12s ease}
+        .btn{display:block;margin-top:6px;text-align:center;background:linear-gradient(90deg,#ffd700,#e6c200);color:#000;font-weight:800;border-radius:10px;padding:10px;text-decoration:none;transition:transform .12s ease,box-shadow .12s ease}
         .btn:hover{transform:translateY(-1px);box-shadow:0 0 0 3px var(--ring)}
         .soldout .btn{background:linear-gradient(90deg,#555,#666);color:#eee}
         .soldout .slide img{filter:grayscale(1) contrast(.95) opacity(.9)}
+        .details{position:absolute;left:.5rem;bottom:.5rem;z-index:3;display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .6rem;border-radius:10px;border:1px solid rgba(255,215,0,.35);background:rgba(0,0,0,.55);backdrop-filter:blur(2px);color:#ffd700;font-weight:800;letter-spacing:.04em;cursor:pointer}
+        .details:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
       </style>
       <article class="card">
         <div class="media">
@@ -276,7 +221,7 @@ class VaultCard extends HTMLElement{
             <button class="nav next" aria-label="Next">›</button>
             <div class="dots" role="tablist"></div>
           </div>
-          <button class="info" title="Read more" aria-label="Read more">…</button>
+          <button class="details" aria-label="Open details">Details</button>
           <div class="more" aria-hidden="true"></div>
           <div class="tag"><span class="dot"></span>NEW</div>
           <span class="seal"></span>
@@ -297,7 +242,7 @@ class VaultCard extends HTMLElement{
     const title=this.getAttribute("title")||"";
     const desc=this.getAttribute("desc")||"";
     this._fullDesc=desc;
-    let imgs=[]; try{imgs=JSON.parse(this.getAttribute("imgs")||"[]")}catch{imgs=[]}
+    let imgs=[];try{imgs=JSON.parse(this.getAttribute("imgs")||"[]")}catch{imgs=[]}
     imgs=(Array.isArray(imgs)?imgs:[]).filter(Boolean);
     const rarity=Math.max(0,Math.min(5,Number(this.getAttribute("rarity")||"0")));
     const stock=Number(this.getAttribute("stock")||"0");
@@ -314,69 +259,53 @@ class VaultCard extends HTMLElement{
     const tag=r.querySelector(".tag");
     const seal=r.querySelector(".seal");
     const overflow=r.querySelector(".more");
-    const infoBtn=r.querySelector(".info");
-    track.innerHTML=""; dots.innerHTML="";
-    const PREVIEW_MAX = 6;
-    const allSlides = imgs.length? imgs : ["__NOIMG__"];
-    this._slides = allSlides.slice(0, PREVIEW_MAX);
-    const extra = Math.max(0, allSlides.length - this._slides.length);
-    media.classList.toggle('has-more', extra>0);
-    overflow.textContent = extra>0 ? `+${extra}` : "";
-    this._idx = Math.min(this._idx, this._slides.length-1); this._idx = Math.max(this._idx, 0);
+    const detailsBtn=r.querySelector(".details");
+    track.innerHTML="";dots.innerHTML="";
+    const PREVIEW_MAX=6;
+    const allSlides=imgs.length?imgs:["__NOIMG__"];
+    this._slides=allSlides.slice(0,PREVIEW_MAX);
+    const extra=Math.max(0,allSlides.length-this._slides.length);
+    media.classList.toggle("has-more",extra>0);
+    overflow.textContent=extra>0?`+${extra}`:"";
+    this._idx=Math.min(this._idx,this._slides.length-1);this._idx=Math.max(this._idx,0);
     this._slides.forEach((src,i)=>{
-      const slide=document.createElement("figure"); slide.className="slide";
-      if(src==="__NOIMG__"){ slide.innerHTML=`<div class="noimg" aria-label="No image"><div class="glyph">無</div></div>`; }
-      else{
-        const im=document.createElement("img");
-        im.loading="lazy"; im.decoding="async"; im.alt=title?`Cover — ${title}`:"";
-        im.addEventListener("error",()=>{slide.innerHTML=`<div class="noimg"><div class="glyph">無</div></div>`},{once:true});
-        im.src=src; slide.appendChild(im);
-      }
+      const slide=document.createElement("figure");slide.className="slide";
+      if(src==="__NOIMG__"){slide.innerHTML=`<div class="noimg" aria-label="No image"><div class="glyph">無</div></div>`}
+      else{const im=document.createElement("img");im.loading="lazy";im.decoding="async";im.alt=title?`Cover — ${title}`:"";im.addEventListener("error",()=>{slide.innerHTML=`<div class="noimg"><div class="glyph">無</div></div>`},{once:true});im.src=src;slide.appendChild(im)}
       track.appendChild(slide);
-      if(this._slides.length>1){
-        const dot=document.createElement("button");
-        dot.className="dot"; dot.type="button"; dot.setAttribute("aria-label",`Slide ${i+1}`);
-        dot.onclick=()=>this._go(i);
-        dots.appendChild(dot);
-      }
+      if(this._slides.length>1){const dot=document.createElement("button");dot.className="dot";dot.type="button";dot.setAttribute("aria-label",`Slide ${i+1}`);dot.onclick=()=>this._go(i);dots.appendChild(dot)}
     });
-    media.onclick = (e) => {
-      if(e.target && e.target.classList.contains('info')) return;
-      const all = allSlides.filter(s=>s!=="__NOIMG__");
-      if(all.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}));
-    };
-    const upd=()=>{track.style.transform=`translateX(-${this._idx*100}%)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)))};    
+    media.onclick=(e)=>{if(e.target&&e.target.classList.contains("details"))return;const all=allSlides.filter(s=>s!=="__NOIMG__");if(all.length)window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}))};
+    const upd=()=>{track.style.transform=`translateX(-${this._idx*100}%)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)))};
     this._go=(i)=>{this._idx=(i+this._slides.length)%this._slides.length;upd()};
     prev.onclick=()=>this._go(this._idx-1);
     next.onclick=()=>this._go(this._idx+1);
     const multi=this._slides.length>1;
-    prev.style.display = next.style.display = multi? "flex":"none";
-    prev.classList.toggle("multi",multi); next.classList.toggle("multi",multi);
-    dots.style.display = multi? "flex":"none";
+    prev.style.display=next.style.display=multi?"flex":"none";
+    prev.classList.toggle("multi",multi);next.classList.toggle("multi",multi);
+    dots.style.display=multi?"flex":"none";
     upd();
     let sx=0,cx=0,drag=false;
-    const down=e=>{drag=true; sx=(e.touches?e.touches[0].clientX:e.clientX); cx=sx};
-    const move=e=>{if(!drag)return; cx=(e.touches?e.touches[0].clientX:e.clientX)};
-    const up=()=>{if(!drag)return; const dx=cx-sx; drag=false; if(Math.abs(dx)>50){ dx<0?this._go(this._idx+1):this._go(this._idx-1)}};
-    track.parentElement.addEventListener("pointerdown",down); track.parentElement.addEventListener("pointermove",move); track.parentElement.addEventListener("pointerup",up);
-    track.parentElement.addEventListener("touchstart",down,{passive:true}); track.parentElement.addEventListener("touchmove",move,{passive:true}); track.parentElement.addEventListener("touchend",up,{passive:true});
+    const down=e=>{drag=true;sx=(e.touches?e.touches[0].clientX:e.clientX);cx=sx};
+    const move=e=>{if(!drag)return;cx=(e.touches?e.touches[0].clientX:e.clientX)};
+    const up=()=>{if(!drag)return;const dx=cx-sx;drag=false;if(Math.abs(dx)>50){dx<0?this._go(this._idx+1):this._go(this._idx-1)}};
+    track.parentElement.addEventListener("pointerdown",down);track.parentElement.addEventListener("pointermove",move);track.parentElement.addEventListener("pointerup",up);
+    track.parentElement.addEventListener("touchstart",down,{passive:true});track.parentElement.addEventListener("touchmove",move,{passive:true});track.parentElement.addEventListener("touchend",up,{passive:true});
     tag.classList.toggle("sparkle",!!isNew);
-    const qtyTxt= available ? (total>1?`${stock}/${total}`:`1/1`) : "SOLD OUT";
-    seal.textContent = available ? `AVAILABLE — ${qtyTxt}` : qtyTxt;
+    const qtyTxt=available?(total>1?`${stock}/${total}`:`1/1`):"SOLD OUT";
+    seal.textContent=available?`AVAILABLE — ${qtyTxt}`:qtyTxt;
     r.querySelector("h2").textContent=title;
     r.querySelector(".desc").textContent=this._fullDesc||"";
-    const openSheet=()=>window.dispatchEvent(new CustomEvent("open-sheet",{detail:{title, desc:this._fullDesc||"", category, lang}}));
-    infoBtn.onclick=openSheet;
+    const openSheet=()=>window.dispatchEvent(new CustomEvent("open-sheet",{detail:{title,desc:this._fullDesc||"",category,lang}}));
+    detailsBtn.onclick=openSheet;
     r.querySelector("h2").onclick=openSheet;
-    const stars=r.querySelector(".stars"); stars.innerHTML="";
-    for(let i=0;i<rarity;i++){ const s=document.createElement("span"); s.className="s"; s.textContent="★"; stars.appendChild(s); }
-    r.querySelector(".qty").textContent= available ? (total>1?`In vault: ${stock}/${total}`:"unique") : "sold";
+    const stars=r.querySelector(".stars");stars.innerHTML="";
+    for(let i=0;i<rarity;i++){const s=document.createElement("span");s.className="s";s.textContent="★";stars.appendChild(s)}
+    r.querySelector(".qty").textContent=available?(total>1?`In vault: ${stock}/${total}`:"unique"):"sold";
     const cta=r.querySelector(".btn");
-    cta.textContent = available ? "Contact us" : "Request restock";
-    cta.href = available
-      ? `mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Info — "+title)}`
-      : `mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Waitlist — "+title)}`;
-    cta.setAttribute("aria-label", cta.textContent + " for " + title);
+    cta.textContent=available?"Contact us":"Request restock";
+    cta.href=available?`mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Info — "+title)}`:`mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Waitlist — "+title)}`;
+    cta.setAttribute("aria-label",cta.textContent+" for "+title);
   }
 }
 customElements.define("vault-card",VaultCard);
@@ -386,116 +315,79 @@ customElements.define("vault-card",VaultCard);
 window.io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("reveal");window.io.unobserve(e.target)}})},{rootMargin:"60px"});
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
-const canon=document.getElementById("canon"); try{canon.href=location.href.split('#')[0]}catch{}
+const canon=document.getElementById("canon");try{canon.href=location.href.split("#")[0]}catch{}
 </script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-const firebaseConfig={
-  apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",
-  authDomain:"wandernatureconnect.firebaseapp.com",
-  databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:"wandernatureconnect",
-  storageBucket:"wandernatureconnect.appspot.com",
-  messagingSenderId:"1062563433646",
-  appId:"1:1062563433646:web:a7251b914f569fc105f13f",
-  measurementId:"G-SGF0KC717J"
-};
+const firebaseConfig={apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",authDomain:"wandernatureconnect.firebaseapp.com",databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",projectId:"wandernatureconnect",storageBucket:"wandernatureconnect.appspot.com",messagingSenderId:"1062563433646",appId:"1:1062563433646:web:a7251b914f569fc105f13f",measurementId:"G-SGF0KC717J"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-
 const container=document.getElementById("items");
 const btnFilter=document.getElementById("filter-available");
-const btnSort=document.getElementById("sort-rarity");
+const btnNewest=document.getElementById("filter-newest");
 const qInput=document.getElementById("q");
 const catBtn=document.getElementById("cat-btn");
 const catModal=document.getElementById("catModal");
 const catGrid=document.getElementById("catGrid");
-
-let filterAvailable=false, sortByRarity=false, cache=[], filterCategory="all", qTerm="";
-const categories=[
-  ["all","All"],
-  ["editoriale_corno","Editoriale Corno"],
-  ["usa_comics","USA Comics"],
-  ["art","Art"],
-  ["manga_japanese","Manga (Japanese)"],
-  ["manga_italian","Manga (Italian)"],
-  ["collectibles","Collectibles"],
-  ["misc","Misc"]
-];
-
+let filterAvailable=false, filterNewest=false, cache=[], filterCategory="all", qTerm="";
+const categories=[["all","All"],["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
+function labelOf(list,val){const f=list.find(([v])=>v===val);return f?f[1]:""}
 renderSkeleton(8);
-
-function renderSkeleton(n){
-  container.innerHTML="";
-  for(let i=0;i<n;i++){const d=document.createElement("div");d.className="skel";container.appendChild(d)}
-}
-function renderEmpty(){
-  container.innerHTML=`<div style="grid-column:1/-1;color:#bbb;text-align:center;padding:24px;border:1px dashed #333;border-radius:12px">Vault is empty</div>`;
-}
+function renderSkeleton(n){container.innerHTML="";for(let i=0;i<n;i++){const d=document.createElement("div");d.className="skel";container.appendChild(d)}}
+function renderEmpty(){container.innerHTML=`<div style="grid-column:1/-1;color:#bbb;text-align:center;padding:24px;border:1px dashed #333;border-radius:12px">Vault is empty</div>`}
 function updateJsonLd(list){
   document.getElementById("ld-items")?.remove();
-  const data={ "@context":"https://schema.org", "@type":"ItemList",
-    "name":"Ghidorah no Sekai — Rare Manga & Comics Showcase",
-    "itemListElement": list.map((it,idx)=>({
-      "@type":"Product","position":idx+1,"name":it.title||"Untitled","description":it.desc||"",
-      "image":(Array.isArray(it.imgs)&&it.imgs[0])||it.img||"",
-      "brand":{"@type":"Brand","name":"Ghidorah no Sekai"},"category":String(it.category||"ComicBook"),
-      "url":location.href,
-      "offers":{"@type":"Offer","availability":(it.stock??0)>0?"https://schema.org/InStock":"https://schema.org/OutOfStock","priceCurrency":"EUR","price":"0"}
-    }))
-  };
+  const data={"@context":"https://schema.org","@type":"ItemList","name":"Ghidorah no Sekai — Rare Manga & Comics Showcase","itemListElement":list.map((it,idx)=>({"@type":"Product","position":idx+1,"name":it.title||"Untitled","description":it.desc||"","image":(Array.isArray(it.imgs)&&it.imgs[0])||it.img||"","brand":{"@type":"Brand","name":"Ghidorah no Sekai"},"category":String(it.category||"ComicBook"),"url":location.href,"offers":{"@type":"Offer","availability":(it.stock??0)>0?"https://schema.org/InStock":"https://schema.org/OutOfStock","priceCurrency":"EUR","price":"0"}}))};
   const s=document.createElement("script");s.type="application/ld+json";s.id="ld-items";s.textContent=JSON.stringify(data);document.head.appendChild(s);
 }
 function renderList(list){
   container.innerHTML="";
-  if(!Array.isArray(list)||list.length===0){renderEmpty();updateJsonLd([]);return;}
+  if(!Array.isArray(list)||list.length===0){renderEmpty();updateJsonLd([]);return}
   const frag=document.createDocumentFragment();
   list.forEach(item=>{
     const el=document.createElement("vault-card");
-    const imgs = Array.isArray(item.imgs) ? item.imgs.filter(Boolean) : (item.img ? [item.img] : []);
-    el.setAttribute("id",    item.id ?? "");
-    el.setAttribute("title", item.title ?? "Untitled");
-    el.setAttribute("desc",  item.desc  ?? "");
-    el.setAttribute("imgs",  JSON.stringify(imgs));
-    el.setAttribute("rarity",String(item.rarity ?? 1));
-    el.setAttribute("stock", String(item.stock  ?? 0));
-    el.setAttribute("total", String(item.total  ?? Math.max(1, item.stock || 1)));
-    if(item.category) el.setAttribute("category", item.category);
-    if(item.lang) el.setAttribute("lang", item.lang);
-    const fresh = (Date.now() - (item.addedAt||0)) <= 7*24*60*60*1000;
-    if(fresh) el.setAttribute("isnew","1");
+    const imgs=Array.isArray(item.imgs)?item.imgs.filter(Boolean):(item.img?[item.img]:[]);
+    el.setAttribute("id",item.id??"");
+    el.setAttribute("title",item.title??"Untitled");
+    el.setAttribute("desc",item.desc??"");
+    el.setAttribute("imgs",JSON.stringify(imgs));
+    el.setAttribute("rarity",String(item.rarity??1));
+    el.setAttribute("stock",String(item.stock??0));
+    el.setAttribute("total",String(item.total??Math.max(1,item.stock||1)));
+    if(item.category)el.setAttribute("category",item.category);
+    if(item.lang)el.setAttribute("lang",item.lang);
+    const fresh=(Date.now()-(item.addedAt||0))<=7*24*60*60*1000;
+    if(fresh)el.setAttribute("isnew","1");
     frag.appendChild(el);
+    window.io?.observe?.(el);
   });
   container.appendChild(frag);
   updateJsonLd(list);
 }
 function applyView(){
   let data=[...cache];
-  if(qTerm){ const t=qTerm; data=data.filter(i=>(`${i.title||''} ${i.desc||''}`).toLowerCase().includes(t)); }
-  if(filterAvailable) data=data.filter(i => (i?.stock ?? 0) > 0);
-  if(filterCategory!=="all") data=data.filter(i => (i?.category||"")===filterCategory);
-  if(sortByRarity)    data.sort((a,b)=> (b?.rarity ?? 0) - (a?.rarity ?? 0));
+  if(qTerm)data=data.filter(i=>(`${i.title||""} ${i.desc||""}`).toLowerCase().includes(qTerm));
+  if(filterAvailable)data=data.filter(i=>(i?.stock??0)>0);
+  if(filterCategory!=="all")data=data.filter(i=>(i?.category||"")===filterCategory);
+  if(filterNewest){const weekAgo=Date.now()-7*24*60*60*1000;data=data.filter(i=>(i.addedAt??0)>=weekAgo);data.sort((a,b)=>(b?.addedAt??0)-(a?.addedAt??0))}
+  else{data.sort((a,b)=>(b?.rarity??0)-(a?.rarity??0))}
   renderList(data);
 }
 const itemsRef=ref(db,"items");
 onValue(itemsRef,(snap)=>{
   const obj=snap.val();
-  if(obj==null){cache=[];applyView();return;}
+  if(obj==null){cache=[];applyView();return}
   let arr=Object.entries(obj).map(([id,v])=>({id,...v}));
-  arr=arr.filter(x=>x && (x.published===true || x.published===1 || x.published==="true" || typeof x.published==="undefined"));
-  arr.sort((a,b)=>(b?.addedAt??0)-(a?.addedAt??0));
-  cache=arr; applyView();
-},()=>{renderEmpty();});
-
-btnFilter?.addEventListener("click",()=>{filterAvailable=!filterAvailable;btnFilter.setAttribute("aria-pressed",String(filterAvailable));applyView();});
-btnSort  ?.addEventListener("click",()=>{sortByRarity  =!sortByRarity;  btnSort  .setAttribute("aria-pressed",String(sortByRarity));  applyView();});
-
-function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-qInput?.addEventListener("input",debounce(()=>{ qTerm=(qInput.value||"").toLowerCase().trim(); applyView(); },120));
-
+  arr=arr.filter(x=>x&&(x.published===true||x.published===1||x.published==="true"||typeof x.published==="undefined"));
+  arr.sort((a,b)=>(b?.rarity??0)-(a?.rarity??0));
+  cache=arr;applyView();
+},()=>{renderEmpty()});
+btnFilter?.addEventListener("click",()=>{filterAvailable=!filterAvailable;btnFilter.setAttribute("aria-pressed",String(filterAvailable));applyView()});
+btnNewest?.addEventListener("click",()=>{filterNewest=!filterNewest;btnNewest.setAttribute("aria-pressed",String(filterNewest));applyView()});
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+qInput?.addEventListener("input",debounce(()=>{qTerm=(qInput.value||"").toLowerCase().trim();applyView()},120));
 function openCatModal(){
   catModal.classList.add("open");
   catModal.setAttribute("aria-hidden","false");
@@ -504,41 +396,87 @@ function openCatModal(){
   const frag=document.createDocumentFragment();
   categories.forEach(([val,label])=>{
     const b=document.createElement("button");
-    b.className="cat-btn";
-    b.textContent=label;
-    if(val===filterCategory) b.setAttribute("aria-current","true");
-    b.onclick=()=>{ selectCategory(val,label); };
+    b.className="cat-btn";b.textContent=label;if(val===filterCategory)b.setAttribute("aria-current","true");
+    b.onclick=()=>{filterCategory=val;catBtn.textContent="Categories: "+label;applyView();closeCatModal()};
     frag.appendChild(b);
   });
   catGrid.appendChild(frag);
 }
-function closeCatModal(){
-  catModal.classList.remove("open");
-  catModal.setAttribute("aria-hidden","true");
-  catBtn.setAttribute("aria-expanded","false");
-}
-function selectCategory(val,label){
-  filterCategory=val;
-  catBtn.textContent="Categories: "+label;
-  applyView();
-  closeCatModal();
-}
+function closeCatModal(){catModal.classList.remove("open");catModal.setAttribute("aria-hidden","true");catBtn.setAttribute("aria-expanded","false")}
 catBtn.addEventListener("click",openCatModal);
 catModal.querySelector(".overlay").addEventListener("click",closeCatModal);
-window.addEventListener("keydown",e=>{ if(catModal.classList.contains("open") && e.key==="Escape") closeCatModal(); });
+window.addEventListener("keydown",e=>{if(catModal.classList.contains("open")&&e.key==="Escape")closeCatModal()});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
 const tl=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
 tl.to(".logo-stage .g1",{duration:3.6,opacity:1,scale:1.08})
-  .to(".logo-stage .g2",{duration:4,rotate:180,opacity:.9,scale:1.06},0)
-  .to(".logo-stage .g3",{duration:5,opacity:.95,scale:1.04},0)
+  .to(".logo-stage .g2",{duration:4,rotate:180,opacity:.92,scale:1.07},0)
+  .to(".logo-stage .g3",{duration:5,opacity:.96,scale:1.05},0)
   .to(".logo",{duration:3.2,scale:1.03},0);
-gsap.to(".logo-stage .g2",{duration:20,rotate:360,repeat:-1,ease:"none"});
+gsap.to(".logo-stage .g2",{duration:22,rotate:360,repeat:-1,ease:"none"});
+</script>
+
+<script>
+const viewer=document.getElementById("viewer");
+const vImg=viewer.querySelector("img");
+const vClose=viewer.querySelector(".close");
+const vPrev=viewer.querySelector(".prev");
+const vNext=viewer.querySelector(".next");
+const vStrip=viewer.querySelector(".thumbs");
+let vList=[],vIndex=0;
+function vRender(){
+  vImg.src=vList[vIndex]||"";
+  vStrip.innerHTML="";
+  vList.forEach((src,i)=>{const th=document.createElement("button");th.className="thumb";if(i===vIndex)th.setAttribute("aria-current","true");const im=document.createElement("img");im.loading="lazy";im.decoding="async";im.src=src;th.appendChild(im);th.onclick=()=>{vIndex=i;vRender()};vStrip.appendChild(th)});
+  [vIndex-1,vIndex+1].forEach(k=>{const j=(k+vList.length)%vList.length;if(vList[j]){const pre=new Image();pre.src=vList[j]}})
+}
+function vOpen(list,start=0){vList=list;vIndex=Math.max(0,Math.min(start,list.length-1));viewer.classList.add("active");viewer.setAttribute("aria-hidden","false");vRender()}
+function vCloseFn(){viewer.classList.remove("active");viewer.setAttribute("aria-hidden","true");vList=[];vIndex=0;vImg.removeAttribute("src");vStrip.innerHTML=""}
+vClose.onclick=vCloseFn;
+vPrev.onclick=()=>{vIndex=(vIndex-1+vList.length)%vList.length;vRender()};
+vNext.onclick=()=>{vIndex=(vIndex+1)%vList.length;vRender()};
+viewer.addEventListener("click",e=>{if(e.target===viewer)vCloseFn()});
+window.addEventListener("keydown",e=>{if(!viewer.classList.contains("active"))return;if(e.key==="Escape")vCloseFn();if(e.key==="ArrowLeft")vPrev.click();if(e.key==="ArrowRight")vNext.click()});
+let touchStartX=0;
+viewer.addEventListener("touchstart",e=>{touchStartX=e.touches[0].clientX},{passive:true});
+viewer.addEventListener("touchend",e=>{const dx=(e.changedTouches[0].clientX-touchStartX);if(Math.abs(dx)>40){dx<0?vNext.click():vPrev.click()}},{passive:true});
+window.addEventListener("open-viewer",(ev)=>{vOpen(ev.detail.imgs||[],ev.detail.index||0)});
+const sheet=document.getElementById("sheet");
+const shOverlay=sheet.querySelector(".overlay");
+const shPanel=sheet.querySelector(".panel");
+const shTitle=document.getElementById("sheetTitle");
+const shBody=document.getElementById("sheetBody");
+const shMail=document.getElementById("sheetMail");
+const shShare=document.getElementById("sheetShare");
+const shTags=document.getElementById("sheetTags");
+const shClose=sheet.querySelector(".close");
+let shOpenState=false,startY=0,deltaY=0;
+const catLabels={"editoriale_corno":"Editoriale Corno","usa_comics":"USA Comics","art":"Art","manga_japanese":"Manga (Japanese)","manga_italian":"Manga (Italian)","collectibles":"Collectibles","misc":"Misc"};
+const langLabels={ja:"Japanese",it:"Italian",en:"English",zh:"Chinese",other:"Other"};
+function openSheet({title,desc,category,lang}){
+  shTitle.textContent=title||"Details";
+  shBody.textContent=desc||"";
+  shTags.innerHTML="";
+  if(category){const t=document.createElement("span");t.className="tag gold";t.textContent=catLabels[category]||category;shTags.appendChild(t)}
+  if(lang){const t=document.createElement("span");t.className="tag";t.textContent=langLabels[lang]||lang;shTags.appendChild(t)}
+  shMail.href=`mailto:ghidorahnosekai@example.com?subject=${encodeURIComponent("Info — "+(title||""))}`;
+  shShare.onclick=(e)=>{e.preventDefault();const text=`${title||"Item"} — ${desc||""}`;if(navigator.share){navigator.share({title:title||"Ghidorah no Sekai",text})}else{navigator.clipboard?.writeText(text);alert("Copied to clipboard")}};
+  sheet.classList.add("open");sheet.setAttribute("aria-hidden","false");shOpenState=true;
+}
+function closeSheet(){sheet.classList.remove("open");sheet.setAttribute("aria-hidden","true");shOpenState=false}
+shClose.onclick=closeSheet;shOverlay.onclick=closeSheet;
+window.addEventListener("keydown",e=>{if(shOpenState&&e.key==="Escape")closeSheet()});
+window.addEventListener("open-sheet",(ev)=>openSheet(ev.detail||{}));
+shPanel.addEventListener("touchstart",e=>{startY=e.touches[0].clientY;deltaY=0},{passive:true});
+shPanel.addEventListener("touchmove",e=>{deltaY=e.touches[0].clientY-startY;if(deltaY>0){shPanel.style.transform=`translateY(${Math.min(deltaY,60)}px)`}},{passive:true});
+shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.style.transform=""},{passive:true});
 </script>
 </body>
 </html>
+
+
 
 
 
