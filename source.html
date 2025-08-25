@@ -73,17 +73,23 @@ textarea{min-height:120px;resize:vertical}
 .modal.open{display:block}
 .modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
 .modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(640px,92vw);top:10vh;max-height:78vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+@media (max-width:740px){
+  .modal .panel{left:0;right:0;transform:none;width:auto;top:auto;bottom:0;max-height:78vh;border-radius:16px 16px 0 0}
+}
 .modal h3{margin:0 0 .6rem;color:#ffd700}
 .modal .close{position:absolute;top:10px;right:10px;border:1px solid #444;background:#151515;color:#eee;border-radius:10px;padding:.45rem .7rem;cursor:pointer}
-.starpad{display:flex;justify-content:center;gap:.6rem;margin:.6rem 0 1rem}
-.starpad button{font-size:40px;line-height:1;border:none;background:none;cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.starpad{display:flex;justify-content:center;gap:.6rem;margin:.6rem 0 1rem;flex-wrap:wrap}
+.starpad button{font-size:44px;line-height:1;border:none;background:none;cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
 .starpad button.on{color:#ffd700}
-.starpad .hint{width:100%;text-align:center;color:#bbb;margin-top:.2rem}
-.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.6rem}
-.pick{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.7rem .9rem;text-align:center;cursor:pointer}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem}
+.pick{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.9rem .9rem;text-align:center;cursor:pointer}
 .pick[aria-current="true"]{outline:2px solid #ffd70055;color:#ffd700;border-color:#3a2e00}
 .modal .actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.8rem}
 .kicker{font-size:.85rem;color:#bbb}
+.snack{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));background:#121212;border:1px solid #2a2a2a;color:#eee;border-radius:12px;padding:.6rem .8rem;display:none;gap:.6rem;align-items:center;z-index:1200}
+.snack.show{display:flex}
+.snack .act{background:#ffd700;color:#000;border:none;border-radius:10px;padding:.4rem .7rem;font-weight:800;cursor:pointer}
+@media (max-width:560px){.item{grid-template-columns:56px 1fr auto}.thumb img{aspect-ratio:1/1}}
 </style>
 </head>
 <body>
@@ -138,6 +144,7 @@ textarea{min-height:120px;resize:vertical}
         <button type="button" class="chip" id="rarityChip" aria-haspopup="dialog">Rarity: <span class="v" id="rarityVal">3★</span></button>
         <button type="button" class="chip" id="catChip" aria-haspopup="dialog">Category: <span class="v" id="catVal">Select</span></button>
         <button type="button" class="chip" id="langChip" aria-haspopup="dialog">Language: <span class="v" id="langVal">Select</span></button>
+        <button type="button" class="chip" id="autoNewChip" aria-pressed="true">Auto-new: <span class="v" id="autoNewVal">On</span></button>
       </div>
 
       <div class="row" style="margin-top:.5rem">
@@ -156,7 +163,7 @@ textarea{min-height:120px;resize:vertical}
       <img id="preview" alt="" />
 
       <div class="row" style="align-items:center;margin-top:.6rem">
-        <label class="toggle"><input id="published" type="checkbox"/> <span>Published</span></label>
+        <label class="toggle"><input id="published" type="checkbox" checked/> <span>Published</span></label>
         <span class="status" id="formStatus"></span>
       </div>
 
@@ -218,6 +225,8 @@ textarea{min-height:120px;resize:vertical}
   </div>
 </div>
 
+<div id="snack" class="snack"><span id="snackMsg"></span><button class="act" id="snackAct">OK</button></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, push, set, update, remove, onValue, query, orderByChild, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
@@ -267,6 +276,12 @@ const langModal=document.getElementById("langModal");
 const langGrid=document.getElementById("langGrid");
 const langClear=document.getElementById("langClear");
 
+const autoNewChip=document.getElementById("autoNewChip");
+const autoNewVal=document.getElementById("autoNewVal");
+const snack=document.getElementById("snack");
+const snackMsg=document.getElementById("snackMsg");
+const snackAct=document.getElementById("snackAct");
+
 let gallery=[];
 let cache=[];
 let dirty=false;
@@ -274,6 +289,7 @@ let autosaveTimer=null;
 let rarityState=3;
 let categoryState="";
 let langState="";
+let autoNew=true;
 
 const categories=[["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
 const languages=[["ja","Japanese"],["it","Italian"],["en","English"],["zh","Chinese"],["other","Other"]];
@@ -283,8 +299,10 @@ function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"
 function fmtDate(t){try{return new Date(t).toLocaleString()}catch{return""}}
 function setStatus(msg){statusEl.textContent=msg;setTimeout(()=>{if(statusEl.textContent===msg)statusEl.textContent=""},2200)}
 function markDirty(){dirty=true;draftBadge.textContent="Draft saved"}
+function snackShow(text,actionLabel,action){snackMsg.textContent=text;snack.classList.add("show");snackAct.textContent=actionLabel||"OK";snackAct.onclick=()=>{snack.classList.remove("show");if(typeof action==="function")action()};setTimeout(()=>{snack.classList.remove("show")},4000)}
+function focusTitle(){document.getElementById("title").focus({preventScroll:false})}
 
-const LS_KEY="gh_admin_draft_v2";
+const LS_KEY="gh_admin_draft_v3";
 function collectDraft(){
   return {
     id:document.getElementById("docId").value.trim(),
@@ -296,7 +314,8 @@ function collectDraft(){
     published:document.getElementById("published").checked,
     gallery:gallery.slice(),
     category:categoryState,
-    lang:langState
+    lang:langState,
+    autoNew:autoNew
   }
 }
 function applyDraft(d){
@@ -308,19 +327,18 @@ function applyDraft(d){
   rarityVal.textContent=rarityState+"★";
   document.getElementById("stock").value=d.stock||"0";
   document.getElementById("total").value=d.total||"1";
-  document.getElementById("published").checked=!!d.published;
+  document.getElementById("published").checked=typeof d.published==="boolean"?d.published:true;
   categoryState=d.category||"";
   langState=d.lang||"";
+  autoNew=typeof d.autoNew==="boolean"?d.autoNew:true;
+  autoNewChip.setAttribute("aria-pressed",String(autoNew));autoNewVal.textContent=autoNew?"On":"Off";
   catVal.textContent=categoryState?labelOf(categories,categoryState):"Select";
   langVal.textContent=langState?labelOf(languages,langState):"Select";
   gallery=Array.isArray(d.gallery)?d.gallery.slice():[];
   renderGallery();
   updateDescCount();
 }
-function scheduleAutosave(){
-  clearTimeout(autosaveTimer);
-  autosaveTimer=setTimeout(()=>{localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));draftBadge.textContent="Draft saved"},900)
-}
+function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));draftBadge.textContent="Draft saved"},900)}
 (function restoreDraft(){const raw=localStorage.getItem(LS_KEY);if(raw){try{applyDraft(JSON.parse(raw));draftBadge.textContent="Draft restored"}catch{}}})();
 
 window.addEventListener("beforeunload",(e)=>{if(dirty){e.preventDefault();e.returnValue=""}});
@@ -366,7 +384,7 @@ form.addEventListener("submit",async e=>{
   const title=document.getElementById("title");
   const stock=document.getElementById("stock");
   const total=document.getElementById("total");
-  if(!title.value.trim()){setStatus("Title required");return}
+  if(!title.value.trim()){setStatus("Title required");title.focus();return}
   if(!total.value)total.value=Math.max(1,parseInt(stock.value||"1",10));
   const payload={
     title:title.value.trim(),
@@ -386,15 +404,22 @@ form.addEventListener("submit",async e=>{
     if(id){
       await update(ref(db,`items/${id}`),payload);
       setStatus("Updated ✓");
+      dirty=false;draftBadge.textContent="Saved";localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+      snackShow("Item updated","OK");
     }else{
       const newRef=push(itemsRef);
       await set(newRef,payload);
       document.getElementById("docId").value=newRef.key;
+      dirty=false;draftBadge.textContent="Saved";
+      localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
       setStatus("Created ✓");
+      if(autoNew){
+        prepareForNext();
+        snackShow("Created and ready for next","Focus",()=>focusTitle());
+      }else{
+        snackShow("Item created","New",()=>prepareForNext());
+      }
     }
-    dirty=false;
-    draftBadge.textContent="Saved";
-    localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
   }catch(err){
     alert(err.message);setStatus("Error");
   }finally{
@@ -402,10 +427,33 @@ form.addEventListener("submit",async e=>{
   }
 });
 
+function prepareForNext(){
+  const keepCat=categoryState,keepLang=langState,keepRar=rarityState,keepPub=document.getElementById("published").checked;
+  form.reset();
+  document.getElementById("docId").value="";
+  categoryState=keepCat;langState=keepLang;rarityState=keepRar;
+  document.getElementById("published").checked=keepPub;
+  catVal.textContent=categoryState?labelOf(categories,categoryState):"Select";
+  langVal.textContent=langState?labelOf(languages,langState):"Select";
+  rarityVal.textContent=rarityState+"★";
+  gallery=[];renderGallery();
+  document.getElementById("stock").value="1";
+  document.getElementById("total").value="1";
+  updateDescCount();
+  draftBadge.textContent="";
+  localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+  focusTitle();
+  deleteBtn.style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
 window.addEventListener("keydown",(e)=>{if((e.ctrlKey||e.metaKey)&&(e.key==="s"||e.key==="S")){e.preventDefault();form.requestSubmit()}if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();form.requestSubmit()}})
 document.getElementById("resetBtnMobile")?.addEventListener("click",()=>resetBtn.click());
-resetBtn.addEventListener("click",()=>{if(dirty&&!confirm("Discard changes?"))return;form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";statusEl.textContent="";previewEl.style.display="none";gallery=[];renderGallery();updateDescCount();dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY);rarityState=3;rarityVal.textContent="3★";categoryState="";langState="";catVal.textContent="Select";langVal.textContent="Select"});
-deleteBtn.addEventListener("click",async()=>{const id=document.getElementById("docId").value.trim();if(!id)return;if(!confirm("Delete this item?"))return;try{await remove(ref(db,`items/${id}`));form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";previewEl.style.display="none";gallery=[];renderGallery();setStatus("Deleted ✓");dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY)}catch(err){alert(err.message)}});
+resetBtn.addEventListener("click",()=>{if(dirty&&!confirm("Discard changes?"))return;hardReset()});
+function hardReset(){
+  form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";statusEl.textContent="";previewEl.style.display="none";gallery=[];renderGallery();updateDescCount();dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY);rarityState=3;rarityVal.textContent="3★";categoryState="";langState="";catVal.textContent="Select";langVal.textContent="Select"
+}
+deleteBtn.addEventListener("click",async()=>{const id=document.getElementById("docId").value.trim();if(!id)return;if(!confirm("Delete this item?"))return;try{await remove(ref(db,`items/${id}`));hardReset();setStatus("Deleted ✓");snackShow("Item deleted","OK")}catch(err){alert(err.message)}});
 
 const qRef=query(itemsRef,orderByChild("addedAt"));
 onValue(qRef,snap=>{const obj=snap.val()||{};const arr=Object.entries(obj).map(([id,v])=>({id,...v}));cache=arr;applyListView()});
@@ -482,16 +530,16 @@ function renderList(arr){
     }else if(del){
       const id=del.getAttribute("data-del");
       if(!confirm("Delete this item?"))return;
-      try{await remove(ref(db,`items/${id}`))}catch(err){alert(err.message)}
+      try{await remove(ref(db,`items/${id}`));snackShow("Item deleted","OK")}catch(err){alert(err.message)}
     }else if(pub){
       const id=pub.getAttribute("data-pub");
-      try{await update(ref(db,`items/${id}`),{published:pub.checked})}
+      try{await update(ref(db,`items/${id}`),{published:pub.checked});snackShow(pub.checked?"Published":"Unpublished","OK")}
       catch(err){alert(err.message);pub.checked=!pub.checked}
     }else if(dup){
       const id=dup.getAttribute("data-dup");
       const data=cache.find(x=>x.id===id);
       if(!data)return;
-      try{const newRef=push(itemsRef);const payload={...data};delete payload.id;payload.addedAt=serverTimestamp();await set(newRef,payload);setStatus("Duplicated ✓")}catch(err){alert(err.message)}
+      try{const newRef=push(itemsRef);const payload={...data};delete payload.id;payload.addedAt=serverTimestamp();await set(newRef,payload);setStatus("Duplicated ✓");snackShow("Duplicated","Open",()=>{document.querySelector(`[data-edit="${newRef.key}"]`)?.click()})}catch(err){alert(err.message)}
     }else if(cpy){
       const id=cpy.getAttribute("data-copy");
       try{await navigator.clipboard.writeText(id);setStatus("ID copied")}catch{}
@@ -499,8 +547,8 @@ function renderList(arr){
   };
 }
 
-function openModal(el){el.classList.add("open");el.setAttribute("aria-hidden","false")}
-function closeModal(el){el.classList.remove("open");el.setAttribute("aria-hidden","true")}
+function openModal(el){document.body.style.overflow="hidden";el.classList.add("open");el.setAttribute("aria-hidden","false")}
+function closeModal(el){el.classList.remove("open");el.setAttribute("aria-hidden","true");if(!document.querySelector(".modal.open"))document.body.style.overflow=""}
 document.querySelectorAll('.modal .overlay,[data-close="rarity"],[data-close="cat"],[data-close="lang"]').forEach(b=>b.addEventListener("click",()=>{closeModal(rarityModal);closeModal(catModal);closeModal(langModal)}));
 window.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(rarityModal);closeModal(catModal);closeModal(langModal)}});
 
@@ -535,11 +583,15 @@ catClear.addEventListener("click",()=>{categoryState="";catVal.textContent="Sele
 langChip.addEventListener("click",()=>{renderPickGrid(langGrid,languages,langState,(v,l)=>{langState=v;langVal.textContent=l});openModal(langModal)});
 langClear.addEventListener("click",()=>{langState="";langVal.textContent="Select";markDirty();scheduleAutosave()});
 
+autoNewChip.addEventListener("click",()=>{autoNew=!autoNew;autoNewChip.setAttribute("aria-pressed",String(autoNew));autoNewVal.textContent=autoNew?"On":"Off";scheduleAutosave()});
+
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 </script>
 </body>
 </html>
+
+
 
 
 
