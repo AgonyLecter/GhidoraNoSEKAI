@@ -44,14 +44,10 @@ img.logo{position:relative;z-index:1;width:96px;height:96px;border-radius:50%;ob
 h1{font-size:clamp(1.6rem,5vw,2.4rem);background:linear-gradient(90deg,var(--gold),var(--gold-dark),var(--gold));background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;letter-spacing:.12em;margin:.2rem 0 0}
 .subtitle{font-size:.98rem;color:var(--muted)}
 .jp-bottom{font-size:1.05rem;color:#bbb8;letter-spacing:.5em}
-
-/* Signature counter */
 .counter-sign{position:relative;margin-top:.35rem;font-size:0.95rem;letter-spacing:.16em;font-weight:800;color:transparent;background:linear-gradient(90deg,#b08d00,#ffd700,#b08d00);background-size:200% auto;-webkit-background-clip:text;background-clip:text;animation:shine 4s linear infinite}
 .counter-sign::after{content:"✦";margin-left:.35rem;font-size:.95em;filter:drop-shadow(0 0 6px rgba(255,215,0,.6))}
 @keyframes shine{0%{background-position:0% center}100%{background-position:200% center}}
 .counter-sign .dot{display:inline-block;width:.5em;height:.5em;border-radius:50%;background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.8);margin:0 .35em .12em}
-
-/* Controls */
 .controls{display:flex;flex-direction:column;gap:.55rem;align-items:center;margin-top:.2rem}
 .controls-row{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;align-items:center;width:100%}
 .searchbar{display:flex;align-items:center;gap:.5rem;width:min(680px,92vw)}
@@ -59,32 +55,29 @@ h1{font-size:clamp(1.6rem,5vw,2.4rem);background:linear-gradient(90deg,var(--gol
 .searchbar input:focus{box-shadow:0 0 0 3px var(--ring)}
 .control-chip{background:linear-gradient(180deg,#0d0d0f,#17171a);border:1px solid #222;border-radius:999px;padding:.6rem .9rem;color:#cfcfcf;font-size:.9rem;cursor:pointer;user-select:none;min-height:40px}
 .control-chip[aria-pressed="true"]{outline:2px solid #ffd70055;color:var(--gold);border-color:#3a2e00}
-
-/* Layout */
 .container{max-width:1100px;margin:0 auto 1.6rem;padding:14px}
 .grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
 @media (max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .skel{background:linear-gradient(180deg,#0d0d10,#131317);border:1px solid #1e1e22;border-radius:var(--radius);overflow:hidden;min-height:calc((100% / (var(--card-media-ratio))) + var(--body-extra));position:relative}
 footer{text-align:center;font-size:.85rem;color:#888a;padding:1.2rem 1rem;border-top:1px solid #222}
 vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-size:auto 420px}
-
-/* Viewer */
 .viewer{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;touch-action:none}
 .viewer.active{display:flex}
-.viewer img{max-width:96vw;max-height:72vh;object-fit:contain;image-orientation:from-image}
+.viewer > img{max-width:96vw;max-height:72vh;object-fit:contain;image-orientation:from-image;display:none}
 .viewer .nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .viewer .prev{left:12px}.viewer .next{right:12px}
 .viewer .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-/* Fullscreen toggle */
 .viewer .fs{position:absolute;top:12px;right:60px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .viewer .fs[aria-pressed="true"]{outline:2px solid rgba(255,215,0,.5)}
 .viewer .thumbs{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;overflow:auto;padding:6px 10px}
 .viewer .thumbs::-webkit-scrollbar{height:6px}
 .viewer .thumb{width:56px;height:56px;border:1px solid #555;border-radius:8px;overflow:hidden;flex:0 0 auto;background:#0f0f0f;display:grid;place-items:center;cursor:pointer}
-.viewer .thumb img{width:100%;height:100%;object-fit:cover}
+.viewer .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .viewer .thumb[aria-current="true"]{outline:2px solid #ffd700;box-shadow:0 0 10px rgba(255,215,0,.5)}
-
-/* Sheet & modals */
+.viewer .loader{position:absolute;inset:0 0 64px 0;display:grid;place-items:center;pointer-events:none}
+.viewer .loader .glyph{font-size:42px;letter-spacing:.2em;color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.45)}
+@keyframes pulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.06);opacity:1}100%{transform:scale(1);opacity:.85}}
+.viewer .loader .glyph{animation:pulse 1.4s ease-in-out infinite}
 .sheet{position:fixed;inset:0;z-index:1100;display:none}
 .sheet.open{display:block}
 .sheet .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -100,25 +93,20 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .sheet .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
 .sheet .tag{border:1px solid #3a3a3a;border-radius:999px;padding:.2rem .6rem;font-size:.82rem;background:#151515;color:#ddd}
 .sheet .tag.gold{border-color:#5c4a00;background:#221b00;color:#ffd700}
-.cat-modal{position:fixed;inset:0;z-index:1200;display:none}
-.cat-modal.open{display:block}
-.cat-modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.cat-modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(560px,92vw);top:12vh;max-height:70vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
-.cat-modal h4{margin:.2rem 0 .6rem;color:#ffd700}
+.cat-modal,.tag-modal{position:fixed;inset:0;z-index:1200;display:none}
+.cat-modal.open,.tag-modal.open{display:block}
+.cat-modal .overlay,.tag-modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.cat-modal .panel,.tag-modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(560px,92vw);top:12vh;max-height:70vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.cat-modal .close,.tag-modal .close{position:absolute;top:10px;right:10px;border:1px solid #444;background:#151515;color:#eee;border-radius:10px;padding:.45rem .7rem;cursor:pointer}
+.cat-modal h4,.tag-modal h4{margin:.2rem 0 .6rem;color:#ffd700}
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
 .cat-btn{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.65rem .8rem;text-align:center;cursor:pointer}
 .cat-btn[aria-current="true"]{outline:2px solid #ffd70055;color:#ffd700;border-color:#3a2e00}
 .catbar{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
 #cat-btn{min-width:160px}
-.tag-modal{position:fixed;inset:0;z-index:1200;display:none}
-.tag-modal.open{display:block}
-.tag-modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.tag-modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(560px,92vw);top:12vh;max-height:70vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
-.tag-modal h4{margin:.2rem 0 .6rem;color:#ffd700}
 .tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.5rem}
 .tag-btn{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.6rem .8rem;text-align:center;cursor:pointer}
 .tag-btn[aria-current="true"]{outline:2px solid #ffd70055;color:#ffd700;border-color:#3a2e00}
-
 @media (prefers-reduced-motion:reduce){
   .logo-stage .glow,.logo{animation:none!important}
 }
@@ -128,7 +116,6 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 <div class="topbar">
   <a href="rules.html" class="rules" aria-label="Vault Rules">⚖️ Rules</a>
 </div>
-
 <header>
   <div class="logo-stage" aria-hidden="true">
     <div class="glow g1"></div>
@@ -142,7 +129,6 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     <span class="dot"></span><span id="countNum">0</span> ITEMS
   </div>
   <div class="jp-bottom" aria-label="Gidora no Sekai">ギドラの世界</div>
-
   <div class="controls" role="group" aria-label="Controls">
     <div class="controls-row">
       <div class="searchbar">
@@ -157,24 +143,19 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     </div>
   </div>
 </header>
-
 <main class="container" id="mainContent">
   <section class="grid" id="items" aria-live="polite"></section>
 </main>
-
 <footer>© 2025 Ghidorah no Sekai — Vintage &amp; Rare Comics Vault</footer>
-
-<!-- Viewer overlay -->
 <div id="viewer" class="viewer" aria-hidden="true">
   <button class="close" aria-label="Close">✕</button>
   <button class="fs" aria-label="Fullscreen" aria-pressed="false" title="Fullscreen">⤢</button>
   <button class="nav prev" aria-label="Previous">‹</button>
-  <img alt="Preview" />
+  <img alt="" />
   <button class="nav next" aria-label="Next">›</button>
   <div class="thumbs" role="tablist" aria-label="Thumbnails"></div>
+  <div class="loader" aria-hidden="true"><div class="glyph">ギドラ</div></div>
 </div>
-
-<!-- Sheet -->
 <div id="sheet" class="sheet" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -190,25 +171,22 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     </div>
   </div>
 </div>
-
-<!-- Category modal -->
 <div id="catModal" class="cat-modal" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="catTitle">
+    <button class="close" aria-label="Close" id="catClose">✕</button>
     <h4 id="catTitle">Select category</h4>
     <div class="cat-grid" id="catGrid"></div>
   </div>
 </div>
-
-<!-- Tag modal -->
 <div id="tagModal" class="tag-modal" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="tagTitle">
+    <button class="close" aria-label="Close" id="tagClose">✕</button>
     <h4 id="tagTitle">Select tags (max 2)</h4>
     <div class="tag-grid" id="tagGrid"></div>
   </div>
 </div>
-
 <script>
 class VaultCard extends HTMLElement{
   static get observedAttributes(){return["title","desc","imgs","rarity","stock","total","isnew","id","category","lang","tags"]}
@@ -300,7 +278,6 @@ class VaultCard extends HTMLElement{
     const category=this.getAttribute("category")||"";
     const lang=this.getAttribute("lang")||"";
     let tags=[];try{tags=JSON.parse(this.getAttribute("tags")||"[]")}catch{tags=[]}
-
     const media=r.querySelector(".media");
     const track=r.querySelector(".track");
     const dots=r.querySelector(".dots");
@@ -308,27 +285,21 @@ class VaultCard extends HTMLElement{
     const next=r.querySelector(".nav.next");
     const tag=r.querySelector(".tag");
     const seal=r.querySelector(".seal");
-    const overflow=r.querySelector(".more");
-    const detailsBtn=r.querySelector(".details");
-
     track.innerHTML="";dots.innerHTML="";
     const PREVIEW_MAX=6;
     const allSlides=imgs.length?imgs:["__NOIMG__"];
     this._slides=allSlides.slice(0,PREVIEW_MAX);
     const extra=Math.max(0,allSlides.length-this._slides.length);
     media.classList.toggle("has-more",extra>0);
-    overflow.textContent=extra>0?`+${extra}`:"";
+    media.querySelector(".more")?.replaceChildren(document.createTextNode(extra>0?`+${extra}`:""));
     this._idx=Math.min(this._idx,this._slides.length-1);this._idx=Math.max(this._idx,0);
-
     this._slides.forEach((src,i)=>{
       const slide=document.createElement("figure");slide.className="slide";
       if(src==="__NOIMG__"){slide.innerHTML=`<div class="noimg" aria-label="No image"><div class="glyph">無</div></div>`}
       else{
         const im=document.createElement("img");
-        im.setAttribute("loading","lazy");
-        im.setAttribute("decoding","async");
-        im.setAttribute("fetchpriority","low");
-        im.alt=title?`Cover — ${title}`:""; im.width=600; im.height=800;
+        im.setAttribute("loading","lazy"); im.setAttribute("decoding","async"); im.setAttribute("fetchpriority","low");
+        im.alt=""; im.width=600; im.height=800;
         im.addEventListener("error",()=>{slide.innerHTML=`<div class="noimg"><div class="glyph">無</div></div>`},{once:true});
         im.src=src; slide.appendChild(im);
       }
@@ -339,12 +310,10 @@ class VaultCard extends HTMLElement{
         dots.appendChild(dot);
       }
     });
-
-    // open viewer tapping the media (excluding Details button)
-    media.addEventListener("click",(e)=>{ if(e.target.closest(".details")) return;
-      const all=allSlides.filter(s=>s!=="__NOIMG__"); if(all.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}));
-    });
-
+    media.onclick=(e)=>{ if(e.target.closest(".details")) return;
+      const all=allSlides.filter(s=>s!=="__NOIMG__");
+      if(all.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}));
+    };
     const upd=()=>{track.style.transform=`translate3d(-${this._idx*100}%,0,0)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)))};
     this._go=(i)=>{this._idx=(i+this._slides.length)%this._slides.length;upd()};
     prev.onclick=()=>this._go(this._idx-1);
@@ -354,8 +323,6 @@ class VaultCard extends HTMLElement{
     prev.classList.toggle("multi",multi);next.classList.toggle("multi",multi);
     dots.style.display=multi?"flex":"none";
     upd();
-
-    // drag axis lock + pointercancel
     let sx=0,sy=0,cx=0,cy=0,drag=false,lockedAxis=null;
     const onDown=e=>{drag=true;lockedAxis=null;const p=e.touches?e.touches[0]:e; sx=p.clientX; sy=p.clientY; cx=sx; cy=sy;};
     const onMove=e=>{if(!drag)return;const p=e.touches?e.touches[0]:e; cx=p.clientX; cy=p.clientY; const dx=cx-sx, dy=cy-sy;
@@ -363,29 +330,22 @@ class VaultCard extends HTMLElement{
       if(lockedAxis==="x"){ if(e.cancelable)e.preventDefault(); if(Math.abs(dx)>50){dx<0?this._go(this._idx+1):this._go(this._idx-1); sx=cx; sy=cy} }
     };
     const onUp=()=>{drag=false;lockedAxis=null};
-    track.parentElement.addEventListener("pointerdown",onDown,{passive:false});
-    track.parentElement.addEventListener("pointermove",onMove,{passive:false});
-    track.parentElement.addEventListener("pointerup",onUp,{passive:true});
-    track.parentElement.addEventListener("pointercancel",onUp,{passive:true});
-    track.parentElement.addEventListener("touchstart",onDown,{passive:true});
-    track.parentElement.addEventListener("touchmove",onMove,{passive:false});
-    track.parentElement.addEventListener("touchend",onUp,{passive:true});
-
+    const surface=track.parentElement;
+    surface.addEventListener("pointerdown",onDown,{passive:false});
+    surface.addEventListener("pointermove",onMove,{passive:false});
+    surface.addEventListener("pointerup",onUp,{passive:true});
+    surface.addEventListener("pointercancel",onUp,{passive:true});
     tag.classList.toggle("sparkle",!!isNew);
     const qtyTxt=available?(total>1?`${stock}/${total}`:`1/1`):"SOLD OUT";
     seal.textContent=available?`AVAILABLE — ${qtyTxt}`:qtyTxt;
-
     r.querySelector("h2").textContent=title;
     r.querySelector(".desc").textContent=this._fullDesc||"";
-
     const openSheet=()=>window.dispatchEvent(new CustomEvent("open-sheet",{detail:{title,desc:this._fullDesc||"",category,lang,tags}}));
     r.querySelector(".details").onclick=openSheet;
     r.querySelector("h2").onclick=openSheet;
-
     const stars=r.querySelector(".stars");stars.innerHTML="";
     for(let i=0;i<rarity;i++){const s=document.createElement("span");s.className="s";s.textContent="★";stars.appendChild(s)}
     r.querySelector(".qty").textContent=available?(total>1?`In vault: ${stock}/${total}`:"unique"):"sold";
-
     const cta=r.querySelector(".btn");
     cta.textContent=available?"Contact us":"Request restock";
     cta.href=available?`mailto:ghidorahnosekai@proton.me?subject=${encodeURIComponent("Info — "+title)}`:`mailto:ghidorahnosekai@proton.me?subject=${encodeURIComponent("Waitlist — "+title)}`;
@@ -394,22 +354,18 @@ class VaultCard extends HTMLElement{
 }
 customElements.define("vault-card",VaultCard);
 </script>
-
 <script>
-/* reveal-on-view */
 window.io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("reveal");window.io.unobserve(e.target)}})},{rootMargin:"60px"});
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 const canon=document.getElementById("canon");try{canon.href=location.href.split("#")[0]}catch{}
 </script>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 const firebaseConfig={apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",authDomain:"wandernatureconnect.firebaseapp.com",databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",projectId:"wandernatureconnect",storageBucket:"wandernatureconnect.appspot.com",messagingSenderId:"1062563433646",appId:"1:1062563433646:web:a7251b914f569fc105f13f",measurementId:"G-SGF0KC717J"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-
 const container=document.getElementById("items");
 const btnFilter=document.getElementById("filter-available");
 const btnNewest=document.getElementById("filter-newest");
@@ -423,24 +379,20 @@ const tagGrid=document.getElementById("tagGrid");
 const countNum=document.getElementById("countNum");
 const headerEl=document.querySelector("header");
 const mainEl=document.getElementById("mainContent");
-
 let filterAvailable=false, filterNewest=false, cache=[], filterCategory="all", qTerm="";
 let selectedTags=[];
-
 const categories=[["all","All"],["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
 const tagOptions=["Art","Erotic","Vintage","Signed","First Edition","Limited","Underground"];
-
 function renderSkeleton(n){container.innerHTML="";for(let i=0;i<n;i++){const d=document.createElement("div");d.className="skel";container.appendChild(d)}}
 function renderEmpty(){container.innerHTML=`<div style="grid-column:1/-1;color:#bbb;text-align:center;padding:24px;border:1px dashed #333;border-radius:12px">Vault is empty</div>`}
 function updateJsonLd(list){
   document.getElementById("ld-items")?.remove();
-  const data={"@context":"https://schema.org","@type":"ItemList","name":"Ghidorah no Sekai — Rare Manga & Comics Showcase",
-  "itemListElement":list.map((it,idx)=>({"@type":"Product","position":idx+1,"name":it.title||"Untitled","description":it.desc||"","image":(Array.isArray(it.imgs)&&it.imgs[0])||it.img||"","brand":{"@type":"Brand","name":"Ghidorah no Sekai"},"category":String(it.category||"ComicBook"),"additionalProperty":[{"@type":"PropertyValue","name":"tags","value":(Array.isArray(it.tags)?it.tags.join(", "):"")}],"url":location.href,"offers":{"@type":"Offer","availability":(it.stock??0)>0?"https://schema.org/InStock":"https://schema.org/OutOfStock","priceCurrency":"EUR","price":"0"}}))};
+  const data={"@context":"https://schema.org","@type":"ItemList","name":"Ghidorah no Sekai — Rare Manga & Comics Showcase","itemListElement":list.map((it,idx)=>({"@type":"Product","position":idx+1,"name":it.title||"Untitled","description":it.desc||"","image":(Array.isArray(it.imgs)&&it.imgs[0])||it.img||"","brand":{"@type":"Brand","name":"Ghidorah no Sekai"},"category":String(it.category||"ComicBook"),"additionalProperty":[{"@type":"PropertyValue","name":"tags","value":(Array.isArray(it.tags)?it.tags.join(", "):"")}],"url":location.href,"offers":{"@type":"Offer","availability":(it.stock??0)>0?"https://schema.org/InStock":"https://schema.org/OutOfStock","priceCurrency":"EUR","price":"0"}}))};
   const s=document.createElement("script");s.type="application/ld+json";s.id="ld-items";s.textContent=JSON.stringify(data);document.head.appendChild(s);
 }
 function renderList(list){
   container.innerHTML="";
-  countNum.textContent=String(list?.length||0); // update signature counter
+  countNum.textContent=String(list?.length||0);
   if(!Array.isArray(list)||list.length===0){renderEmpty();updateJsonLd([]);return}
   const frag=document.createDocumentFragment();
   list.forEach(item=>{
@@ -485,15 +437,31 @@ onValue(itemsRef,(snap)=>{
   arr.sort((a,b)=>(b?.rarity??0)-(a?.rarity??0));
   cache=arr;applyView();
 },()=>{renderEmpty()});
-
 btnFilter?.addEventListener("click",()=>{filterAvailable=!filterAvailable;btnFilter.setAttribute("aria-pressed",String(filterAvailable));applyView()});
 btnNewest?.addEventListener("click",()=>{filterNewest=!filterNewest;btnNewest.setAttribute("aria-pressed",String(filterNewest));applyView()});
-
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
 qInput?.addEventListener("input",debounce(()=>{qTerm=(qInput.value||"").toLowerCase().trim();applyView()},120));
-
-/* Category modal */
+let bodyLockCount=0;
+function getScrollbarW(){return window.innerWidth - document.documentElement.clientWidth}
+function lockBody(lock){
+  if(lock){ bodyLockCount++;
+    const sw=getScrollbarW();
+    document.documentElement.style.overflow="hidden";
+    document.body.style.overflow="hidden";
+    document.body.style.paddingRight=sw?sw+"px":"";
+    document.querySelector(".topbar")?.style.setProperty("padding-right",`calc(12px + ${sw||0}px)`);
+  }else{
+    bodyLockCount=Math.max(0,bodyLockCount-1);
+    if(bodyLockCount===0){
+      document.documentElement.style.overflow="";
+      document.body.style.overflow="";
+      document.body.style.paddingRight="";
+      document.querySelector(".topbar")?.style.removeProperty("padding-right");
+    }
+  }
+}
 function openCatModal(){
+  lockBody(true);
   catModal.classList.add("open");
   catModal.setAttribute("aria-hidden","false");
   catBtn.setAttribute("aria-expanded","true");
@@ -507,13 +475,13 @@ function openCatModal(){
   });
   catGrid.appendChild(frag);
 }
-function closeCatModal(){catModal.classList.remove("open");catModal.setAttribute("aria-hidden","true");catBtn.setAttribute("aria-expanded","false")}
+function closeCatModal(){catModal.classList.remove("open");catModal.setAttribute("aria-hidden","true");catBtn.setAttribute("aria-expanded","false");lockBody(false)}
 catBtn.addEventListener("click",openCatModal);
 catModal.querySelector(".overlay").addEventListener("click",closeCatModal);
+document.getElementById("catClose").addEventListener("click",closeCatModal);
 window.addEventListener("keydown",e=>{if(catModal.classList.contains("open")&&e.key==="Escape")closeCatModal()});
-
-/* Tag modal */
 function openTagModal(){
+  lockBody(true);
   tagModal.classList.add("open");
   tagModal.setAttribute("aria-hidden","false");
   tagBtn.setAttribute("aria-expanded","true");
@@ -532,16 +500,15 @@ function toggleTag(label){
   if(selectedTags.includes(label)) selectedTags=selectedTags.filter(t=>t!==label);
   else{ if(selectedTags.length<2) selectedTags=[...selectedTags,label]; else { selectedTags=[selectedTags[1],label] } }
   tagBtn.textContent=selectedTags.length?`Tags: ${selectedTags.join(" + ")}`:"Tags: Any";
+  [...tagGrid.querySelectorAll(".tag-btn")].forEach(b=>{b.removeAttribute("aria-current"); if(selectedTags.includes(b.textContent)) b.setAttribute("aria-current","true")});
   applyView();
-  const cur=[...tagGrid.querySelectorAll(".tag-btn")];
-  cur.forEach(b=>{b.removeAttribute("aria-current"); if(selectedTags.includes(b.textContent)) b.setAttribute("aria-current","true")});
 }
-function closeTagModal(){tagModal.classList.remove("open");tagModal.setAttribute("aria-hidden","true");tagBtn.setAttribute("aria-expanded","false")}
+function closeTagModal(){tagModal.classList.remove("open");tagModal.setAttribute("aria-hidden","true");tagBtn.setAttribute("aria-expanded","false");lockBody(false)}
 tagBtn.addEventListener("click",openTagModal);
 tagModal.querySelector(".overlay").addEventListener("click",closeTagModal);
+document.getElementById("tagClose").addEventListener("click",closeTagModal);
 window.addEventListener("keydown",e=>{if(tagModal.classList.contains("open")&&e.key==="Escape")closeTagModal()});
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
 const tl=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
@@ -551,9 +518,7 @@ tl.to(".logo-stage .g1",{duration:3.6,opacity:1,scale:1.08})
   .to(".logo",{duration:3.2,scale:1.03},0);
 gsap.to(".logo-stage .g2",{duration:22,rotate:360,repeat:-1,ease:"none"});
 </script>
-
 <script>
-/* Advanced viewer with Fullscreen + body lock + inert */
 const viewer=document.getElementById("viewer");
 const vImg=viewer.querySelector("img");
 const vClose=viewer.querySelector(".close");
@@ -561,73 +526,129 @@ const vPrev=viewer.querySelector(".prev");
 const vNext=viewer.querySelector(".next");
 const vStrip=viewer.querySelector(".thumbs");
 const vFs=viewer.querySelector(".fs");
-let vList=[],vIndex=0;
+const loader=viewer.querySelector(".loader");
 
+let vList=[],vIndex=0,vTicket=0;
 function setInert(active){
-  [headerEl, mainEl].forEach(el=>{ if(!el) return; if(active){ el.setAttribute("inert",""); } else { el.removeAttribute("inert"); } });
-}
-function lockBody(lock){
-  document.documentElement.style.overflow = lock ? "hidden" : "";
-  document.body.style.overflow = lock ? "hidden" : "";
+  [headerEl, mainEl].forEach(el=>{ if(!el) return; active?el.setAttribute("inert",""):el.removeAttribute("inert"); });
 }
 function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
-async function enterFS(el){
-  if(el.requestFullscreen) await el.requestFullscreen();
-  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+async function enterFS(el){ if(el.requestFullscreen) await el.requestFullscreen(); else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen(); }
+async function exitFS(){ if(document.exitFullscreen) await document.exitFullscreen(); else if(document.webkitExitFullscreen) document.webkitExitFullscreen(); }
+function showLoader(on){
+  loader.style.display=on?"grid":"none";
+  vImg.style.display=on?"none":"block";
 }
-async function exitFS(){
-  if(document.exitFullscreen) await document.exitFullscreen();
-  else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+function sameURL(a,b){
+  try{ return new URL(a,location.href).href===new URL(b,location.href).href; }
+  catch{ return a===b }
 }
-
+function setThumbCurrent(){
+  [...vStrip.children].forEach((th,i)=>{
+    if(i===vIndex) th.setAttribute("aria-current","true");
+    else th.removeAttribute("aria-current");
+  });
+}
+async function loadCurrentImage(myTicket){
+  const src=vList[vIndex]||"";
+  if(!src){ vImg.removeAttribute("src"); showLoader(false); return; }
+  const done=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
+  const fail=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
+  if(sameURL(vImg.dataset.src||"", src) && vImg.complete && vImg.naturalWidth>0){ done(); return; }
+  vImg.onload=done;
+  vImg.onerror=fail;
+  vImg.removeAttribute("src");
+  vImg.dataset.src=src;
+  showLoader(true);
+  vImg.loading="eager";
+  vImg.decoding="async";
+  vImg.src=src;
+  try{
+    await vImg.decode();
+    done();
+  }catch{
+    requestAnimationFrame(()=>setTimeout(()=>{
+      if(myTicket!==vTicket) return;
+      if(vImg.complete && vImg.naturalWidth>0) done();
+    }, 900));
+  }
+}
 function vRender(){
-  vImg.setAttribute("loading","eager");
-  vImg.setAttribute("decoding","async");
-  vImg.setAttribute("fetchpriority","high");
-  vImg.width=1200; vImg.height=900;
-  vImg.src=vList[vIndex]||"";
+  const myTicket=++vTicket;
   vStrip.innerHTML="";
-  vList.forEach((src,i)=>{const th=document.createElement("button");th.className="thumb";if(i===vIndex)th.setAttribute("aria-current","true");const im=document.createElement("img");im.loading="lazy";im.decoding="async";im.width=56;im.height=56;im.src=src;th.appendChild(im);th.onclick=()=>{vIndex=i;vRender()};vStrip.appendChild(th)});
-  // prefetch neighbors
-  [-2,-1,1,2].forEach(offset=>{const j=(vIndex+offset+vList.length)%vList.length;if(vList[j]){const pre=new Image();pre.decoding="async";pre.loading="lazy";pre.src=vList[j]}})
+  vList.forEach((src,i)=>{
+    const th=document.createElement("button");
+    th.className="thumb";
+    const im=document.createElement("img");
+    if(i>5) im.loading="lazy";
+    im.decoding="async";
+    im.width=56; im.height=56; im.src=src;
+    im.onerror=()=>{ im.remove(); th.textContent="×"; };
+    th.appendChild(im);
+    th.onclick=()=>{ vIndex=i; setThumbCurrent(); vRender(); };
+    vStrip.appendChild(th);
+  });
+  setThumbCurrent();
+  showLoader(true);
+  loadCurrentImage(myTicket);
+  [-2,-1,1,2].forEach(offset=>{
+    const j=(vIndex+offset+vList.length)%vList.length;
+    if(vList[j]){ const pre=new Image(); pre.decoding="async"; pre.loading="lazy"; pre.src=vList[j]; }
+  });
 }
 function vOpen(list,start=0){
-  vList=list;vIndex=Math.max(0,Math.min(start,list.length-1));
-  viewer.classList.add("active");viewer.setAttribute("aria-hidden","false");
-  lockBody(true); setInert(true);
+  vList=[]; vIndex=0; vStrip.innerHTML="";
+  vImg.onload=null; vImg.onerror=null;
+  vImg.removeAttribute("src"); delete vImg.dataset.src; showLoader(true);
+  vList=list.slice();
+  vIndex=Math.max(0,Math.min(start,vList.length-1));
+  viewer.classList.add("active");
+  viewer.setAttribute("aria-hidden","false");
+  if(typeof window.lockBody==="function"){ window.lockBody(true); }
+  setInert(true);
   vRender();
-  history.pushState({viewer:true},""); // enable back-to-close
+  history.pushState({viewer:true},"");
 }
 function vCloseFn(){
   if(isFS()) exitFS();
-  viewer.classList.remove("active");viewer.setAttribute("aria-hidden","true");
-  lockBody(false); setInert(false);
-  vList=[];vIndex=0;vImg.removeAttribute("src");vStrip.innerHTML="";
+  viewer.classList.remove("active");
+  viewer.setAttribute("aria-hidden","true");
+  setInert(false);
+  if(typeof window.lockBody==="function"){ window.lockBody(false); }
+  vList=[]; vIndex=0; vStrip.innerHTML="";
+  vImg.onload=null; vImg.onerror=null;
+  vImg.removeAttribute("src"); delete vImg.dataset.src;
+  showLoader(true);
 }
 vClose.onclick=vCloseFn;
-vPrev.onclick=()=>{vIndex=(vIndex-1+vList.length)%vList.length;vRender()};
-vNext.onclick=()=>{vIndex=(vIndex+1)%vList.length;vRender()};
-viewer.addEventListener("click",e=>{if(e.target===viewer)vCloseFn()});
-window.addEventListener("keydown",e=>{if(!viewer.classList.contains("active"))return;if(e.key==="Escape")vCloseFn();if(e.key==="ArrowLeft")vPrev.click();if(e.key==="ArrowRight")vNext.click()});
+vPrev.onclick=()=>{ if(!vList.length) return; vIndex=(vIndex-1+vList.length)%vList.length; setThumbCurrent(); vRender(); };
+vNext.onclick=()=>{ if(!vList.length) return; vIndex=(vIndex+1)%vList.length; setThumbCurrent(); vRender(); };
+viewer.addEventListener("click",e=>{ if(e.target===viewer) vCloseFn() });
+window.addEventListener("keydown",e=>{
+  if(!viewer.classList.contains("active")) return;
+  if(e.key==="Escape") vCloseFn();
+  if(e.key==="ArrowLeft") vPrev.click();
+  if(e.key==="ArrowRight") vNext.click();
+});
 let touchStartX=0;
 viewer.addEventListener("touchstart",e=>{touchStartX=e.touches[0].clientX},{passive:true});
-viewer.addEventListener("touchend",e=>{const dx=(e.changedTouches[0].clientX-touchStartX);if(Math.abs(dx)>40){dx<0?vNext.click():vPrev.click()}},{passive:true});
-window.addEventListener("open-viewer",(ev)=>{vOpen(ev.detail.imgs||[],ev.detail.index||0)});
-
-// Fullscreen button
+viewer.addEventListener("touchend",e=>{
+  const dx=(e.changedTouches[0].clientX-touchStartX);
+  if(Math.abs(dx)>40){ dx<0?vNext.click():vPrev.click(); }
+},{passive:true});
+window.addEventListener("open-viewer",(ev)=>{
+  const L=(ev.detail?.imgs||[]).filter(Boolean);
+  const i=ev.detail?.index||0;
+  if(L.length){ vOpen(L,i); }
+});
 vFs.addEventListener("click", async ()=>{
   if(!isFS()){ await enterFS(viewer); vFs.setAttribute("aria-pressed","true"); }
   else{ await exitFS(); vFs.setAttribute("aria-pressed","false"); }
 });
-// Sync button state when exiting via system UI
 document.addEventListener("fullscreenchange",()=>{ vFs.setAttribute("aria-pressed", isFS() ? "true":"false"); });
-
-// Back button closes viewer if open
 window.addEventListener("popstate", ()=> { if(viewer.classList.contains("active")) vCloseFn(); });
 </script>
-
 <script>
-/* Sheet (unchanged except mail) */
 const sheet=document.getElementById("sheet");
 const shOverlay=sheet.querySelector(".overlay");
 const shPanel=sheet.querySelector(".panel");
