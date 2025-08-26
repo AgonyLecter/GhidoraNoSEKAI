@@ -364,7 +364,7 @@ const canon=document.getElementById("canon");try{canon.href=location.href.split(
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-const firebaseConfig={apiKey:"AIzaSyC7qhjI3lRxqZGbvmTQscetvvhuE8T4N4I",authDomain:"wandernatureconnect.firebaseapp.com",databaseURL:"https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app",projectId:"wandernatureconnect",storageBucket:"wandernatureconnect.appspot.com",messagingSenderId:"1062563433646",appId:"1:1062563433646:web:a7251b914f569fc105f13f",measurementId:"G-SGF0KC717J"};
+const firebaseConfig={apiKey:"AIzaSyA49iSn7qBR7TaL9q4l8X1a0HmFOaudtxs",authDomain:"thcvault-6a800.firebaseapp.com",databaseURL:"https://thcvault-6a800-default-rtdb.europe-west1.firebasedatabase.app",projectId:"thcvault-6a800",storageBucket:"thcvault-6a800.appspot.com",messagingSenderId:"746310807606",appId:"1:746310807606:web:20ccf6ea569cbf68f0a897",measurementId:"G-GT435NPY50"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const container=document.getElementById("items");
@@ -529,8 +529,6 @@ const vStrip=viewer.querySelector(".thumbs");
 const vFs=viewer.querySelector(".fs");
 const loader=viewer.querySelector(".loader");
 let vList=[],vIndex=0,vTicket=0;
-const headerEl=document.querySelector("header");
-const mainEl=document.getElementById("mainContent");
 function setInert(active){
   [headerEl, mainEl].forEach(el=>{ if(!el) return; active?el.setAttribute("inert",""):el.removeAttribute("inert"); });
 }
@@ -600,7 +598,6 @@ function vOpen(list,start=0){
   vIndex=Math.max(0,Math.min(start,vList.length-1));
   viewer.classList.add("active");
   viewer.setAttribute("aria-hidden","false");
-  if (typeof window.lockBody === "function") window.lockBody(true);
   setInert(true);
   vRender();
   history.pushState({viewer:true},"");
@@ -610,7 +607,6 @@ function vCloseFn(){
   viewer.classList.remove("active");
   viewer.setAttribute("aria-hidden","true");
   setInert(false);
-  if (typeof window.lockBody === "function") window.lockBody(false);
   vList=[]; vIndex=0; vStrip.innerHTML="";
   vImg.onload=null; vImg.onerror=null;
   vImg.removeAttribute("src"); delete vImg.dataset.src;
@@ -678,6 +674,7 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
+
 
 
 
