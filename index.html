@@ -107,9 +107,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.5rem}
 .tag-btn{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.6rem .8rem;text-align:center;cursor:pointer}
 .tag-btn[aria-current="true"]{outline:2px solid #ffd70055;color:#ffd700;border-color:#3a2e00}
-@media (prefers-reduced-motion:reduce){
-  .logo-stage .glow,.logo{animation:none!important}
-}
+@media (prefers-reduced-motion:reduce){.logo-stage .glow,.logo{animation:none!important}}
 </style>
 </head>
 <body>
@@ -298,7 +296,10 @@ class VaultCard extends HTMLElement{
       if(src==="__NOIMG__"){slide.innerHTML=`<div class="noimg" aria-label="No image"><div class="glyph">無</div></div>`}
       else{
         const im=document.createElement("img");
-        im.setAttribute("loading","lazy"); im.setAttribute("decoding","async"); im.setAttribute("fetchpriority","low");
+        if(i===0){im.setAttribute("loading","eager");im.setAttribute("fetchpriority","high");}
+        else{im.setAttribute("loading","lazy");im.setAttribute("fetchpriority","low");}
+        im.setAttribute("decoding","async");
+        im.setAttribute("referrerpolicy","no-referrer");
         im.alt=""; im.width=600; im.height=800;
         im.addEventListener("error",()=>{slide.innerHTML=`<div class="noimg"><div class="glyph">無</div></div>`},{once:true});
         im.src=src; slide.appendChild(im);
@@ -527,8 +528,9 @@ const vNext=viewer.querySelector(".next");
 const vStrip=viewer.querySelector(".thumbs");
 const vFs=viewer.querySelector(".fs");
 const loader=viewer.querySelector(".loader");
-
 let vList=[],vIndex=0,vTicket=0;
+const headerEl=document.querySelector("header");
+const mainEl=document.getElementById("mainContent");
 function setInert(active){
   [headerEl, mainEl].forEach(el=>{ if(!el) return; active?el.setAttribute("inert",""):el.removeAttribute("inert"); });
 }
@@ -539,10 +541,6 @@ function showLoader(on){
   loader.style.display=on?"grid":"none";
   vImg.style.display=on?"none":"block";
 }
-function sameURL(a,b){
-  try{ return new URL(a,location.href).href===new URL(b,location.href).href; }
-  catch{ return a===b }
-}
 function setThumbCurrent(){
   [...vStrip.children].forEach((th,i)=>{
     if(i===vIndex) th.setAttribute("aria-current","true");
@@ -551,27 +549,25 @@ function setThumbCurrent(){
 }
 async function loadCurrentImage(myTicket){
   const src=vList[vIndex]||"";
+  vImg.style.display="none";
+  showLoader(true);
   if(!src){ vImg.removeAttribute("src"); showLoader(false); return; }
+  vImg.onload=null; 
+  vImg.onerror=null;
   const done=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
   const fail=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
-  if(sameURL(vImg.dataset.src||"", src) && vImg.complete && vImg.naturalWidth>0){ done(); return; }
   vImg.onload=done;
   vImg.onerror=fail;
   vImg.removeAttribute("src");
   vImg.dataset.src=src;
-  showLoader(true);
   vImg.loading="eager";
   vImg.decoding="async";
+  vImg.referrerPolicy="no-referrer";
   vImg.src=src;
-  try{
-    await vImg.decode();
-    done();
-  }catch{
-    requestAnimationFrame(()=>setTimeout(()=>{
-      if(myTicket!==vTicket) return;
-      if(vImg.complete && vImg.naturalWidth>0) done();
-    }, 900));
-  }
+  setTimeout(()=>{
+    if(myTicket!==vTicket) return;
+    if(vImg.complete && vImg.naturalWidth>0){ done(); }
+  },2500);
 }
 function vRender(){
   const myTicket=++vTicket;
@@ -593,7 +589,7 @@ function vRender(){
   loadCurrentImage(myTicket);
   [-2,-1,1,2].forEach(offset=>{
     const j=(vIndex+offset+vList.length)%vList.length;
-    if(vList[j]){ const pre=new Image(); pre.decoding="async"; pre.loading="lazy"; pre.src=vList[j]; }
+    if(vList[j]){ const pre=new Image(); pre.decoding="async"; pre.loading="lazy"; pre.referrerPolicy="no-referrer"; pre.src=vList[j]; }
   });
 }
 function vOpen(list,start=0){
@@ -604,7 +600,6 @@ function vOpen(list,start=0){
   vIndex=Math.max(0,Math.min(start,vList.length-1));
   viewer.classList.add("active");
   viewer.setAttribute("aria-hidden","false");
-  if(typeof window.lockBody==="function"){ window.lockBody(true); }
   setInert(true);
   vRender();
   history.pushState({viewer:true},"");
@@ -614,7 +609,6 @@ function vCloseFn(){
   viewer.classList.remove("active");
   viewer.setAttribute("aria-hidden","true");
   setInert(false);
-  if(typeof window.lockBody==="function"){ window.lockBody(false); }
   vList=[]; vIndex=0; vStrip.innerHTML="";
   vImg.onload=null; vImg.onerror=null;
   vImg.removeAttribute("src"); delete vImg.dataset.src;
@@ -682,6 +676,7 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
+
 
 
 
