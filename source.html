@@ -17,9 +17,6 @@ header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
 .brand{display:flex;align-items:center;gap:.75rem}
 .brand img{width:40px;height:40px;border-radius:50%}
 .sub{color:var(--muted);font-size:.9rem}
-.btn{background:conic-gradient(from 0deg at 50% 50%,#ffe27a,#e5c100,#ffd84d,#ffe27a);color:#000;font-weight:800;border:none;border-radius:12px;padding:.8rem 1.1rem;cursor:pointer;box-shadow:0 0 16px rgba(255,215,0,.22)}
-.btn.dim{background:#171717;color:#ddd;border:1px solid #2a2a2a}
-.btn.ghost{background:linear-gradient(90deg,#1a1400,#2b2200);color:#FFD700;border:1px solid rgba(255,215,0,.28)}
 main{display:grid;grid-template-columns:460px 1fr;gap:1rem;padding:1rem}
 @media (max-width:1100px){main{grid-template-columns:1fr}}
 .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1rem}
@@ -31,9 +28,6 @@ textarea{min-height:120px;resize:vertical}
 .helper{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:#9d9d9d;margin-top:.25rem}
 .row{display:flex;gap:.5rem}
 .row>*{flex:1}
-.tools{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.select{background:#101010;border:1px solid #2a2a2a;color:#ddd;border-radius:12px;padding:.6rem .7rem}
-.kbd{border:1px solid #2a2a2a;border-radius:6px;padding:.05rem .35rem;font-size:.78rem;color:#cfcfcf}
 .grid{display:grid;gap:.6rem}
 .item{display:grid;grid-template-columns:72px 1fr auto;gap:.75rem;align-items:center;background:#0b0b0b;border:1px solid #1d1d1d;border-radius:12px;padding:.6rem}
 .item img{width:72px;height:96px;object-fit:cover;border-radius:8px}
@@ -49,13 +43,14 @@ textarea{min-height:120px;resize:vertical}
 .toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#ccc;transition:transform .2s ease}
 .toggle input:checked::after{transform:translateX(22px);background:#FFD700}
 .status{font-size:.9rem;color:#bbb}
-.search{display:flex;gap:.5rem;align-items:center}
 .fabbar{display:none}
 @media (max-width:640px){
   main{display:block;padding-bottom:90px}
   .fabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,.2),#000);border-top:1px solid #202020;padding:.6rem env(safe-area-inset-left) calc(.6rem + env(safe-area-inset-bottom)) env(safe-area-inset-right);gap:.5rem;justify-content:space-around}
   .fabbar .btn{flex:1;min-height:46px}
 }
+.btn{background:conic-gradient(from 0deg at 50% 50%,#ffe27a,#e5c100,#ffd84d,#ffe27a);color:#000;font-weight:800;border:none;border-radius:12px;padding:.8rem 1.1rem;cursor:pointer;box-shadow:0 0 16px rgba(255,215,0,.22)}
+.btn.dim{background:#171717;color:#ddd;border:1px solid #2a2a2a}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem;margin-top:.6rem}
 .thumb{position:relative;border:1px solid #222;border-radius:10px;overflow:hidden;background:#0c0c0c;user-select:none}
 .thumb img{width:100%;height:100%;object-fit:contain;display:block;aspect-ratio:3/4;background:#000}
@@ -101,32 +96,7 @@ textarea{min-height:120px;resize:vertical}
       <div class="sub">Realtime DB + Storage</div>
     </div>
   </div>
-  <div class="tools">
-    <input id="search" placeholder="Search title..." />
-    <select id="filter" class="select" title="Filtro">
-      <option value="all">All</option>
-      <option value="pub">Published</option>
-      <option value="draft">Draft</option>
-    </select>
-    <select id="filterCat" class="select" title="Category">
-      <option value="all">All categories</option>
-      <option value="editoriale_corno">Editoriale Corno</option>
-      <option value="usa_comics">USA Comics</option>
-      <option value="art">Art</option>
-      <option value="manga_japanese">Manga (Japanese)</option>
-      <option value="manga_italian">Manga (Italian)</option>
-      <option value="collectibles">Collectibles</option>
-      <option value="misc">Misc</option>
-    </select>
-    <select id="sort" class="select" title="Ordina per">
-      <option value="added">AddedAt ↓</option>
-      <option value="rarity">Rarity ↓</option>
-      <option value="stock">Stock ↓</option>
-      <option value="title">Title A→Z</option>
-    </select>
-    <span class="kicker">Shortcut: <span class="kbd">⌘/Ctrl</span>+<span class="kbd">S</span></span>
-    <a class="btn ghost" href="rules.html">⚖️ Rules</a>
-  </div>
+  <div class="kicker">⌘/Ctrl + S per salvare</div>
 </header>
 
 <main>
@@ -144,6 +114,7 @@ textarea{min-height:120px;resize:vertical}
         <button type="button" class="chip" id="rarityChip" aria-haspopup="dialog">Rarity: <span class="v" id="rarityVal">3★</span></button>
         <button type="button" class="chip" id="catChip" aria-haspopup="dialog">Category: <span class="v" id="catVal">Select</span></button>
         <button type="button" class="chip" id="langChip" aria-haspopup="dialog">Language: <span class="v" id="langVal">Select</span></button>
+        <button type="button" class="chip" id="tagChip" aria-haspopup="dialog">Tags: <span class="v" id="tagVal">0/2</span></button>
         <button type="button" class="chip" id="autoNewChip" aria-pressed="true">Auto-new: <span class="v" id="autoNewVal">On</span></button>
       </div>
 
@@ -153,7 +124,7 @@ textarea{min-height:120px;resize:vertical}
       </div>
 
       <label>Gallery upload</label>
-      <div class="dropzone" id="drop">Drag & drop / paste images / or select</div>
+      <div class="dropzone" id="drop">Drag &amp; drop / paste images / or select</div>
       <input id="files" type="file" accept="image/*" multiple />
       <div class="row" style="margin-top:.4rem">
         <input id="imgUrl" placeholder="Add single image URL (optional)" />
@@ -186,6 +157,7 @@ textarea{min-height:120px;resize:vertical}
   </div>
 </main>
 
+<!-- Modals -->
 <div id="rarityModal" class="modal" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rarityTitle">
@@ -225,6 +197,19 @@ textarea{min-height:120px;resize:vertical}
   </div>
 </div>
 
+<div id="tagModal" class="modal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="tagTitle">
+    <button class="close" data-close="tag">✕</button>
+    <h3 id="tagTitle">Select tags (max 2)</h3>
+    <div class="pick-grid" id="tagGrid"></div>
+    <div class="actions">
+      <button class="btn dim" id="tagClear">Clear</button>
+      <button class="btn" data-close="tag">Done</button>
+    </div>
+  </div>
+</div>
+
 <div id="snack" class="snack"><span id="snackMsg"></span><button class="act" id="snackAct">OK</button></div>
 
 <script type="module">
@@ -237,16 +222,12 @@ const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const st=getStorage(app);
 
+/* --- DOM --- */
 const form=document.getElementById("form");
 const saveBtn=document.getElementById("saveBtn");
 const resetBtn=document.getElementById("resetBtn");
 const deleteBtn=document.getElementById("deleteBtn");
 const statusEl=document.getElementById("formStatus");
-const searchEl=document.getElementById("search");
-const filterEl=document.getElementById("filter");
-const filterCatEl=document.getElementById("filterCat");
-const sortEl=document.getElementById("sort");
-const listEl=document.getElementById("list");
 
 const filesEl=document.getElementById("files");
 const dropEl=document.getElementById("drop");
@@ -276,12 +257,20 @@ const langModal=document.getElementById("langModal");
 const langGrid=document.getElementById("langGrid");
 const langClear=document.getElementById("langClear");
 
+const tagChip=document.getElementById("tagChip");
+const tagVal=document.getElementById("tagVal");
+const tagModal=document.getElementById("tagModal");
+const tagGrid=document.getElementById("tagGrid");
+const tagClear=document.getElementById("tagClear");
+
 const autoNewChip=document.getElementById("autoNewChip");
 const autoNewVal=document.getElementById("autoNewVal");
 const snack=document.getElementById("snack");
 const snackMsg=document.getElementById("snackMsg");
 const snackAct=document.getElementById("snackAct");
+const listEl=document.getElementById("list");
 
+/* --- State --- */
 let gallery=[];
 let cache=[];
 let dirty=false;
@@ -290,19 +279,24 @@ let rarityState=3;
 let categoryState="";
 let langState="";
 let autoNew=true;
+let selectedTags=[];
 
 const categories=[["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
 const languages=[["ja","Japanese"],["it","Italian"],["en","English"],["zh","Chinese"],["other","Other"]];
+const tagOptions=["Art","Erotic","Vintage","Signed","First Edition","Limited","Underground"];
 
+/* --- Utils --- */
 function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
-function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 function fmtDate(t){try{return new Date(t).toLocaleString()}catch{return""}}
 function setStatus(msg){statusEl.textContent=msg;setTimeout(()=>{if(statusEl.textContent===msg)statusEl.textContent=""},2200)}
 function markDirty(){dirty=true;draftBadge.textContent="Draft saved"}
 function snackShow(text,actionLabel,action){snackMsg.textContent=text;snack.classList.add("show");snackAct.textContent=actionLabel||"OK";snackAct.onclick=()=>{snack.classList.remove("show");if(typeof action==="function")action()};setTimeout(()=>{snack.classList.remove("show")},4000)}
 function focusTitle(){document.getElementById("title").focus({preventScroll:false})}
+function labelOf(list,val){const f=list.find(([v])=>v===val);return f?f[1]:""}
 
-const LS_KEY="gh_admin_draft_v3";
+/* --- Draft (localStorage) --- */
+const LS_KEY="gh_admin_draft_v4";
 function collectDraft(){
   return {
     id:document.getElementById("docId").value.trim(),
@@ -315,7 +309,8 @@ function collectDraft(){
     gallery:gallery.slice(),
     category:categoryState,
     lang:langState,
-    autoNew:autoNew
+    autoNew:autoNew,
+    tags:selectedTags.slice()
   }
 }
 function applyDraft(d){
@@ -331,9 +326,11 @@ function applyDraft(d){
   categoryState=d.category||"";
   langState=d.lang||"";
   autoNew=typeof d.autoNew==="boolean"?d.autoNew:true;
+  selectedTags=Array.isArray(d.tags)?d.tags.slice():[];
   autoNewChip.setAttribute("aria-pressed",String(autoNew));autoNewVal.textContent=autoNew?"On":"Off";
   catVal.textContent=categoryState?labelOf(categories,categoryState):"Select";
   langVal.textContent=langState?labelOf(languages,langState):"Select";
+  tagVal.textContent=`${selectedTags.length}/2`;
   gallery=Array.isArray(d.gallery)?d.gallery.slice():[];
   renderGallery();
   updateDescCount();
@@ -341,8 +338,10 @@ function applyDraft(d){
 function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));draftBadge.textContent="Draft saved"},900)}
 (function restoreDraft(){const raw=localStorage.getItem(LS_KEY);if(raw){try{applyDraft(JSON.parse(raw));draftBadge.textContent="Draft restored"}catch{}}})();
 
+/* --- Leave guard --- */
 window.addEventListener("beforeunload",(e)=>{if(dirty){e.preventDefault();e.returnValue=""}});
 
+/* --- Gallery --- */
 function renderGallery(){
   galleryEl.innerHTML="";
   gallery.forEach((url,idx)=>{
@@ -372,12 +371,15 @@ dropEl.addEventListener("drop",async e=>{const dt=e.dataTransfer;if(!dt)return;c
 document.addEventListener("paste",async e=>{const items=e.clipboardData?.items||[];const images=[...items].map(i=>i.getAsFile()).filter(f=>f&&/^image\//.test(f.type));if(!images.length)return;statusEl.textContent="Uploading…";for(const f of images){await uploadFile(f)}statusEl.textContent="Upload complete";markDirty();scheduleAutosave()});
 addUrlBtn.addEventListener("click",()=>{const u=(imgUrlEl.value||"").trim();if(!u)return;gallery.push(u);imgUrlEl.value="";renderGallery();markDirty();scheduleAutosave()});
 
+/* --- Counters / inputs --- */
 function updateDescCount(){const n=(descEl.value||"").length;descCount.textContent=`${n} chars`}
 descEl.addEventListener("input",()=>{updateDescCount();markDirty();scheduleAutosave()});
 ["title","stock","total","published"].forEach(id=>{const el=document.getElementById(id);el.addEventListener(el.type==="checkbox"?"change":"input",()=>{if(id==="stock")el.value=String(Math.max(0,parseInt(el.value||"0",10)||0));if(id==="total")el.value=String(Math.max(1,parseInt(el.value||"1",10)||1));markDirty();scheduleAutosave()})});
 
+/* --- DB --- */
 const itemsRef=ref(db,"items");
 
+/* --- Submit --- */
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   const id=document.getElementById("docId").value.trim();
@@ -396,8 +398,8 @@ form.addEventListener("submit",async e=>{
     total:Math.max(1,parseInt(total.value||"1",10)||1),
     category:categoryState||"",
     lang:langState||"",
-    published:document.getElementById("published").checked,
-    addedAt: serverTimestamp()
+    tags:selectedTags.slice(),
+    published:document.getElementById("published").checked
   };
   try{
     saveBtn.disabled=true;
@@ -408,7 +410,7 @@ form.addEventListener("submit",async e=>{
       snackShow("Item updated","OK");
     }else{
       const newRef=push(itemsRef);
-      await set(newRef,payload);
+      await set(newRef,{...payload,addedAt:serverTimestamp()});
       document.getElementById("docId").value=newRef.key;
       dirty=false;draftBadge.textContent="Saved";
       localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
@@ -427,6 +429,7 @@ form.addEventListener("submit",async e=>{
   }
 });
 
+/* --- Post-create clean --- */
 function prepareForNext(){
   const keepCat=categoryState,keepLang=langState,keepRar=rarityState,keepPub=document.getElementById("published").checked;
   form.reset();
@@ -436,6 +439,7 @@ function prepareForNext(){
   catVal.textContent=categoryState?labelOf(categories,categoryState):"Select";
   langVal.textContent=langState?labelOf(languages,langState):"Select";
   rarityVal.textContent=rarityState+"★";
+  selectedTags=[];tagVal.textContent="0/2";
   gallery=[];renderGallery();
   document.getElementById("stock").value="1";
   document.getElementById("total").value="1";
@@ -447,38 +451,17 @@ function prepareForNext(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
+/* --- Shortcuts & reset --- */
 window.addEventListener("keydown",(e)=>{if((e.ctrlKey||e.metaKey)&&(e.key==="s"||e.key==="S")){e.preventDefault();form.requestSubmit()}if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();form.requestSubmit()}})
 document.getElementById("resetBtnMobile")?.addEventListener("click",()=>resetBtn.click());
 resetBtn.addEventListener("click",()=>{if(dirty&&!confirm("Discard changes?"))return;hardReset()});
 function hardReset(){
-  form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";statusEl.textContent="";previewEl.style.display="none";gallery=[];renderGallery();updateDescCount();dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY);rarityState=3;rarityVal.textContent="3★";categoryState="";langState="";catVal.textContent="Select";langVal.textContent="Select"
+  form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";statusEl.textContent="";previewEl.style.display="none";gallery=[];renderGallery();updateDescCount();dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY);rarityState=3;rarityVal.textContent="3★";categoryState="";langState="";selectedTags=[];catVal.textContent="Select";langVal.textContent="Select";tagVal.textContent="0/2"
 }
-deleteBtn.addEventListener("click",async()=>{const id=document.getElementById("docId").value.trim();if(!id)return;if(!confirm("Delete this item?"))return;try{await remove(ref(db,`items/${id}`));hardReset();setStatus("Deleted ✓");snackShow("Item deleted","OK")}catch(err){alert(err.message)}});
 
+/* --- Live list (no search/filters) --- */
 const qRef=query(itemsRef,orderByChild("addedAt"));
-onValue(qRef,snap=>{const obj=snap.val()||{};const arr=Object.entries(obj).map(([id,v])=>({id,...v}));cache=arr;applyListView()});
-
-function labelOf(list,val){const f=list.find(([v])=>v===val);return f?f[1]:""}
-function applyListView(){
-  let arr=[...cache];
-  const f=filterEl.value;
-  if(f==="pub")arr=arr.filter(x=>!!x.published);
-  if(f==="draft")arr=arr.filter(x=>!x.published);
-  const fc=filterCatEl.value;
-  if(fc!=="all")arr=arr.filter(x=>(x.category||"")===fc);
-  const term=(searchEl.value||"").toLowerCase();
-  if(term)arr=arr.filter(i=>((i.title||"")+" "+(i.desc||"")).toLowerCase().includes(term));
-  const s=sortEl.value;
-  if(s==="added")arr.sort((a,b)=>(b.addedAt??0)-(a.addedAt??0));
-  if(s==="rarity")arr.sort((a,b)=>(b.rarity??0)-(a.rarity??0));
-  if(s==="stock")arr.sort((a,b)=>(b.stock??0)-(a.stock??0));
-  if(s==="title")arr.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
-  renderList(arr);
-}
-searchEl.addEventListener("input",applyListView);
-filterEl.addEventListener("change",applyListView);
-filterCatEl.addEventListener("change",applyListView);
-sortEl.addEventListener("change",applyListView);
+onValue(qRef,snap=>{const obj=snap.val()||{};const arr=Object.entries(obj).map(([id,v])=>({id,...v}));cache=arr.sort((a,b)=>(b.addedAt??0)-(a.addedAt??0));renderList(cache)});
 
 function renderList(arr){
   listEl.innerHTML="";
@@ -491,11 +474,13 @@ function renderList(arr){
     const descLen=(it.desc||"").length;
     const warnCover=!cover?'<span class="pill warn">no-cover</span>':'';
     const warnDesc=descLen<40?'<span class="pill warn">desc&lt;40</span>':'';
-    const cat=it.category?`<span class="pill">${escapeHtml(labelOf(categories,it.category))}</span>`:'';
-    const lang=it.lang?`<span class="pill">${escapeHtml(labelOf(languages,it.lang))}</span>`:'';
-    row.innerHTML=`<img src="${cover}" alt="cover"/><div><div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap"><strong>${escapeHtml(it.title||"Untitled")}</strong><span class="pill">★${it.rarity||0}</span><span class="kicker">${when}</span><div class="pills"><span class="pill">${it.published?"Published":"Draft"}</span><span class="pill">${it.stock??0}/${it.total??1}</span><span class="pill">imgs:${imgCount}</span><span class="pill">len:${descLen}</span>${cat}${lang}${warnCover}${warnDesc}</div></div><div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,160))}${(it.desc||"").length>160?"…":""}</div></div><div class="actions"><button class="a" data-dup="${it.id}" title="Duplicate">Dup</button><button class="a" data-copy="${it.id}" title="Copy ID">ID</button><button class="a" data-edit="${it.id}">Edit</button><label class="toggle" title="Toggle publish"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label><button class="a del" data-del="${it.id}">Del</button></div>`;
+    const catPill=it.category?`<span class="pill">${escapeHtml(labelOf(categories,it.category))}</span>`:'';
+    const langPill=it.lang?`<span class="pill">${escapeHtml(labelOf(languages,it.lang))}</span>`:'';
+    const tagPills=(Array.isArray(it.tags)?it.tags:[]).map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join('');
+    row.innerHTML=`<img src="${cover}" alt="cover"/><div><div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap"><strong>${escapeHtml(it.title||"Untitled")}</strong><span class="pill">★${it.rarity||0}</span><span class="kicker">${when}</span><div class="pills"><span class="pill">${it.published?"Published":"Draft"}</span><span class="pill">${it.stock??0}/${it.total??1}</span><span class="pill">imgs:${imgCount}</span><span class="pill">len:${descLen}</span>${catPill}${langPill}${tagPills}${warnCover}${warnDesc}</div></div><div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,160))}${(it.desc||"").length>160?"…":""}</div></div><div class="actions"><button class="a" data-dup="${it.id}" title="Duplicate">Dup</button><button class="a" data-copy="${it.id}" title="Copy ID">ID</button><button class="a" data-edit="${it.id}">Edit</button><label class="toggle" title="Toggle publish"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label><button class="a del" data-del="${it.id}">Del</button></div>`;
     listEl.appendChild(row);
   });
+
   listEl.onclick=async ev=>{
     const t=ev.target;
     const edit=t.closest("[data-edit]");
@@ -518,8 +503,10 @@ function renderList(arr){
       document.getElementById("published").checked=!!data.published;
       categoryState=data.category||"";
       langState=data.lang||"";
+      selectedTags=Array.isArray(data.tags)?data.tags.slice():[];
       catVal.textContent=categoryState?labelOf(categories,categoryState):"Select";
       langVal.textContent=langState?labelOf(languages,langState):"Select";
+      tagVal.textContent=`${selectedTags.length}/2`;
       gallery=Array.isArray(data.imgs)?data.imgs.slice():(data.img?[data.img]:[]);
       renderGallery();updateDescCount();
       deleteBtn.style.display="inline-block";
@@ -539,7 +526,15 @@ function renderList(arr){
       const id=dup.getAttribute("data-dup");
       const data=cache.find(x=>x.id===id);
       if(!data)return;
-      try{const newRef=push(itemsRef);const payload={...data};delete payload.id;payload.addedAt=serverTimestamp();await set(newRef,payload);setStatus("Duplicated ✓");snackShow("Duplicated","Open",()=>{document.querySelector(`[data-edit="${newRef.key}"]`)?.click()})}catch(err){alert(err.message)}
+      try{
+        const newRef=push(itemsRef);
+        const payload={...data};
+        delete payload.id;
+        payload.addedAt=serverTimestamp();
+        await set(newRef,payload);
+        setStatus("Duplicated ✓");
+        snackShow("Duplicated","Open",()=>{document.querySelector(`[data-edit="${newRef.key}"]`)?.click()})
+      }catch(err){alert(err.message)}
     }else if(cpy){
       const id=cpy.getAttribute("data-copy");
       try{await navigator.clipboard.writeText(id);setStatus("ID copied")}catch{}
@@ -547,11 +542,13 @@ function renderList(arr){
   };
 }
 
+/* --- Modals open/close --- */
 function openModal(el){document.body.style.overflow="hidden";el.classList.add("open");el.setAttribute("aria-hidden","false")}
 function closeModal(el){el.classList.remove("open");el.setAttribute("aria-hidden","true");if(!document.querySelector(".modal.open"))document.body.style.overflow=""}
-document.querySelectorAll('.modal .overlay,[data-close="rarity"],[data-close="cat"],[data-close="lang"]').forEach(b=>b.addEventListener("click",()=>{closeModal(rarityModal);closeModal(catModal);closeModal(langModal)}));
-window.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(rarityModal);closeModal(catModal);closeModal(langModal)}});
+document.querySelectorAll('.modal .overlay,[data-close="rarity"],[data-close="cat"],[data-close="lang"],[data-close="tag"]').forEach(b=>b.addEventListener("click",()=>{closeModal(rarityModal);closeModal(catModal);closeModal(langModal);closeModal(tagModal)}));
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(rarityModal);closeModal(catModal);closeModal(langModal);closeModal(tagModal)}});
 
+/* --- Rarity --- */
 function renderStarPad(){
   starPad.innerHTML="";
   for(let i=1;i<=5;i++){
@@ -566,6 +563,7 @@ function renderStarPad(){
 rarityChip.addEventListener("click",()=>{renderStarPad();openModal(rarityModal)});
 rarityOk.addEventListener("click",()=>{rarityVal.textContent=rarityState+"★";closeModal(rarityModal);markDirty();scheduleAutosave()});
 
+/* --- Category / Language --- */
 function renderPickGrid(grid,items,current,cb){
   grid.innerHTML="";
   items.forEach(([val,label])=>{
@@ -576,15 +574,35 @@ function renderPickGrid(grid,items,current,cb){
     grid.appendChild(b);
   });
 }
-
 catChip.addEventListener("click",()=>{renderPickGrid(catGrid,categories,categoryState,(v,l)=>{categoryState=v;catVal.textContent=l});openModal(catModal)});
 catClear.addEventListener("click",()=>{categoryState="";catVal.textContent="Select";markDirty();scheduleAutosave()});
-
 langChip.addEventListener("click",()=>{renderPickGrid(langGrid,languages,langState,(v,l)=>{langState=v;langVal.textContent=l});openModal(langModal)});
 langClear.addEventListener("click",()=>{langState="";langVal.textContent="Select";markDirty();scheduleAutosave()});
 
-autoNewChip.addEventListener("click",()=>{autoNew=!autoNew;autoNewChip.setAttribute("aria-pressed",String(autoNew));autoNewVal.textContent=autoNew?"On":"Off";scheduleAutosave()});
+/* --- Tags (max 2) --- */
+function renderTagGrid(){
+  tagGrid.innerHTML="";
+  tagOptions.forEach(label=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="pick";b.textContent=label;
+    if(selectedTags.includes(label))b.setAttribute("aria-current","true");
+    b.onclick=()=>{
+      if(selectedTags.includes(label)){selectedTags=selectedTags.filter(t=>t!==label)}
+      else{
+        if(selectedTags.length<2) selectedTags=[...selectedTags,label];
+        else selectedTags=[selectedTags[1],label];
+      }
+      tagVal.textContent=`${selectedTags.length}/2`;
+      renderTagGrid();
+      markDirty();scheduleAutosave();
+    };
+    tagGrid.appendChild(b);
+  });
+}
+tagChip.addEventListener("click",()=>{renderTagGrid();openModal(tagModal)});
+tagClear.addEventListener("click",()=>{selectedTags=[];tagVal.textContent="0/2";renderTagGrid();markDirty();scheduleAutosave()});
 
+/* --- Context menu/Devtools block (opzionale) --- */
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 </script>
