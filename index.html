@@ -600,6 +600,7 @@ function vOpen(list,start=0){
   vIndex=Math.max(0,Math.min(start,vList.length-1));
   viewer.classList.add("active");
   viewer.setAttribute("aria-hidden","false");
+  if (typeof window.lockBody === "function") window.lockBody(true);
   setInert(true);
   vRender();
   history.pushState({viewer:true},"");
@@ -609,6 +610,7 @@ function vCloseFn(){
   viewer.classList.remove("active");
   viewer.setAttribute("aria-hidden","true");
   setInert(false);
+  if (typeof window.lockBody === "function") window.lockBody(false);
   vList=[]; vIndex=0; vStrip.innerHTML="";
   vImg.onload=null; vImg.onerror=null;
   vImg.removeAttribute("src"); delete vImg.dataset.src;
@@ -676,8 +678,6 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
-
-
 
 
 
