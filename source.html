@@ -1,300 +1,590 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-<meta charset="utf-8" />
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Ghidorah — Source Uploader</title>
-<meta name="color-scheme" content="dark light" />
+<title>Ghidorah — Vault Source (Admin)</title>
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@700&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#0b0b0d;--card:#121216;--ink:#e8e8ea;--muted:#a7a7ad;--brand:#ffd700;--line:#232329;--ok:#23c55e;--warn:#ef4444}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-.container{max-width:980px;margin:0 auto;padding:16px}
-h1{font-size:1.4rem;margin:10px 0 16px;letter-spacing:.08em;color:var(--brand)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-label{display:block;font-size:.9rem;color:var(--muted);margin:.4rem 0 .25rem}
-input[type="text"],input[type="number"],textarea,select{width:100%;padding:.6rem .7rem;border-radius:10px;border:1px solid #2a2a33;background:#101014;color:#fff;outline:none}
-input[type="text"]:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(255,215,0,.35)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.18rem .55rem;border:1px solid #3a3a44;border-radius:999px;background:#15151a;color:#ddd;font-size:.8rem}
-.flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-button{border:1px solid #35353d;background:#15151a;color:#fff;border-radius:10px;padding:.65rem .9rem;cursor:pointer}
-button.primary{background:linear-gradient(90deg,#ffd700,#e6c200);color:#000;border-color:#5c4a00;font-weight:800}
-button:disabled{opacity:.6;cursor:not-allowed}
-hr{border:none;border-top:1px solid var(--line);margin:10px 0}
-#drop{border:1px dashed #3a3a44;border-radius:12px;padding:16px;text-align:center;background:#0f0f13}
-#drop.drag{outline:2px solid rgba(255,215,0,.5)}
-#thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
-.thumb{position:relative;border:1px solid #2a2a33;border-radius:10px;overflow:hidden;background:#0f0f12;display:grid;place-items:center;aspect-ratio:3/4}
-.thumb img{max-width:100%;max-height:100%;display:block;object-fit:cover;image-orientation:from-image}
-.pbar{position:absolute;left:0;right:0;bottom:0;height:6px;background:#1a1a1f}
-.pbar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ade80,#22c55e)}
-.status{font-size:.92rem}
-.kv{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-top:8px}
-code.small{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.8rem;color:#ddd;background:#111114;border:1px solid #2a2a33;border-radius:8px;padding:.35rem .45rem;word-break:break-all}
-.list{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:12px}
-.item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 10px;border-bottom:1px solid #1e1e24}
-.item:last-child{border-bottom:none}
-.item b{color:#eaeaf0}
-.ok{color:var(--ok)}.err{color:var(--warn)}
-.small{font-size:.86rem;color:#bdbdc4}
+:root{--bg:#000;--gold:#FFD700;--text:#e6e6e6;--muted:#9a9a9a;--panel:#0f0f0f;--border:#202020;--ring:rgba(255,215,0,0.55);--chip:#141414}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:'Zen Kaku Gothic Antique',system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:linear-gradient(180deg,rgba(0,0,0,.8),rgba(0,0,0,0));backdrop-filter:blur(8px);z-index:20}
+.brand{display:flex;align-items:center;gap:.75rem}
+.brand img{width:40px;height:40px;border-radius:50%}
+.sub{color:var(--muted);font-size:.9rem}
+main{display:grid;grid-template-columns:460px 1fr;gap:1rem;padding:1rem}
+@media (max-width:1100px){main{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1rem}
+.panel h2{margin:.25rem 0 1rem;font-size:1.1rem;color:var(--gold)}
+label{display:block;font-size:.9rem;color:#ccc;margin:.5rem 0 .35rem}
+input,textarea,select{width:100%;background:#0b0b0b;color:#fff;border:1px solid #2a2a2a;border-radius:12px;padding:.7rem .8rem;outline:none;font-size:1rem}
+input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px var(--ring)}
+textarea{min-height:120px;resize:vertical}
+.helper{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:#9d9d9d;margin-top:.25rem}
+.row{display:flex;gap:.5rem}
+.row>*{flex:1}
+.grid{display:grid;gap:.6rem}
+.item{display:grid;grid-template-columns:72px 1fr auto;gap:.75rem;align-items:center;background:#0b0b0b;border:1px solid #1d1d1d;border-radius:12px;padding:.6rem}
+.item img{width:72px;height:96px;object-fit:cover;border-radius:8px}
+.pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.pill{border:1px solid #2a2a2a;border-radius:999px;padding:.1rem .45rem;font-size:.75rem;color:#cfcfcf;background:#101010}
+.pill.warn{border-color:#553300;color:#ffc04d;background:#1a1400}
+.actions{display:flex;gap:.4rem;align-items:center}
+.a{padding:.55rem .8rem;border-radius:10px;border:1px solid #2a2a2a;background:#141414;color:#eaeaea;cursor:pointer;min-height:42px}
+.a.del{background:#2a0b0b;color:#ffb3b3;border-color:#3a1010}
+.toggle{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.toggle input{width:48px;height:26px;appearance:none;background:#2a2a2a;border-radius:999px;position:relative;outline:none;border:1px solid #3a3a3a}
+.toggle input:checked{background:#4d3a00;border-color:#705500}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#ccc;transition:transform .2s ease}
+.toggle input:checked::after{transform:translateX(22px);background:#FFD700}
+.status{font-size:.9rem;color:#bbb}
+.fabbar{display:none}
+@media (max-width:640px){
+  main{display:block;padding-bottom:90px}
+  .fabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,.2),#000);border-top:1px solid #202020;padding:.6rem env(safe-area-inset-left) calc(.6rem + env(safe-area-inset-bottom)) env(safe-area-inset-right);gap:.5rem;justify-content:space-around}
+  .fabbar .btn{flex:1;min-height:46px}
+}
+.btn{background:conic-gradient(from 0deg at 50% 50%,#ffe27a,#e5c100,#ffd84d,#ffe27a);color:#000;font-weight:800;border:none;border-radius:12px;padding:.8rem 1.1rem;cursor:pointer;box-shadow:0 0 16px rgba(255,215,0,.22)}
+.btn.dim{background:#171717;color:#ddd;border:1px solid #2a2a2a}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem;margin-top:.6rem}
+.thumb{position:relative;border:1px solid #222;border-radius:10px;overflow:hidden;background:#0c0c0c;user-select:none}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block;aspect-ratio:3/4;background:#000}
+.thumb .ops{position:absolute;inset:auto .25rem .25rem .25rem;display:flex;gap:.25rem;justify-content:space-between}
+.small{font-size:.86rem;padding:.4rem .55rem;border-radius:9px;border:1px solid #2a2a2a;background:#131313;color:#eaeaea;cursor:pointer}
+.small.star{border-color:#705500;background:#2b2200;color:#FFD700}
+.thumb.dragging{opacity:.6;outline:2px dashed #555}
+.dropzone{margin-top:.5rem;border:1px dashed #393939;border-radius:12px;padding:.9rem;text-align:center;color:#bdbdbd}
+.dropzone.active{background:#0a0a0a;border-color:#5b4500;color:#ffd36b;box-shadow:0 0 0 2px rgba(255,215,0,.12) inset}
+#preview{display:none;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-top:.5rem;border:1px solid #222}
+.ctrl-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:.45rem;background:var(--chip);border:1px solid #2a2a2a;color:#ddd;border-radius:999px;padding:.6rem .8rem;cursor:pointer}
+.chip .v{font-weight:800;color:#ffd700}
+.modal{position:fixed;inset:0;z-index:1000;display:none}
+.modal.open{display:block}
+.modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.modal .panel{position:absolute;left:50%;transform:translateX(-50%);width:min(640px,92vw);top:10vh;max-height:78vh;overflow:auto;background:linear-gradient(180deg,#111214,#0f0f11);border:1px solid #232323;border-radius:16px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+@media (max-width:740px){
+  .modal .panel{left:0;right:0;transform:none;width:auto;top:auto;bottom:0;max-height:78vh;border-radius:16px 16px 0 0}
+}
+.modal h3{margin:0 0 .6rem;color:#ffd700}
+.modal .close{position:absolute;top:10px;right:10px;border:1px solid #444;background:#151515;color:#eee;border-radius:10px;padding:.45rem .7rem;cursor:pointer}
+.starpad{display:flex;justify-content:center;gap:.6rem;margin:.6rem 0 1rem;flex-wrap:wrap}
+.starpad button{font-size:44px;line-height:1;border:none;background:none;cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.starpad button.on{color:#ffd700}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem}
+.pick{border:1px solid #272727;background:#141416;color:#e8e8e8;border-radius:12px;padding:.9rem .9rem;text-align:center;cursor:pointer}
+.pick[aria-current="true"]{outline:2px solid #ffd70055;color:#ffd700;border-color:#3a2e00}
+.modal .actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.8rem}
+.kicker{font-size:.85rem;color:#bbb}
+.snack{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));background:#121212;border:1px solid #2a2a2a;color:#eee;border-radius:12px;padding:.6rem .8rem;display:none;gap:.6rem;align-items:center;z-index:1200}
+.snack.show{display:flex}
+.snack .act{background:#ffd700;color:#000;border:none;border-radius:10px;padding:.4rem .7rem;font-weight:800;cursor:pointer}
+@media (max-width:560px){.item{grid-template-columns:56px 1fr auto}.thumb img{aspect-ratio:1/1}}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Ghidorah — Upload & Publish</h1>
-
-  <div class="grid">
-    <div class="card">
-      <div class="flex">
-        <span class="badge">Project: <b>thcvault-6a800</b></span>
-        <span class="badge" id="authState">Auth: <b>anon</b></span>
-        <span class="badge" id="bucketState">Bucket ready</span>
-      </div>
-      <hr />
-      <div id="drop" tabindex="0">
-        <div>Drop images here or choose files</div>
-        <div class="small">JPEG/PNG/WebP • multiple allowed</div>
-        <div style="margin-top:8px">
-          <input type="file" id="filePick" accept="image/*" multiple />
-        </div>
-      </div>
-      <div id="thumbs"></div>
-      <div class="flex" style="margin-top:10px">
-        <button id="uploadBtn">Upload images</button>
-        <span class="status" id="upStatus"></span>
-      </div>
-      <hr />
-      <label>Or paste external image URLs (one per line)</label>
-      <textarea id="extUrls" rows="4" placeholder="https://...jpg
-https://...png"></textarea>
-    </div>
-
-    <div class="card">
-      <label>Title</label>
-      <input id="title" type="text" placeholder="L'Uomo Ragno n 6 / Zap Comix #4 / Kaba ..." />
-      <label>Description</label>
-      <textarea id="desc" rows="5" placeholder="Notes, condition, year, print info"></textarea>
-      <div class="row">
-        <div>
-          <label>Category</label>
-          <select id="category">
-            <option value="editoriale_corno">Editoriale Corno</option>
-            <option value="usa_comics">USA Comics</option>
-            <option value="art">Art</option>
-            <option value="manga_japanese">Manga (Japanese)</option>
-            <option value="manga_italian">Manga (Italian)</option>
-            <option value="collectibles">Collectibles</option>
-            <option value="misc">Misc</option>
-          </select>
-        </div>
-        <div>
-          <label>Language</label>
-          <select id="lang">
-            <option value="it">Italian</option>
-            <option value="en">English</option>
-            <option value="ja">Japanese</option>
-            <option value="zh">Chinese</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label>Rarity (1–5)</label>
-          <input id="rarity" type="number" min="1" max="5" value="3" />
-        </div>
-        <div>
-          <label>Stock / Total</label>
-          <div class="row">
-            <input id="stock" type="number" min="0" value="1" />
-            <input id="total" type="number" min="1" value="1" />
-          </div>
-        </div>
-      </div>
-      <label>Tags (comma separated)</label>
-      <input id="tags" type="text" placeholder="Vintage, Limited, First Edition" />
-      <div class="flex" style="margin-top:8px">
-        <label class="badge"><input id="published" type="checkbox" checked /> Published</label>
-        <label class="badge"><input id="isnew" type="checkbox" /> Mark as NEW</label>
-      </div>
-      <hr />
-      <div class="flex">
-        <button class="primary" id="publishBtn">Publish item</button>
-        <button id="resetBtn">Reset form</button>
-        <span class="status" id="pubStatus"></span>
-      </div>
-      <div class="kv">
-        <div>Primary image</div><div><code class="small" id="primaryOut"></code></div>
-        <div>Images array</div><div><code class="small" id="arrayOut"></code></div>
-      </div>
+<header>
+  <div class="brand">
+    <img src="Ghidorah1.png" alt="Ghidorah"/>
+    <div>
+      <strong>Vault Source (Admin)</strong>
+      <div class="sub">Realtime DB + Storage</div>
     </div>
   </div>
+  <div class="kicker">⌘/Ctrl + S per salvare</div>
+</header>
 
-  <div class="card" style="margin-top:14px">
-    <div class="flex" style="justify-content:space-between">
-      <div class="small">Recent uploads</div>
-      <button id="refreshBtn">Refresh</button>
+<main>
+  <section class="panel" aria-labelledby="formTitle">
+    <h2 id="formTitle">Crea / Modifica Item</h2>
+    <form id="form" autocomplete="off">
+      <input type="hidden" id="docId" />
+      <label for="title">Titolo</label>
+      <input id="title" required placeholder="Es. Akira #1 (Italy)" />
+      <label for="desc">Descrizione</label>
+      <textarea id="desc" placeholder="Dettagli, edizione, condizioni..."></textarea>
+      <div class="helper"><span id="descCount">0 chars</span><span id="draftBadge" class="kicker"></span></div>
+
+      <div class="ctrl-row" style="margin-top:.4rem">
+        <button type="button" class="chip" id="rarityChip" aria-haspopup="dialog">Rarità: <span class="v" id="rarityVal">3★</span></button>
+        <button type="button" class="chip" id="catChip" aria-haspopup="dialog">Categoria: <span class="v" id="catVal">Seleziona</span></button>
+        <button type="button" class="chip" id="langChip" aria-haspopup="dialog">Lingua: <span class="v" id="langVal">Seleziona</span></button>
+        <button type="button" class="chip" id="tagChip" aria-haspopup="dialog">Tag: <span class="v" id="tagVal">0/2</span></button>
+        <button type="button" class="chip" id="autoNewChip" aria-pressed="true">Auto-new: <span class="v" id="autoNewVal">On</span></button>
+      </div>
+
+      <div class="row" style="margin-top:.5rem">
+        <div><label for="stock">Stock</label><input id="stock" type="number" inputmode="numeric" min="0" value="1" required /></div>
+        <div><label for="total">Totale</label><input id="total" type="number" inputmode="numeric" min="1" value="1" /></div>
+      </div>
+
+      <label>Carica immagini (file)</label>
+      <div class="dropzone" id="drop">Trascina qui / incolla immagini / oppure seleziona</div>
+      <input id="files" type="file" accept="image/*" multiple />
+      <div class="gallery" id="gallery"></div>
+      <img id="preview" alt="" />
+
+      <div class="row" style="align-items:center;margin-top:.6rem">
+        <label class="toggle"><input id="published" type="checkbox" checked/> <span>Pubblicato</span></label>
+        <span class="status" id="formStatus"></span>
+      </div>
+
+      <div class="row" style="margin-top:.6rem">
+        <button type="submit" class="btn" id="saveBtn">Salva</button>
+        <button type="button" class="btn dim" id="resetBtn">Reset</button>
+        <button type="button" class="btn dim" id="deleteBtn" style="display:none">Elimina</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel" aria-labelledby="listTitle">
+    <h2 id="listTitle">Items</h2>
+    <div id="list" class="grid"></div>
+  </section>
+
+  <div class="fabbar">
+    <button type="button" class="btn dim" id="resetBtnMobile">Reset</button>
+    <button type="submit" form="form" class="btn" id="saveBtnMobile">Salva</button>
+  </div>
+</main>
+
+<div id="rarityModal" class="modal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rarityTitle">
+    <button class="close" data-close="rarity">✕</button>
+    <h3 id="rarityTitle">Seleziona rarità</h3>
+    <div class="starpad" id="starPad"></div>
+    <div class="actions">
+      <button class="btn dim" data-close="rarity">Annulla</button>
+      <button class="btn" id="rarityOk">Applica</button>
     </div>
-    <div id="recent" class="list"></div>
   </div>
 </div>
 
+<div id="catModal" class="modal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="catTitle">
+    <button class="close" data-close="cat">✕</button>
+    <h3 id="catTitle">Seleziona categoria</h3>
+    <div class="pick-grid" id="catGrid"></div>
+    <div class="actions">
+      <button class="btn dim" id="catClear">Pulisci</button>
+      <button class="btn" data-close="cat">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="langModal" class="modal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="langTitle">
+    <button class="close" data-close="lang">✕</button>
+    <h3 id="langTitle">Seleziona lingua</h3>
+    <div class="pick-grid" id="langGrid"></div>
+    <div class="actions">
+      <button class="btn dim" id="langClear">Pulisci</button>
+      <button class="btn" data-close="lang">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="tagModal" class="modal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="tagTitle">
+    <button class="close" data-close="tag">✕</button>
+    <h3 id="tagTitle">Seleziona tag (max 2)</h3>
+    <div class="pick-grid" id="tagGrid"></div>
+    <div class="actions">
+      <button class="btn dim" id="tagClear">Pulisci</button>
+      <button class="btn" data-close="tag">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="snack" class="snack"><span id="snackMsg"></span><button class="act" id="snackAct">OK</button></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref as dbRef, push, set, query, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-import { getStorage, ref as stRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import { getDatabase, ref, push, set, update, remove, onValue, query, orderByChild, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
 const firebaseConfig={apiKey:"AIzaSyA49iSn7qBR7TaL9q4l8X1a0HmFOaudtxs",authDomain:"thcvault-6a800.firebaseapp.com",databaseURL:"https://thcvault-6a800-default-rtdb.europe-west1.firebasedatabase.app",projectId:"thcvault-6a800",storageBucket:"thcvault-6a800.appspot.com",messagingSenderId:"746310807606",appId:"1:746310807606:web:20ccf6ea569cbf68f0a897",measurementId:"G-GT435NPY50"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-const storage=getStorage(app);
+const st=getStorage(app);
 
-const el=(id)=>document.getElementById(id);
-const filePick=el("filePick"), drop=el("drop"), thumbs=el("thumbs"), upStatus=el("upStatus");
-const titleEl=el("title"), descEl=el("desc"), categoryEl=el("category"), langEl=el("lang"), rarityEl=el("rarity"), stockEl=el("stock"), totalEl=el("total"), tagsEl=el("tags"), publishedEl=el("published"), isnewEl=el("isnew");
-const uploadBtn=el("uploadBtn"), publishBtn=el("publishBtn"), resetBtn=el("resetBtn"), pubStatus=el("pubStatus");
-const extUrls=el("extUrls"), primaryOut=el("primaryOut"), arrayOut=el("arrayOut");
-const recentBox=el("recent"), refreshBtn=el("refreshBtn");
+const form=document.getElementById("form");
+const saveBtn=document.getElementById("saveBtn");
+const resetBtn=document.getElementById("resetBtn");
+const deleteBtn=document.getElementById("deleteBtn");
+const statusEl=document.getElementById("formStatus");
 
-let files=[], urls=[];
+const filesEl=document.getElementById("files");
+const dropEl=document.getElementById("drop");
+const galleryEl=document.getElementById("gallery");
+const previewEl=document.getElementById("preview");
+const descEl=document.getElementById("desc");
+const descCount=document.getElementById("descCount");
+const draftBadge=document.getElementById("draftBadge");
 
-function renderThumbs(){
-  thumbs.innerHTML="";
-  const all=[...files.map(f=>({type:"file",src:URL.createObjectURL(f),name:f.name})), ...urls.map(u=>({type:"url",src:u}))];
-  all.forEach((it,idx)=>{
-    const d=document.createElement("div"); d.className="thumb";
-    const img=document.createElement("img"); img.alt=""; img.referrerPolicy="no-referrer"; img.decoding="async"; img.loading="lazy"; img.src=it.src;
-    const bar=document.createElement("div"); bar.className="pbar"; const i=document.createElement("i"); bar.appendChild(i);
-    d.appendChild(img); d.appendChild(bar);
-    d.dataset.index=idx; d.dataset.kind=it.type;
-    thumbs.appendChild(d);
+const rarityChip=document.getElementById("rarityChip");
+const rarityVal=document.getElementById("rarityVal");
+const rarityModal=document.getElementById("rarityModal");
+const starPad=document.getElementById("starPad");
+const rarityOk=document.getElementById("rarityOk");
+
+const catChip=document.getElementById("catChip");
+const catVal=document.getElementById("catVal");
+const catModal=document.getElementById("catModal");
+const catGrid=document.getElementById("catGrid");
+const catClear=document.getElementById("catClear");
+
+const langChip=document.getElementById("langChip");
+const langVal=document.getElementById("langVal");
+const langModal=document.getElementById("langModal");
+const langGrid=document.getElementById("langGrid");
+const langClear=document.getElementById("langClear");
+
+const tagChip=document.getElementById("tagChip");
+const tagVal=document.getElementById("tagVal");
+const tagModal=document.getElementById("tagModal");
+const tagGrid=document.getElementById("tagGrid");
+const tagClear=document.getElementById("tagClear");
+
+const autoNewChip=document.getElementById("autoNewChip");
+const autoNewVal=document.getElementById("autoNewVal");
+const snack=document.getElementById("snack");
+const snackMsg=document.getElementById("snackMsg");
+const snackAct=document.getElementById("snackAct");
+const listEl=document.getElementById("list");
+
+let gallery=[];
+let cache=[];
+let dirty=false;
+let autosaveTimer=null;
+let rarityState=3;
+let categoryState="";
+let langState="";
+let autoNew=true;
+let selectedTags=[];
+
+const categories=[["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
+const languages=[["ja","Japanese"],["it","Italian"],["en","English"],["zh","Chinese"],["other","Other"]];
+const tagOptions=["Art","Erotic","Vintage","Signed","First Edition","Limited","Underground"];
+
+function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
+function escapeHtml(s){return (s||"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function fmtDate(t){try{return new Date(t).toLocaleString()}catch{return""}}
+function setStatus(msg){statusEl.textContent=msg;setTimeout(()=>{if(statusEl.textContent===msg)statusEl.textContent=""},2200)}
+function markDirty(){dirty=true;draftBadge.textContent="Bozza salvata"}
+function snackShow(text,actionLabel,action){snackMsg.textContent=text;snack.classList.add("show");snackAct.textContent=actionLabel||"OK";snackAct.onclick=()=>{snack.classList.remove("show");if(typeof action==="function")action()};setTimeout(()=>{snack.classList.remove("show")},4000)}
+function focusTitle(){document.getElementById("title").focus({preventScroll:false})}
+function labelOf(list,val){const f=list.find(([v])=>v===val);return f?f[1]:""}
+
+const LS_KEY="gh_admin_draft_v4";
+function collectDraft(){
+  return {
+    id:document.getElementById("docId").value.trim(),
+    title:document.getElementById("title").value||"",
+    desc:descEl.value||"",
+    rarity:String(rarityState),
+    stock:document.getElementById("stock").value||"0",
+    total:document.getElementById("total").value||"1",
+    published:document.getElementById("published").checked,
+    gallery:gallery.slice(),
+    category:categoryState,
+    lang:langState,
+    autoNew:autoNew,
+    tags:selectedTags.slice()
+  }
+}
+function applyDraft(d){
+  if(!d)return;
+  document.getElementById("docId").value=d.id||"";
+  document.getElementById("title").value=d.title||"";
+  descEl.value=d.desc||"";
+  rarityState=clamp(parseInt(d.rarity||"3",10)||3,1,5);
+  rarityVal.textContent=rarityState+"★";
+  document.getElementById("stock").value=d.stock||"0";
+  document.getElementById("total").value=d.total||"1";
+  document.getElementById("published").checked=typeof d.published==="boolean"?d.published:true;
+  categoryState=d.category||"";
+  langState=d.lang||"";
+  autoNew=typeof d.autoNew==="boolean"?d.autoNew:true;
+  selectedTags=Array.isArray(d.tags)?d.tags.slice():[];
+  autoNewChip.setAttribute("aria-pressed",String(autoNew));autoNewVal.textContent=autoNew?"On":"Off";
+  catVal.textContent=categoryState?labelOf(categories,categoryState):"Seleziona";
+  langVal.textContent=langState?labelOf(languages,langState):"Seleziona";
+  tagVal.textContent=`${selectedTags.length}/2`;
+  gallery=Array.isArray(d.gallery)?d.gallery.slice():[];
+  renderGallery();
+  updateDescCount();
+}
+function scheduleAutosave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));draftBadge.textContent="Bozza salvata"},900)}
+(function restoreDraft(){const raw=localStorage.getItem(LS_KEY);if(raw){try{applyDraft(JSON.parse(raw));draftBadge.textContent="Bozza ripristinata"}catch{}}})();
+
+window.addEventListener("beforeunload",(e)=>{if(dirty){e.preventDefault();e.returnValue=""}});
+
+function renderGallery(){
+  galleryEl.innerHTML="";
+  gallery.forEach((url,idx)=>{
+    const t=document.createElement("div");
+    t.className="thumb";t.draggable=true;t.dataset.idx=idx;
+    t.innerHTML=`<img src="${url}" alt=""/><div class="ops"><button class="small star" data-cover="${idx}" title="Copertina">Cover</button><div><button class="small" data-left="${idx}" title="Sinistra">◀</button><button class="small" data-right="${idx}" title="Destra">▶</button><button class="small" data-del="${idx}" title="Elimina">Del</button></div></div>`;
+    galleryEl.appendChild(t);
   });
 }
+let dragIdx=null;
+galleryEl.addEventListener("dragstart",(e)=>{const thumb=e.target.closest(".thumb");if(!thumb)return;dragIdx=+thumb.dataset.idx;thumb.classList.add("dragging")});
+galleryEl.addEventListener("dragend",(e)=>{const thumb=e.target.closest(".thumb");if(thumb)thumb.classList.remove("dragging");dragIdx=null});
+galleryEl.addEventListener("dragover",(e)=>{e.preventDefault();const over=e.target.closest(".thumb");if(!over||dragIdx==null)return;const overIdx=+over.dataset.idx;if(dragIdx===overIdx)return;const[x]=gallery.splice(dragIdx,1);gallery.splice(overIdx,0,x);dragIdx=overIdx;renderGallery();markDirty();scheduleAutosave()});
+galleryEl.addEventListener("click",(e)=>{const cover=e.target.closest("[data-cover]");const left=e.target.closest("[data-left]");const right=e.target.closest("[data-right]");const del=e.target.closest("[data-del]");if(cover){const i=+cover.getAttribute("data-cover");const[x]=gallery.splice(i,1);gallery.unshift(x);renderGallery()}else if(left){const i=+left.getAttribute("data-left");if(i>0){[gallery[i-1],gallery[i]]=[gallery[i],gallery[i-1]];renderGallery()}}else if(right){const i=+right.getAttribute("data-right");if(i<gallery.length-1){[gallery[i+1],gallery[i]]=[gallery[i],gallery[i+1]];renderGallery()}}else if(del){const i=+del.getAttribute("data-del");gallery.splice(i,1);renderGallery()}markDirty();scheduleAutosave()});
 
-function pickFiles(list){
-  for(const f of list){
-    if(!f.type.startsWith("image/")) continue;
-    files.push(f);
-  }
-  renderThumbs(); updateOutputs();
+async function uploadFile(file){
+  const safeName=file.name.replace(/[^a-z0-9\.\-_]/gi,"_");
+  const path=`items/${Date.now()}_${Math.floor(Math.random()*1e9)}_${safeName}`.slice(0,750);
+  const refS=sRef(st,path);
+  const task=uploadBytesResumable(refS,file,{contentType:file.type||"image/jpeg",cacheControl:"public,max-age=31536000,immutable"});
+  return new Promise((res,rej)=>{task.on("state_changed",()=>{},rej,async()=>{const url=await getDownloadURL(task.snapshot.ref);gallery.push(url);renderGallery();res(url)})});
 }
-filePick.addEventListener("change",(e)=>{ pickFiles(e.target.files||[]) });
+filesEl.addEventListener("change",async e=>{const files=[...(e.target.files||[])];if(!files.length)return;statusEl.textContent="Caricamento…";for(const f of files){await uploadFile(f)}statusEl.textContent="Upload completo";markDirty();scheduleAutosave()});
+["dragenter","dragover"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault();dropEl.classList.add("active")}));
+["dragleave","drop"].forEach(ev=>dropEl.addEventListener(ev,(e)=>{e.preventDefault();dropEl.classList.remove("active")}));
+dropEl.addEventListener("drop",async e=>{const dt=e.dataTransfer;if(!dt)return;const files=[...(dt.files||[])].filter(f=>/^image\//.test(f.type));if(!files.length)return;statusEl.textContent="Caricamento…";for(const f of files){await uploadFile(f)}statusEl.textContent="Upload completo";markDirty();scheduleAutosave()});
+document.addEventListener("paste",async e=>{const items=e.clipboardData?.items||[];const images=[...items].map(i=>i.getAsFile()).filter(f=>f&&/^image\//.test(f.type));if(!images.length)return;statusEl.textContent="Caricamento…";for(const f of images){await uploadFile(f)}statusEl.textContent="Upload completo";markDirty();scheduleAutosave()});
 
-;["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,(e)=>{e.preventDefault();drop.classList.add("drag")},{passive:false}));
-;["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,(e)=>{e.preventDefault();drop.classList.remove("drag")},{passive:false}));
-drop.addEventListener("drop",(e)=>{e.preventDefault();const dt=e.dataTransfer; if(dt?.files) pickFiles(dt.files)});
+function updateDescCount(){const n=(descEl.value||"").length;descCount.textContent=`${n} chars`}
+descEl.addEventListener("input",()=>{updateDescCount();markDirty();scheduleAutosave()});
+["title","stock","total","published"].forEach(id=>{const el=document.getElementById(id);el.addEventListener(el.type==="checkbox"?"change":"input",()=>{if(id==="stock")el.value=String(Math.max(0,parseInt(el.value||"0",10)||0));if(id==="total")el.value=String(Math.max(1,parseInt(el.value||"1",10)||1));markDirty();scheduleAutosave()})});
 
-function parseExtUrls(){
-  const lines=(extUrls.value||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  urls=[...new Set(lines)];
-  renderThumbs(); updateOutputs();
-}
-extUrls.addEventListener("blur",parseExtUrls);
+const itemsRef=ref(db,"items");
 
-function setBar(idx,percent){
-  const t=thumbs.children[idx]; if(!t) return;
-  const i=t.querySelector(".pbar>i"); if(i) i.style.width=percent+"%";
-}
-
-async function uploadAll(){
-  if(files.length===0){ upStatus.textContent="No local files to upload"; return; }
-  uploadBtn.disabled=true; upStatus.textContent="Uploading…";
-  const out=[];
-  for(let k=0;k<files.length;k++){
-    const f=files[k];
-    const path=`items/${Date.now()}_${Math.floor(Math.random()*1e9)}_${encodeURIComponent(f.name)}`.slice(0,750);
-    const ref=stRef(storage,path);
-    await new Promise((resolve,reject)=>{
-      const task=uploadBytesResumable(ref,f,{cacheControl:"public,max-age=31536000,immutable"});
-      task.on("state_changed",(snap)=>{
-        const pct=Math.round(100*snap.bytesTransferred/snap.totalBytes);
-        setBar(k,pct);
-      },reject,async()=>{
-        const url=await getDownloadURL(task.snapshot.ref);
-        out.push(url); resolve();
-      });
-    });
-  }
-  urls=[...out, ...urls];
-  files=[]; filePick.value="";
-  renderThumbs();
-  upStatus.textContent=`Uploaded ${out.length} image(s)`;
-  updateOutputs();
-  uploadBtn.disabled=false;
-}
-
-function updateOutputs(){
-  primaryOut.textContent=urls[0]||"";
-  arrayOut.textContent=urls.length?JSON.stringify(urls):"[]";
-}
-
-function parseTags(){
-  const raw=(tagsEl.value||"").split(",").map(s=>s.trim()).filter(Boolean);
-  return Array.from(new Set(raw));
-}
-
-async function publish(){
-  const title=(titleEl.value||"").trim();
-  if(!title){ pubStatus.textContent="Title required"; pubStatus.className="status err"; return; }
-  const data={
-    title,
-    desc:(descEl.value||"").trim(),
-    category:categoryEl.value||"misc",
-    lang:langEl.value||"other",
-    rarity:Math.max(1,Math.min(5,Number(rarityEl.value||3))),
-    stock:Math.max(0,Number(stockEl.value||0)),
-    total:Math.max(1,Number(totalEl.value||1)),
-    tags:parseTags(),
-    published:!!publishedEl.checked,
-    addedAt:Date.now()
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const id=document.getElementById("docId").value.trim();
+  const title=document.getElementById("title");
+  const stock=document.getElementById("stock");
+  const total=document.getElementById("total");
+  if(!title.value.trim()){setStatus("Titolo obbligatorio");title.focus();return}
+  if(!gallery.length){snackShow("Carica almeno una immagine","OK");return}
+  if(!total.value)total.value=Math.max(1,parseInt(stock.value||"1",10));
+  const payload={
+    title:title.value.trim(),
+    desc:descEl.value.trim(),
+    img:gallery[0]||"",
+    imgs:gallery.slice(),
+    rarity:clamp(rarityState,1,5),
+    stock:Math.max(0,parseInt(stock.value||"0",10)||0),
+    total:Math.max(1,parseInt(total.value||"1",10)||1),
+    category:categoryState||"",
+    lang:langState||"",
+    tags:selectedTags.slice(),
+    published:document.getElementById("published").checked
   };
-  if(isnewEl.checked) data.isnew=1;
-  if(urls[0]) data.img=urls[0];
-  if(urls.length) data.imgs=urls.slice();
+  try{
+    saveBtn.disabled=true;
+    if(id){
+      await update(ref(db,`items/${id}`),payload);
+      setStatus("Aggiornato ✓");
+      dirty=false;draftBadge.textContent="Salvato";localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+      snackShow("Item aggiornato","OK");
+    }else{
+      const newRef=push(itemsRef);
+      await set(newRef,{...payload,addedAt:serverTimestamp()});
+      document.getElementById("docId").value=newRef.key;
+      dirty=false;draftBadge.textContent="Salvato";
+      localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+      setStatus("Creato ✓");
+      if(autoNew){
+        prepareForNext();
+        snackShow("Creato e pronto al prossimo","Focus",()=>focusTitle());
+      }else{
+        snackShow("Item creato","Nuovo",()=>prepareForNext());
+      }
+    }
+  }catch(err){
+    alert(err.message);setStatus("Errore");
+  }finally{
+    saveBtn.disabled=false;
+  }
+});
 
-  const node=push(dbRef(db,"items"));
-  await set(node,data);
-
-  pubStatus.textContent="Published ✓"; pubStatus.className="status ok";
-  refreshRecent();
+function prepareForNext(){
+  const keepCat=categoryState,keepLang=langState,keepRar=rarityState,keepPub=document.getElementById("published").checked;
+  form.reset();
+  document.getElementById("docId").value="";
+  categoryState=keepCat;langState=keepLang;rarityState=keepRar;
+  document.getElementById("published").checked=keepPub;
+  catVal.textContent=categoryState?labelOf(categories,categoryState):"Seleziona";
+  langVal.textContent=langState?labelOf(languages,langState):"Seleziona";
+  rarityVal.textContent=rarityState+"★";
+  selectedTags=[];tagVal.textContent="0/2";
+  gallery=[];renderGallery();
+  document.getElementById("stock").value="1";
+  document.getElementById("total").value="1";
+  updateDescCount();
+  draftBadge.textContent="";
+  localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+  focusTitle();
+  deleteBtn.style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function resetForm(){
-  titleEl.value=""; descEl.value=""; tagsEl.value="";
-  rarityEl.value=3; stockEl.value=1; totalEl.value=1; publishedEl.checked=true; isnewEl.checked=false;
-  files=[]; urls=[]; filePick.value=""; extUrls.value="";
-  thumbs.innerHTML=""; updateOutputs(); pubStatus.textContent="";
+window.addEventListener("keydown",(e)=>{if((e.ctrlKey||e.metaKey)&&(e.key==="s"||e.key==="S")){e.preventDefault();form.requestSubmit()}if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();form.requestSubmit()}})
+document.getElementById("resetBtnMobile")?.addEventListener("click",()=>resetBtn.click());
+resetBtn.addEventListener("click",()=>{if(dirty&&!confirm("Scartare le modifiche?"))return;hardReset()});
+function hardReset(){
+  form.reset();document.getElementById("docId").value="";deleteBtn.style.display="none";statusEl.textContent="";previewEl.style.display="none";gallery=[];renderGallery();updateDescCount();dirty=false;draftBadge.textContent="";localStorage.removeItem(LS_KEY);rarityState=3;rarityVal.textContent="3★";categoryState="";langState="";selectedTags=[];catVal.textContent="Seleziona";langVal.textContent="Seleziona";tagVal.textContent="0/2"
 }
 
-async function refreshRecent(){
-  recentBox.innerHTML="";
-  const q=query(dbRef(db,"items"),limitToLast(20));
-  onValue(q,(snap)=>{
-    const val=snap.val()||{};
-    const list=Object.entries(val).map(([id,v])=>({id,...v})).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
-    recentBox.innerHTML="";
-    list.forEach(it=>{
-      const row=document.createElement("div"); row.className="item";
-      const left=document.createElement("div");
-      const right=document.createElement("div");
-      left.innerHTML=`<b>${it.title||"Untitled"}</b><div class="small">${it.category||"-"} • ${it.lang||"-"} • rarity ${it.rarity||"-"}</div>`;
-      right.innerHTML=`<span class="small ${it.published?"ok":"err"}">${it.published?"published":"hidden"}</span>`;
-      row.appendChild(left); row.appendChild(right);
-      recentBox.appendChild(row);
-    });
-  },{onlyOnce:true});
+const qRef=query(itemsRef,orderByChild("addedAt"));
+onValue(qRef,snap=>{const obj=snap.val()||{};const arr=Object.entries(obj).map(([id,v])=>({id,...v}));cache=arr.sort((a,b)=>(b.addedAt??0)-(a.addedAt??0));renderList(cache)});
+
+function renderList(arr){
+  listEl.innerHTML="";
+  arr.forEach(it=>{
+    const row=document.createElement("div");
+    row.className="item";
+    const when=typeof it.addedAt==="number"?fmtDate(it.addedAt):"";
+    const cover=(Array.isArray(it.imgs)&&it.imgs[0])||it.img||"";
+    const imgCount=Array.isArray(it.imgs)?it.imgs.length:(it.img?1:0);
+    const descLen=(it.desc||"").length;
+    const warnCover=!cover?'<span class="pill warn">no-cover</span>':'';
+    const warnDesc=descLen<40?'<span class="pill warn">desc&lt;40</span>':'';
+    const catPill=it.category?`<span class="pill">${escapeHtml(labelOf(categories,it.category))}</span>`:'';
+    const langPill=it.lang?`<span class="pill">${escapeHtml(labelOf(languages,it.lang))}</span>`:'';
+    const tagPills=(Array.isArray(it.tags)?it.tags:[]).map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join('');
+    row.innerHTML=`<img src="${cover}" alt="cover"/><div><div style="display:flex; align-items:center; gap:.5rem; flex-wrap:wrap"><strong>${escapeHtml(it.title||"Untitled")}</strong><span class="pill">★${it.rarity||0}</span><span class="kicker">${when}</span><div class="pills"><span class="pill">${it.published?"Pubblicato":"Bozza"}</span><span class="pill">${it.stock??0}/${it.total??1}</span><span class="pill">imgs:${imgCount}</span><span class="pill">len:${descLen}</span>${catPill}${langPill}${tagPills}${warnCover}${warnDesc}</div></div><div class="sub" style="margin-top:.25rem">${escapeHtml((it.desc||"").slice(0,160))}${(it.desc||"").length>160?"…":""}</div></div><div class="actions"><button class="a" data-dup="${it.id}" title="Duplica">Dup</button><button class="a" data-copy="${it.id}" title="Copia ID">ID</button><button class="a" data-edit="${it.id}">Modifica</button><label class="toggle" title="Pubblica"><input type="checkbox" ${it.published?"checked":""} data-pub="${it.id}"/></label><button class="a del" data-del="${it.id}">Del</button></div>`;
+    listEl.appendChild(row);
+  });
+
+  listEl.onclick=async ev=>{
+    const t=ev.target;
+    const edit=t.closest("[data-edit]");
+    const del=t.closest("[data-del]");
+    const pub=t.closest("[data-pub] input");
+    const dup=t.closest("[data-dup]");
+    const cpy=t.closest("[data-copy]");
+    if(edit){
+      const id=edit.getAttribute("data-edit");
+      const data=cache.find(x=>x.id===id);
+      if(!data)return;
+      if(dirty&&!confirm("Le modifiche non salvate verranno perse. Continuare?"))return;
+      document.getElementById("docId").value=id;
+      document.getElementById("title").value=data.title||"";
+      descEl.value=data.desc||"";
+      rarityState=clamp(parseInt(data.rarity||"3",10)||3,1,5);
+      rarityVal.textContent=rarityState+"★";
+      document.getElementById("stock").value=data.stock||0;
+      document.getElementById("total").value=data.total||1;
+      document.getElementById("published").checked=!!data.published;
+      categoryState=data.category||"";
+      langState=data.lang||"";
+      selectedTags=Array.isArray(data.tags)?data.tags.slice():[];
+      catVal.textContent=categoryState?labelOf(categories,categoryState):"Seleziona";
+      langVal.textContent=langState?labelOf(languages,langState):"Seleziona";
+      tagVal.textContent=`${selectedTags.length}/2`;
+      gallery=Array.isArray(data.imgs)?data.imgs.slice():(data.img?[data.img]:[]);
+      renderGallery();updateDescCount();
+      deleteBtn.style.display="inline-block";
+      statusEl.textContent=`Modifica ${id}`;
+      dirty=false;draftBadge.textContent="";
+      localStorage.setItem(LS_KEY,JSON.stringify(collectDraft()));
+      window.scrollTo({top:0,behavior:"smooth"});
+    }else if(del){
+      const id=del.getAttribute("data-del");
+      if(!confirm("Eliminare questo item?"))return;
+      try{await remove(ref(db,`items/${id}`));snackShow("Item eliminato","OK")}catch(err){alert(err.message)}
+    }else if(pub){
+      const id=pub.getAttribute("data-pub");
+      try{await update(ref(db,`items/${id}`),{published:pub.checked});snackShow(pub.checked?"Pubblicato":"Non pubblicato","OK")}
+      catch(err){alert(err.message);pub.checked=!pub.checked}
+    }else if(dup){
+      const id=dup.getAttribute("data-dup");
+      const data=cache.find(x=>x.id===id);
+      if(!data)return;
+      try{
+        const newRef=push(itemsRef);
+        const payload={...data};
+        delete payload.id;
+        payload.addedAt=serverTimestamp();
+        await set(newRef,payload);
+        setStatus("Duplicato ✓");
+        snackShow("Duplicato","Apri",()=>{document.querySelector(`[data-edit="${newRef.key}"]`)?.click()})
+      }catch(err){alert(err.message)}
+    }else if(cpy){
+      const id=cpy.getAttribute("data-copy");
+      try{await navigator.clipboard.writeText(id);setStatus("ID copiato")}catch{}
+    }
+  };
 }
 
-uploadBtn.addEventListener("click",uploadAll);
-publishBtn.addEventListener("click",publish);
-resetBtn.addEventListener("click",resetForm);
-refreshBtn.addEventListener("click",refreshRecent);
+function openModal(el){document.body.style.overflow="hidden";el.classList.add("open");el.setAttribute("aria-hidden","false")}
+function closeModal(el){el.classList.remove("open");el.setAttribute("aria-hidden","true");if(!document.querySelector(".modal.open"))document.body.style.overflow=""}
+document.querySelectorAll('.modal .overlay,[data-close="rarity"],[data-close="cat"],[data-close="lang"],[data-close="tag"]').forEach(b=>b.addEventListener("click",()=>{closeModal(rarityModal);closeModal(catModal);closeModal(langModal);closeModal(tagModal)}));
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(rarityModal);closeModal(catModal);closeModal(langModal);closeModal(tagModal)}});
 
-refreshRecent();
+function renderStarPad(){
+  starPad.innerHTML="";
+  for(let i=1;i<=5;i++){
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent="★";
+    if(i<=rarityState)b.classList.add("on");
+    b.onclick=()=>{rarityState=i;renderStarPad()};
+    starPad.appendChild(b);
+  }
+}
+rarityChip.addEventListener("click",()=>{renderStarPad();openModal(rarityModal)});
+rarityOk.addEventListener("click",()=>{rarityVal.textContent=rarityState+"★";closeModal(rarityModal);markDirty();scheduleAutosave()});
+
+function renderPickGrid(grid,items,current,cb){
+  grid.innerHTML="";
+  items.forEach(([val,label])=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="pick";b.textContent=label;
+    if(val===current)b.setAttribute("aria-current","true");
+    b.onclick=()=>{cb(val,label);renderPickGrid(grid,items,val,cb);markDirty();scheduleAutosave()};
+    grid.appendChild(b);
+  });
+}
+catChip.addEventListener("click",()=>{renderPickGrid(catGrid,categories,categoryState,(v,l)=>{categoryState=v;catVal.textContent=l});openModal(catModal)});
+catClear.addEventListener("click",()=>{categoryState="";catVal.textContent="Seleziona";markDirty();scheduleAutosave()});
+langChip.addEventListener("click",()=>{renderPickGrid(langGrid,languages,langState,(v,l)=>{langState=v;langVal.textContent=l});openModal(langModal)});
+langClear.addEventListener("click",()=>{langState="";langVal.textContent="Seleziona";markDirty();scheduleAutosave()});
+
+function renderTagGrid(){
+  tagGrid.innerHTML="";
+  tagOptions.forEach(label=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="pick";b.textContent=label;
+    if(selectedTags.includes(label))b.setAttribute("aria-current","true");
+    b.onclick=()=>{
+      if(selectedTags.includes(label)){selectedTags=selectedTags.filter(t=>t!==label)}
+      else{
+        if(selectedTags.length<2) selectedTags=[...selectedTags,label];
+        else selectedTags=[selectedTags[1],label];
+      }
+      tagVal.textContent=`${selectedTags.length}/2`;
+      renderTagGrid();
+      markDirty();scheduleAutosave();
+    };
+    tagGrid.appendChild(b);
+  });
+}
+tagChip.addEventListener("click",()=>{renderTagGrid();openModal(tagModal)});
+tagClear.addEventListener("click",()=>{selectedTags=[];tagVal.textContent="0/2";renderTagGrid();markDirty();scheduleAutosave()});
+
+document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
+window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 </script>
 </body>
 </html>
+
 
 
 
