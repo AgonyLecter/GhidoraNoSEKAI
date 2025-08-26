@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@700&display=swap" rel="stylesheet" />
 <link rel="dns-prefetch" href="https://www.gstatic.com" />
 <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
-<link rel="dns-prefetch" href="https://wandernatureconnect-default-rtdb.europe-west1.firebasedatabase.app" />
+<link rel="dns-prefetch" href="https://thcvault-6a800-default-rtdb.europe-west1.firebasedatabase.app" />
 <link rel="preload" as="image" href="Ghidorah1.png" imagesizes="96px" fetchpriority="high" />
 <meta name="theme-color" content="#000000" />
 <link rel="canonical" id="canon" href="/" />
@@ -530,6 +530,8 @@ const vFs=viewer.querySelector(".fs");
 const loader=viewer.querySelector(".loader");
 let vList=[],vIndex=0,vTicket=0;
 function setInert(active){
+  const headerEl=document.querySelector("header");
+  const mainEl=document.getElementById("mainContent");
   [headerEl, mainEl].forEach(el=>{ if(!el) return; active?el.setAttribute("inert",""):el.removeAttribute("inert"); });
 }
 function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
@@ -674,6 +676,8 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
+
+
 
 
 
