@@ -61,23 +61,26 @@ h1{font-size:clamp(1.6rem,5vw,2.4rem);background:linear-gradient(90deg,var(--gol
 .skel{background:linear-gradient(180deg,#0d0d10,#131317);border:1px solid #1e1e22;border-radius:var(--radius);overflow:hidden;min-height:calc((100% / (var(--card-media-ratio))) + var(--body-extra));position:relative}
 footer{text-align:center;font-size:.85rem;color:#888a;padding:1.2rem 1rem;border-top:1px solid #222}
 vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-size:auto 420px}
+
+/* VIEWER (fullscreen immediato) */
 .viewer{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;touch-action:none}
 .viewer.active{display:flex}
 .viewer > img{max-width:96vw;max-height:72vh;object-fit:contain;image-orientation:from-image;display:none}
 .viewer .nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .viewer .prev{left:12px}.viewer .next{right:12px}
 .viewer .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.viewer .fs{position:absolute;top:12px;right:60px;width:40px;height:40px;border-radius:50%;border:1px solid #444;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.viewer .fs[aria-pressed="true"]{outline:2px solid rgba(255,215,0,.5)}
 .viewer .thumbs{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;overflow:auto;padding:6px 10px}
 .viewer .thumbs::-webkit-scrollbar{height:6px}
 .viewer .thumb{width:56px;height:56px;border:1px solid #555;border-radius:8px;overflow:hidden;flex:0 0 auto;background:#0f0f0f;display:grid;place-items:center;cursor:pointer}
 .viewer .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .viewer .thumb[aria-current="true"]{outline:2px solid #ffd700;box-shadow:0 0 10px rgba(255,215,0,.5)}
 .viewer .loader{position:absolute;inset:0 0 64px 0;display:grid;place-items:center;pointer-events:none}
-.viewer .loader .glyph{font-size:42px;letter-spacing:.2em;color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.45)}
+.viewer .loader .glyph{font-size:42px;letter-spacing:.2em;color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.45);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.06);opacity:1}100%{transform:scale(1);opacity:.85}}
-.viewer .loader .glyph{animation:pulse 1.4s ease-in-out infinite}
+/* Nascondo il bottone FS (ora si entra auto). Mantengo il tasto chiudi. */
+.viewer .fs{ display:none !important; }
+
+/* SHEET / MODALS */
 .sheet{position:fixed;inset:0;z-index:1100;display:none}
 .sheet.open{display:block}
 .sheet .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -93,6 +96,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
 .sheet .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
 .sheet .tag{border:1px solid #3a3a3a;border-radius:999px;padding:.2rem .6rem;font-size:.82rem;background:#151515;color:#ddd}
 .sheet .tag.gold{border-color:#5c4a00;background:#221b00;color:#ffd700}
+
 .cat-modal,.tag-modal{position:fixed;inset:0;z-index:1200;display:none}
 .cat-modal.open,.tag-modal.open{display:block}
 .cat-modal .overlay,.tag-modal .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -145,8 +149,11 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
   <section class="grid" id="items" aria-live="polite"></section>
 </main>
 <footer>© 2025 Ghidorah no Sekai — Vintage &amp; Rare Comics Vault</footer>
+
+<!-- VIEWER (fullscreen diretto) -->
 <div id="viewer" class="viewer" aria-hidden="true">
   <button class="close" aria-label="Close">✕</button>
+  <!-- fs button nascosto via CSS, lasciato per compatibilità -->
   <button class="fs" aria-label="Fullscreen" aria-pressed="false" title="Fullscreen">⤢</button>
   <button class="nav prev" aria-label="Previous">‹</button>
   <img alt="" />
@@ -154,6 +161,8 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
   <div class="thumbs" role="tablist" aria-label="Thumbnails"></div>
   <div class="loader" aria-hidden="true"><div class="glyph">ギドラ</div></div>
 </div>
+
+<!-- SHEET -->
 <div id="sheet" class="sheet" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -169,6 +178,8 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     </div>
   </div>
 </div>
+
+<!-- MODALS -->
 <div id="catModal" class="cat-modal" aria-hidden="true">
   <div class="overlay"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="catTitle">
@@ -185,6 +196,7 @@ vault-card{display:block;height:100%;content-visibility:auto;contain-intrinsic-s
     <div class="tag-grid" id="tagGrid"></div>
   </div>
 </div>
+
 <script>
 class VaultCard extends HTMLElement{
   static get observedAttributes(){return["title","desc","imgs","rarity","stock","total","isnew","id","category","lang","tags"]}
@@ -276,6 +288,7 @@ class VaultCard extends HTMLElement{
     const category=this.getAttribute("category")||"";
     const lang=this.getAttribute("lang")||"";
     let tags=[];try{tags=JSON.parse(this.getAttribute("tags")||"[]")}catch{tags=[]}
+
     const media=r.querySelector(".media");
     const track=r.querySelector(".track");
     const dots=r.querySelector(".dots");
@@ -283,6 +296,7 @@ class VaultCard extends HTMLElement{
     const next=r.querySelector(".nav.next");
     const tag=r.querySelector(".tag");
     const seal=r.querySelector(".seal");
+
     track.innerHTML="";dots.innerHTML="";
     const PREVIEW_MAX=6;
     const allSlides=imgs.length?imgs:["__NOIMG__"];
@@ -291,6 +305,7 @@ class VaultCard extends HTMLElement{
     media.classList.toggle("has-more",extra>0);
     media.querySelector(".more")?.replaceChildren(document.createTextNode(extra>0?`+${extra}`:""));
     this._idx=Math.min(this._idx,this._slides.length-1);this._idx=Math.max(this._idx,0);
+
     this._slides.forEach((src,i)=>{
       const slide=document.createElement("figure");slide.className="slide";
       if(src==="__NOIMG__"){slide.innerHTML=`<div class="noimg" aria-label="No image"><div class="glyph">無</div></div>`}
@@ -311,12 +326,15 @@ class VaultCard extends HTMLElement{
         dots.appendChild(dot);
       }
     });
+
+    // Apri subito il viewer in fullscreen (lista completa, niente __NOIMG__)
     media.onclick=(e)=>{ if(e.target.closest(".details")) return;
       const all=allSlides.filter(s=>s!=="__NOIMG__");
       if(all.length) window.dispatchEvent(new CustomEvent("open-viewer",{detail:{imgs:all,index:this._idx}}));
     };
-    const upd=()=>{track.style.transform=`translate3d(-${this._idx*100}%,0,0)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)))};
-    this._go=(i)=>{this._idx=(i+this._slides.length)%this._slides.length;upd()};
+
+    const upd=()=>{track.style.transform=`translate3d(-${this._idx*100}%,0,0)`;[...dots.children].forEach((d,i)=>d.setAttribute("aria-current",String(i===this._idx)));}
+    this._go=(i)=>{this._idx=(i+this._slides.length)%this._slides.length;track.style.transition="transform .28s ease";upd()}
     prev.onclick=()=>this._go(this._idx-1);
     next.onclick=()=>this._go(this._idx+1);
     const multi=this._slides.length>1;
@@ -324,18 +342,47 @@ class VaultCard extends HTMLElement{
     prev.classList.toggle("multi",multi);next.classList.toggle("multi",multi);
     dots.style.display=multi?"flex":"none";
     upd();
-    let sx=0,sy=0,cx=0,cy=0,drag=false,lockedAxis=null;
-    const onDown=e=>{drag=true;lockedAxis=null;const p=e.touches?e.touches[0]:e; sx=p.clientX; sy=p.clientY; cx=sx; cy=sy;};
-    const onMove=e=>{if(!drag)return;const p=e.touches?e.touches[0]:e; cx=p.clientX; cy=p.clientY; const dx=cx-sx, dy=cy-sy;
-      if(!lockedAxis){ if(Math.abs(dx)>8||Math.abs(dy)>8){lockedAxis=Math.abs(dx)>Math.abs(dy)?"x":"y"} }
-      if(lockedAxis==="x"){ if(e.cancelable)e.preventDefault(); if(Math.abs(dx)>50){dx<0?this._go(this._idx+1):this._go(this._idx-1); sx=cx; sy=cy} }
-    };
-    const onUp=()=>{drag=false;lockedAxis=null};
+
+    // --- Swipe con INERZIA stile Vinted (pointer events) ---
+    let drag=false, axis=null, startX=0, startY=0, lastX=0, lastT=0, vel=0, dxLive=0;
     const surface=track.parentElement;
+
+    const onDown=(e)=>{
+      drag=true; axis=null; vel=0; dxLive=0;
+      startX=lastX=e.clientX; startY=e.clientY; lastT=performance.now();
+      track.style.transition="none";
+      surface.setPointerCapture?.(e.pointerId||0);
+    };
+    const onMove=(e)=>{
+      if(!drag) return;
+      const now=performance.now();
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+      if(!axis){
+        if(Math.abs(dx)>8||Math.abs(dy)>8) axis=(Math.abs(dx)>Math.abs(dy)?"x":"y");
+      }
+      if(axis==="x"){
+        e.preventDefault();
+        vel=(e.clientX-lastX)/Math.max(1,now-lastT); // px/ms
+        lastX=e.clientX; lastT=now; dxLive=dx;
+        track.style.transform=`translate3d(calc(-${this._idx*100}% + ${dx/3}px),0,0)`;
+      }
+    };
+    const onUp=()=>{
+      if(!drag) return; drag=false; axis=null;
+      track.style.transition="transform .25s ease";
+      const threshold=50;
+      const fast=Math.abs(vel)>0.35;
+      if(dxLive<-threshold || (fast && vel<0)) this._go(this._idx+1);
+      else if(dxLive>threshold || (fast && vel>0)) this._go(this._idx-1);
+      else this._go(this._idx);
+    };
     surface.addEventListener("pointerdown",onDown,{passive:false});
     surface.addEventListener("pointermove",onMove,{passive:false});
     surface.addEventListener("pointerup",onUp,{passive:true});
     surface.addEventListener("pointercancel",onUp,{passive:true});
+
+    // NEW badge, meta, CTA
     tag.classList.toggle("sparkle",!!isNew);
     const qtyTxt=available?(total>1?`${stock}/${total}`:`1/1`):"SOLD OUT";
     seal.textContent=available?`AVAILABLE — ${qtyTxt}`:qtyTxt;
@@ -355,18 +402,22 @@ class VaultCard extends HTMLElement{
 }
 customElements.define("vault-card",VaultCard);
 </script>
+
 <script>
 window.io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("reveal");window.io.unobserve(e.target)}})},{rootMargin:"60px"});
 document.addEventListener("contextmenu",e=>e.preventDefault(),{passive:!1});
 window.addEventListener("keydown",e=>{const t=(e.key||"").toLowerCase();("f12"===t||e.ctrlKey&&"u"===t||e.ctrlKey&&e.shiftKey&&["i","j","c","s"].includes(t))&&(e.preventDefault(),e.stopPropagation())},!0);
 const canon=document.getElementById("canon");try{canon.href=location.href.split("#")[0]}catch{}
 </script>
+
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 const firebaseConfig={apiKey:"AIzaSyA49iSn7qBR7TaL9q4l8X1a0HmFOaudtxs",authDomain:"thcvault-6a800.firebaseapp.com",databaseURL:"https://thcvault-6a800-default-rtdb.europe-west1.firebasedatabase.app",projectId:"thcvault-6a800",storageBucket:"thcvault-6a800.appspot.com",messagingSenderId:"746310807606",appId:"1:746310807606:web:20ccf6ea569cbf68f0a897",measurementId:"G-GT435NPY50"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
+
 const container=document.getElementById("items");
 const btnFilter=document.getElementById("filter-available");
 const btnNewest=document.getElementById("filter-newest");
@@ -378,12 +429,12 @@ const tagBtn=document.getElementById("tag-btn");
 const tagModal=document.getElementById("tagModal");
 const tagGrid=document.getElementById("tagGrid");
 const countNum=document.getElementById("countNum");
-const headerEl=document.querySelector("header");
-const mainEl=document.getElementById("mainContent");
+
 let filterAvailable=false, filterNewest=false, cache=[], filterCategory="all", qTerm="";
 let selectedTags=[];
 const categories=[["all","All"],["editoriale_corno","Editoriale Corno"],["usa_comics","USA Comics"],["art","Art"],["manga_japanese","Manga (Japanese)"],["manga_italian","Manga (Italian)"],["collectibles","Collectibles"],["misc","Misc"]];
 const tagOptions=["Art","Erotic","Vintage","Signed","First Edition","Limited","Underground"];
+
 function renderSkeleton(n){container.innerHTML="";for(let i=0;i<n;i++){const d=document.createElement("div");d.className="skel";container.appendChild(d)}}
 function renderEmpty(){container.innerHTML=`<div style="grid-column:1/-1;color:#bbb;text-align:center;padding:24px;border:1px dashed #333;border-radius:12px">Vault is empty</div>`}
 function updateJsonLd(list){
@@ -442,6 +493,7 @@ btnFilter?.addEventListener("click",()=>{filterAvailable=!filterAvailable;btnFil
 btnNewest?.addEventListener("click",()=>{filterNewest=!filterNewest;btnNewest.setAttribute("aria-pressed",String(filterNewest));applyView()});
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
 qInput?.addEventListener("input",debounce(()=>{qTerm=(qInput.value||"").toLowerCase().trim();applyView()},120));
+
 let bodyLockCount=0;
 function getScrollbarW(){return window.innerWidth - document.documentElement.clientWidth}
 function lockBody(lock){
@@ -510,6 +562,8 @@ tagModal.querySelector(".overlay").addEventListener("click",closeTagModal);
 document.getElementById("tagClose").addEventListener("click",closeTagModal);
 window.addEventListener("keydown",e=>{if(tagModal.classList.contains("open")&&e.key==="Escape")closeTagModal()});
 </script>
+
+<!-- GSAP logo glow -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
 const tl=gsap.timeline({repeat:-1,yoyo:true,defaults:{ease:"sine.inOut"}});
@@ -519,6 +573,8 @@ tl.to(".logo-stage .g1",{duration:3.6,opacity:1,scale:1.08})
   .to(".logo",{duration:3.2,scale:1.03},0);
 gsap.to(".logo-stage .g2",{duration:22,rotate:360,repeat:-1,ease:"none"});
 </script>
+
+<!-- VIEWER: fullscreen diretto + tasto chiudi + gesture -->
 <script>
 const viewer=document.getElementById("viewer");
 const vImg=viewer.querySelector("img");
@@ -526,48 +582,39 @@ const vClose=viewer.querySelector(".close");
 const vPrev=viewer.querySelector(".prev");
 const vNext=viewer.querySelector(".next");
 const vStrip=viewer.querySelector(".thumbs");
-const vFs=viewer.querySelector(".fs");
 const loader=viewer.querySelector(".loader");
-let vList=[],vIndex=0,vTicket=0;
+let vList=[],vIndex=0,vTicket=0,swipeStartX=0,swipeStartY=0,swipeDX=0,swipeDY=0;
+
 function setInert(active){
   const headerEl=document.querySelector("header");
   const mainEl=document.getElementById("mainContent");
   [headerEl, mainEl].forEach(el=>{ if(!el) return; active?el.setAttribute("inert",""):el.removeAttribute("inert"); });
 }
-function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
-async function enterFS(el){ if(el.requestFullscreen) await el.requestFullscreen(); else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen(); }
-async function exitFS(){ if(document.exitFullscreen) await document.exitFullscreen(); else if(document.webkitExitFullscreen) document.webkitExitFullscreen(); }
 function showLoader(on){
   loader.style.display=on?"grid":"none";
   vImg.style.display=on?"none":"block";
 }
 function setThumbCurrent(){
-  [...vStrip.children].forEach((th,i)=>{
-    if(i===vIndex) th.setAttribute("aria-current","true");
-    else th.removeAttribute("aria-current");
-  });
+  [...vStrip.children].forEach((th,i)=> th.toggleAttribute("aria-current", i===vIndex));
 }
+function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+async function enterFS(el){ try{ if(el.requestFullscreen) await el.requestFullscreen(); else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen(); }catch{} }
+async function exitFS(){ try{ if(document.exitFullscreen) await document.exitFullscreen(); else if(document.webkitExitFullscreen) document.webkitExitFullscreen(); }catch{} }
+
 async function loadCurrentImage(myTicket){
   const src=vList[vIndex]||"";
   vImg.style.display="none";
   showLoader(true);
   if(!src){ vImg.removeAttribute("src"); showLoader(false); return; }
-  vImg.onload=null; 
-  vImg.onerror=null;
-  const done=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
-  const fail=()=>{ if(myTicket!==vTicket) return; showLoader(false); };
-  vImg.onload=done;
-  vImg.onerror=fail;
+  vImg.onload=()=>{ if(myTicket===vTicket) showLoader(false); };
+  vImg.onerror=()=>{ if(myTicket===vTicket) showLoader(false); };
   vImg.removeAttribute("src");
   vImg.dataset.src=src;
   vImg.loading="eager";
   vImg.decoding="async";
   vImg.referrerPolicy="no-referrer";
   vImg.src=src;
-  setTimeout(()=>{
-    if(myTicket!==vTicket) return;
-    if(vImg.complete && vImg.naturalWidth>0){ done(); }
-  },2500);
+  setTimeout(()=>{ if(myTicket===vTicket && vImg.complete && vImg.naturalWidth>0){ showLoader(false); } },1500);
 }
 function vRender(){
   const myTicket=++vTicket;
@@ -576,9 +623,7 @@ function vRender(){
     const th=document.createElement("button");
     th.className="thumb";
     const im=document.createElement("img");
-    if(i>5) im.loading="lazy";
-    im.decoding="async";
-    im.width=56; im.height=56; im.src=src;
+    im.decoding="async"; im.loading=i>5?"lazy":"eager"; im.width=56; im.height=56; im.src=src;
     im.onerror=()=>{ im.remove(); th.textContent="×"; };
     th.appendChild(im);
     th.onclick=()=>{ vIndex=i; setThumbCurrent(); vRender(); };
@@ -592,20 +637,17 @@ function vRender(){
     if(vList[j]){ const pre=new Image(); pre.decoding="async"; pre.loading="lazy"; pre.referrerPolicy="no-referrer"; pre.src=vList[j]; }
   });
 }
-function vOpen(list,start=0){
-  vList=[]; vIndex=0; vStrip.innerHTML="";
-  vImg.onload=null; vImg.onerror=null;
-  vImg.removeAttribute("src"); delete vImg.dataset.src; showLoader(true);
-  vList=list.slice();
-  vIndex=Math.max(0,Math.min(start,vList.length-1));
+async function vOpen(list,start=0){
+  vList=list.slice(); vIndex=Math.max(0,Math.min(start,vList.length-1));
   viewer.classList.add("active");
   viewer.setAttribute("aria-hidden","false");
   setInert(true);
+  await enterFS(viewer);  // FULLSCREEN immediato
   vRender();
   history.pushState({viewer:true},"");
 }
-function vCloseFn(){
-  if(isFS()) exitFS();
+async function vCloseFn(){
+  await exitFS();
   viewer.classList.remove("active");
   viewer.setAttribute("aria-hidden","true");
   setInert(false);
@@ -618,30 +660,31 @@ vClose.onclick=vCloseFn;
 vPrev.onclick=()=>{ if(!vList.length) return; vIndex=(vIndex-1+vList.length)%vList.length; setThumbCurrent(); vRender(); };
 vNext.onclick=()=>{ if(!vList.length) return; vIndex=(vIndex+1)%vList.length; setThumbCurrent(); vRender(); };
 viewer.addEventListener("click",e=>{ if(e.target===viewer) vCloseFn() });
-window.addEventListener("keydown",e=>{
-  if(!viewer.classList.contains("active")) return;
-  if(e.key==="Escape") vCloseFn();
-  if(e.key==="ArrowLeft") vPrev.click();
-  if(e.key==="ArrowRight") vNext.click();
-});
-let touchStartX=0;
-viewer.addEventListener("touchstart",e=>{touchStartX=e.touches[0].clientX},{passive:true});
-viewer.addEventListener("touchend",e=>{
-  const dx=(e.changedTouches[0].clientX-touchStartX);
-  if(Math.abs(dx)>40){ dx<0?vNext.click():vPrev.click(); }
+
+// Gesture: swipe L/R per cambiare, swipe DOWN per chiudere
+viewer.addEventListener("touchstart",e=>{ const t=e.touches[0]; swipeStartX=t.clientX; swipeStartY=t.clientY; swipeDX=0; swipeDY=0; },{passive:true});
+viewer.addEventListener("touchmove",e=>{ const t=e.touches[0]; swipeDX=t.clientX-swipeStartX; swipeDY=t.clientY-swipeStartY; },{passive:true});
+viewer.addEventListener("touchend",()=>{
+  const absX=Math.abs(swipeDX), absY=Math.abs(swipeDY);
+  if(absY>60 && absY>absX){ vCloseFn(); return; }
+  if(absX>40){ swipeDX<0 ? vNext.click() : vPrev.click(); }
 },{passive:true});
+
+// Apri dal custom event
 window.addEventListener("open-viewer",(ev)=>{
   const L=(ev.detail?.imgs||[]).filter(Boolean);
   const i=ev.detail?.index||0;
-  if(L.length){ vOpen(L,i); }
+  if(L.length) vOpen(L,i);
 });
-vFs.addEventListener("click", async ()=>{
-  if(!isFS()){ await enterFS(viewer); vFs.setAttribute("aria-pressed","true"); }
-  else{ await exitFS(); vFs.setAttribute("aria-pressed","false"); }
-});
-document.addEventListener("fullscreenchange",()=>{ vFs.setAttribute("aria-pressed", isFS() ? "true":"false"); });
+
+// Back button chiude
 window.addEventListener("popstate", ()=> { if(viewer.classList.contains("active")) vCloseFn(); });
+
+// Sincronizza stato tasto (non visibile) su change
+document.addEventListener("fullscreenchange",()=>{ /* noop, close button rimane */ });
 </script>
+
+<!-- SHEET logic -->
 <script>
 const sheet=document.getElementById("sheet");
 const shOverlay=sheet.querySelector(".overlay");
@@ -676,6 +719,7 @@ shPanel.addEventListener("touchend",()=>{if(deltaY>60){closeSheet()}shPanel.styl
 </script>
 </body>
 </html>
+
 
 
 
