@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.scalaquaranta.twa",
+        "sha256_cert_fingerprints": ["16:E1:A5:9B:B2:DC:FF:AA:C5:98:6C:F3:E4:D1:6D:03:23:DB:D2:E5:B9:66:EB:35:E6:A3:B6:8F:78:BA:CC:3F"]
+      }
+    }]
